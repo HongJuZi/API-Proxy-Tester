@@ -16,30 +16,55 @@ API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内�
 ## 项目结构
 
 ```
-api-test-tool/
+API-Proxy-Tester/
+├── .gitignore          # Git忽略文件配置
+├── LICENSE             # 许可证文件
+├── README.md           # 项目说明文档
+├── backend/            # 后端相关文件
+│   └── api-test-worker.php
+├── index.html          # 入口HTML文件
+├── package-lock.json   # 依赖锁定文件
+├── package.json        # 项目配置和依赖
+├── postcss.config.js   # PostCSS配置
+├── public/             # 静态资源目录
 ├── src/                # 源代码目录
+│   ├── App.vue         # 根组件
+│   ├── assets/         # 资源文件
 │   ├── components/     # Vue组件
 │   │   ├── forms/      # 表单相关组件
 │   │   ├── layout/     # 布局组件
 │   │   ├── modals/     # 模态框组件
 │   │   ├── response/   # 响应相关组件
 │   │   └── settings/   # 设置相关组件
+│   ├── main.js         # 入口JavaScript文件
+│   ├── pages/          # 页面组件
+│   │   ├── AboutPage.vue
+│   │   ├── ApiTestPage.vue
+│   │   └── HomePage.vue
+│   ├── router/         # 路由配置
+│   │   └── index.js
+│   ├── stores/         # 状态管理(Pinia)
+│   │   └── index.js
 │   ├── styles/         # 样式文件
-│   │   └── components/ # 组件样式
-│   ├── utils/          # 工具函数
-│   └── store/          # 状态管理
-├── index.html          # 入口HTML文件
-├── package.json        # 项目配置和依赖
-├── vite.config.js      # Vite配置
+│   │   ├── components/ # 组件样式
+│   │   ├── main.css    # 主样式文件
+│   │   └── tailwind.css # Tailwind CSS样式
+│   └── utils/          # 工具函数
+│       ├── apiClient.js
+│       ├── documentGenerator.js
+│       ├── helpers.js
+│       ├── modalHelper.js
+│       ├── paramProcessor.js
+│       └── storage.js
 ├── tailwind.config.js  # Tailwind CSS配置
-└── postcss.config.js   # PostCSS配置
+└── vite.config.js      # Vite配置
 ```
 
 ## 开发环境搭建
 
 1. 进入项目目录：
    ```bash
-   cd api-test-tool
+   cd API-Proxy-Tester
    ```
 
 2. 安装依赖：

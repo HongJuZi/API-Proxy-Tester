@@ -58,32 +58,33 @@
         </div>
         
         <ApiConfig
-            v-model:selected-method="selectedMethod"
-            :methods="methods"
-            v-model:api-path="apiPath"
-            :api-name="apiName"
-            @update:apiName="updateProperty('apiName', $event)"
-            v-model:api-params="apiParams"
-            v-model:input-mode="inputMode"
-            v-model:kv-pairs="kvPairs"
-            :json-raw-input="jsonRawInput"
-            @update:json-raw-input="updateProperty('jsonRawInput', $event)"
-            v-model:json-preview-content="jsonPreviewContent"
-            :expanded-sections="expandedSections"
-            @toggle-expand="toggleExpand"
-            @add-param="addParam"
-            @remove-param="removeParam"
-            @add-kv-pair="addKvPair"
-            @remove-kv-pair="removeKvPair"
-            @update-json-preview="updateJsonPreview"
-            @format-json-preview="formatJsonPreview"
-            @format-json-input="formatJsonInput"
-            @validate-json="validateJson"
-            @import-json-to-kv-pairs="importJsonToKvPairs"
-            @copy-request-config="copyRequestConfig"
-            @send-request="sendRequest"
-            @clear-api-config="clearApiConfig"
-          />
+      v-model:selected-method="selectedMethod"
+      :methods="methods"
+      v-model:api-path="apiPath"
+      :api-name="apiName"
+      @update:apiName="updateProperty('apiName', $event)"
+      v-model:api-params="apiParams"
+      v-model:input-mode="inputMode"
+      v-model:kv-pairs="kvPairs"
+      :json-raw-input="jsonRawInput"
+      @update:json-raw-input="updateProperty('jsonRawInput', $event)"
+      v-model:json-preview-content="jsonPreviewContent"
+      :expanded-sections="expandedSections"
+      @toggle-expand="toggleExpand"
+      @add-param="addParam"
+      @remove-param="removeParam"
+      @add-kv-pair="addKvPair"
+      @remove-kv-pair="removeKvPair"
+      @update-json-preview="updateJsonPreview"
+      @format-json-preview="formatJsonPreview"
+      @format-json-input="formatJsonInput"
+      @validate-json="validateJson"
+      @import-json-to-kv-pairs="importJsonToKvPairs"
+      @copy-request-config="copyRequestConfig"
+      @send-request="sendRequest"
+      @clear-api-config="clearApiConfig"
+      @update:api-path="updateProperty('apiPath', $event)"
+    />
           
           <!-- 请求信息卡片 -->
           <RequestInfo
@@ -136,6 +137,7 @@
       @update:base-url="handleBaseUrlUpdate"
       @update:timeout="handleTimeoutUpdate"
       @update:request-mode="handleRequestModeChange"
+      @update:global-param-mode="handleGlobalParamModeChange"
     />
     
     <!-- 帮助模态框 -->

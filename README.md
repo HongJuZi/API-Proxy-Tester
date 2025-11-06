@@ -5,6 +5,8 @@
 
 API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内网环境的接口测试及对接开发，提供简单易用的界面和强大的功能。
 
+[![GitHub Stars](https://img.shields.io/github/stars/HongJuZi/API-Proxy-Tester?style=social)](https://github.com/HongJuZi/API-Proxy-Tester) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Platform: Web](https://img.shields.io/badge/platform-web-blue)]()
+
 ## 功能特性
 
 - 基于Vue 3和Vite构建，快速开发和部署
@@ -114,7 +116,3 @@ API-Proxy-Tester/
 ## 许可证
 
 MIT License
-
----
-
-[查看英文版README](./README_EN.md)

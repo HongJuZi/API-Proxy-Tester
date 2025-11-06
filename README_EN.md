@@ -5,6 +5,8 @@
 
 API Proxy Testing Tool built with Vue 3 and Vite. Core goal is for interface testing and integration development in VPN intranet environments, providing an easy-to-use interface and powerful features.
 
+[![GitHub Stars](https://img.shields.io/github/stars/HongJuZi/API-Proxy-Tester?style=social)](https://github.com/HongJuZi/API-Proxy-Tester) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Platform: Web](https://img.shields.io/badge/platform-web-blue)]()
+
 ## Features
 
 - Built with Vue 3 and Vite for fast development and deployment

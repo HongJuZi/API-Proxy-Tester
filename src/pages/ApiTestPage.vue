@@ -473,11 +473,8 @@ export default {
     
     // 处理全局参数模式切换
     handleGlobalParamModeChange(mode) {
-      console.log('===== ApiTestPage: 处理全局参数模式切换 =====');
-      console.log('切换到模式:', mode);
       try {
         this.updateProperty('globalParamMode', mode);
-        console.log('更新globalParamMode成功，当前值:', this.globalParamMode);
       } catch (error) {
         console.error('更新globalParamMode失败:', error);
       }
@@ -490,11 +487,8 @@ export default {
     // 保存全局设置到localStorage
     saveGlobalSettings(settingsFromModal) {
       try {
-        console.log('接收到的设置参数:', settingsFromModal)
-        
         // 确保使用从模态框传递的设置数据
         if (!settingsFromModal) {
-          console.error('没有接收到有效的设置数据')
           this.showToast('设置数据无效')
           return
         }
@@ -502,17 +496,12 @@ export default {
         // 创建设置的深拷贝，确保不引用原始对象
         const settings = JSON.parse(JSON.stringify(settingsFromModal))
         
-        console.log('准备保存的全局设置:', settings)
-        
         // 直接保存到localStorage
         const success = storage.saveGlobalSettings(settings)
         
         if (success) {
-          console.log('设置保存到localStorage成功')
-          
           // 立即重新加载设置，确保获取的是最新保存的值
           const loadedSettings = storage.loadGlobalSettings()
-          console.log('重新加载的设置:', loadedSettings)
           
           // 强制更新store中的所有全局设置属性
           this.updateState({
@@ -540,14 +529,12 @@ export default {
             globalParamMethod: loadedSettings.globalParamMethod || 'GET' // 添加全局参数提交方式，默认GET
           })
           
-          console.log('store和组件属性更新完成')
           // 显示保存成功提示
           this.showToast('设置保存成功')
           // 关闭模态框
           this.hideGlobalSettings()
         } else {
           this.showToast('设置保存失败')
-          console.error('保存返回失败状态')
         }
       } catch (error) {
         console.error('保存全局设置失败:', error)
@@ -557,9 +544,7 @@ export default {
     // 加载全局设置
     loadGlobalSettings() {
       try {
-        console.log('开始加载全局设置...')
         const settings = storage.loadGlobalSettings()
-        console.log('从localStorage加载的设置:', settings)
         
         // 使用updateState一次性更新所有设置，确保完整更新
         const settingsToUpdate = {

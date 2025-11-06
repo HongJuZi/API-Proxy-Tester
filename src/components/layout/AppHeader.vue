@@ -40,33 +40,24 @@ export default {
   methods: {
     showGlobalSettings() {
       // 通知父组件显示全局设置模态框
-      console.log('===== AppHeader: 触发全局设置事件 =====')
-      console.log('this.$emit 存在:', !!this.$emit)
       try {
-        const result = this.$emit('show-global-settings')
-        console.log('事件触发结果:', result)
+        this.$emit('show-global-settings')
       } catch (error) {
         console.error('事件触发失败:', error)
       }
     },
     showHelp() {
       // 通知父组件显示帮助模态框
-      console.log('===== AppHeader: 触发帮助事件 =====')
-      console.log('this.$emit 存在:', !!this.$emit)
       try {
-        const result = this.$emit('show-help')
-        console.log('事件触发结果:', result)
+        this.$emit('show-help')
       } catch (error) {
         console.error('事件触发失败:', error)
       }
     },
     toggleTheme() {
       // 主题切换逻辑将在主应用中实现
-      console.log('===== AppHeader: 触发主题切换事件 =====')
-      console.log('this.$emit 存在:', !!this.$emit)
       try {
-        const result = this.$emit('toggle-theme')
-        console.log('事件触发结果:', result)
+        this.$emit('toggle-theme')
       } catch (error) {
         console.error('事件触发失败:', error)
       }

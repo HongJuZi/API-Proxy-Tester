@@ -254,8 +254,6 @@ export default {
         globalParamMethod: this.globalParamMethod // 添加全局参数提交方式
       }
       
-      console.log('GlobalSettings组件准备保存的设置:', settingsToSave)
-      
       // 触发保存事件
       this.$emit('save', settingsToSave)
     },

@@ -51,7 +51,7 @@ export const useMainStore = defineStore('main', {
       value: '',
       visible: true
     }],
-    jsonRawInput: '',
+    jsonRawInput: '{}',
     jsonPreviewContent: '{}',
     
     // 响应数据

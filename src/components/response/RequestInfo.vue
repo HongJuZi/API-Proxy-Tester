@@ -152,44 +152,48 @@ export default {
     },
     formattedBody() {
       try {
-        if (typeof this.requestBody === 'string') {
-          // 如果已经是字符串，尝试解析并格式化
-          // 首先检查是否已经是格式化的JSON字符串
-          const trimmedBody = this.requestBody.trim();
-          if (trimmedBody.startsWith('{') || trimmedBody.startsWith('[')) {
+        // 确保始终返回字符串，以JSON文本格式显示最终合并后的请求体数据
+        let result = ''
+        
+        // 处理代理模式下的请求体（包装对象）
+        // 在代理模式下，requestBody可能包含完整请求信息，需要提取其中的data字段作为实际请求体
+        console.log(this.requestBody);
+        if (typeof this.requestBody === 'object' && 
+            this.requestBody !== null && 
+            'method' in this.requestBody && 
+            'url' in this.requestBody && 
+            'data' in this.requestBody) {
+          // 这是一个代理模式下的包装请求对象，提取其中的实际请求体数据
+            result = this.formatJson(this.requestBody.data)
+        } else if (typeof this.requestBody === 'object' && this.requestBody !== null) {
+          // 非代理模式的对象数据，直接格式化
+          result = JSON.stringify(this.requestBody, null, 2)
+        } else if (typeof this.requestBody === 'string') {
+          // 字符串类型数据
+          const trimmed = this.requestBody.trim()
+          if (trimmed && trimmed !== '{}') {
+            // 尝试作为JSON解析并美化
             try {
-              // 尝试解析为JSON对象然后再格式化输出
-              return JSON.stringify(JSON.parse(trimmedBody), null, 2);
-            } catch (e) {
-              // 如果解析失败，可能是格式不正确的JSON字符串，仍然尝试格式化
-              return this.formatJsonString(trimmedBody);
+              const parsed = JSON.parse(trimmed)
+              result = JSON.stringify(parsed, null, 2)
+            } catch {
+              // 不是有效的JSON字符串，直接返回
+              result = trimmed
             }
           } else {
-            // 非JSON格式的字符串，尝试作为普通文本处理
-            return this.requestBody;
+            result = '{}'
           }
+        } else {
+          // 其他情况或null/undefined
+          result = this.requestBody ? JSON.stringify(this.requestBody, null, 2) : '{}'
         }
-        // 如果是对象，直接格式化输出
-        return JSON.stringify(this.requestBody || {}, null, 2)
-      } catch (e) {
-        console.warn('格式化请求体数据失败:', e);
-        // 捕获所有错误，确保至少返回字符串形式
-        return String(this.requestBody || '{}')
-      }
-    },
-    
-    // 辅助方法：尝试格式化可能不完美的JSON字符串
-    formatJsonString(str) {
-      try {
-        // 尝试一些简单的修复，如添加缺失的引号
-        // 注意：这只是一个基本的尝试，不保证能处理所有情况
-        let fixedStr = str;
         
-        // 如果失败，返回原始字符串
-        return JSON.stringify(JSON.parse(fixedStr), null, 2);
-      } catch {
-        // 如果仍然解析失败，至少尝试美化显示
-        return str;
+        // 最终类型检查，确保返回字符串
+        return typeof result === 'string' ? result : String(result)
+      } catch (e) {
+        console.warn('格式化请求体失败:', e)
+        // 错误处理，确保返回有效的字符串
+        return this.requestBody ? String(this.requestBody) : '{}'
       }
     },
     hasRequestBody() {
@@ -203,6 +207,16 @@ export default {
   methods: {
     toggleCollapse() {
       this.collapse = !this.collapse
+    },
+    
+    // 简化的JSON格式化辅助方法
+    formatJson(obj) {
+      try {
+        return JSON.stringify(obj, null, 2)
+      } catch (e) {
+        console.warn('JSON格式化失败:', e)
+        return '{}'
+      }
     },
     copyItem(type, content) {
       // 使用更兼容的复制方法

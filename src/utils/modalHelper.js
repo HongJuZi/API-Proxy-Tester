@@ -57,10 +57,8 @@ class ModalHelper {
       }
     })
 
-    // 监听关闭事件
-    this.app.config.globalProperties.$on('close', () => {
-      this.destroyModal()
-    })
+    // 在Vue 3中，全局属性上不再支持$on事件，改为使用provide/inject或直接传递prop
+    // 这里我们已经通过props传递了关闭回调，不需要额外监听
 
     // 挂载应用
     this.modalInstance = this.app.mount(this.modalContainer)

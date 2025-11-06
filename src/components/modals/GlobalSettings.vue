@@ -220,7 +220,44 @@ export default {
       this.$emit('close')
     },
     save() {
-      this.$emit('save')
+      // 验证输入
+      if (this.requestMode === 'proxy' && (!this.proxyUrl || !this.baseUrl)) {
+        this.$emit('show-toast', '代理模式下必须填写代理URL和基础URL');
+        return
+      }
+      
+      if (this.globalParamMode === 'json' && this.globalJsonInput) {
+        try {
+          JSON.parse(this.globalJsonInput)
+        } catch (e) {
+          this.$emit('show-toast', '全局参数JSON格式错误');
+          return
+        }
+      }
+      
+      // 检查超时设置是否为有效数字
+      if (this.timeout && isNaN(Number(this.timeout))) {
+        this.$emit('show-toast', '超时时间必须为有效数字');
+        return
+      }
+      
+      // 准备要保存的数据，确保是深拷贝
+      const settingsToSave = {
+        requestMode: this.requestMode,
+        proxyUrl: this.proxyUrl,
+        baseUrl: this.baseUrl,
+        timeout: Number(this.timeout) || 30000,
+        globalParams: JSON.parse(JSON.stringify(this.globalParams)), // 深拷贝避免引用问题
+        globalParamMode: this.globalParamMode,
+        globalJsonInput: this.globalJsonInput,
+        headers: JSON.parse(JSON.stringify(this.headers)), // 深拷贝避免引用问题
+        globalParamMethod: this.globalParamMethod // 添加全局参数提交方式
+      }
+      
+      console.log('GlobalSettings组件准备保存的设置:', settingsToSave)
+      
+      // 触发保存事件
+      this.$emit('save', settingsToSave)
     },
     addParam(type) {
       this.$emit('add-param', type)

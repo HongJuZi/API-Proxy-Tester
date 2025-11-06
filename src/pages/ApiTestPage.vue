@@ -488,25 +488,63 @@ export default {
     },
     
     // 保存全局设置到localStorage
-    saveGlobalSettings() {
+    saveGlobalSettings(settingsFromModal) {
       try {
-        const settings = {
-          requestMode: this.requestMode,
-          proxyUrl: this.proxyUrl,
-          baseUrl: this.baseUrl,
-          timeout: this.timeout,
-          globalParams: this.globalParams,
-          globalParamMode: this.globalParamMode,
-          globalJsonInput: this.globalJsonInput,
-          headers: this.headers
+        console.log('接收到的设置参数:', settingsFromModal)
+        
+        // 确保使用从模态框传递的设置数据
+        if (!settingsFromModal) {
+          console.error('没有接收到有效的设置数据')
+          this.showToast('设置数据无效')
+          return
         }
+        
+        // 创建设置的深拷贝，确保不引用原始对象
+        const settings = JSON.parse(JSON.stringify(settingsFromModal))
+        
+        console.log('准备保存的全局设置:', settings)
+        
+        // 直接保存到localStorage
         const success = storage.saveGlobalSettings(settings)
+        
         if (success) {
+          console.log('设置保存到localStorage成功')
+          
+          // 立即重新加载设置，确保获取的是最新保存的值
+          const loadedSettings = storage.loadGlobalSettings()
+          console.log('重新加载的设置:', loadedSettings)
+          
+          // 强制更新store中的所有全局设置属性
+          this.updateState({
+            requestMode: loadedSettings.requestMode,
+            proxyUrl: loadedSettings.proxyUrl,
+            baseUrl: loadedSettings.baseUrl,
+            timeout: loadedSettings.timeout,
+            globalParams: JSON.parse(JSON.stringify(loadedSettings.globalParams)),
+            globalParamMode: loadedSettings.globalParamMode,
+            globalJsonInput: loadedSettings.globalJsonInput,
+            headers: JSON.parse(JSON.stringify(loadedSettings.headers)),
+            globalParamMethod: loadedSettings.globalParamMethod || 'GET' // 添加全局参数提交方式，默认GET
+          })
+          
+          // 同时更新组件的本地属性，确保立即生效
+          Object.assign(this, {
+            requestMode: loadedSettings.requestMode,
+            proxyUrl: loadedSettings.proxyUrl,
+            baseUrl: loadedSettings.baseUrl,
+            timeout: loadedSettings.timeout,
+            globalParams: JSON.parse(JSON.stringify(loadedSettings.globalParams)),
+            globalParamMode: loadedSettings.globalParamMode,
+            globalJsonInput: loadedSettings.globalJsonInput,
+            headers: JSON.parse(JSON.stringify(loadedSettings.headers)),
+            globalParamMethod: loadedSettings.globalParamMethod || 'GET' // 添加全局参数提交方式，默认GET
+          })
+          
+          console.log('store和组件属性更新完成')
           // 显示保存成功提示
           this.showToast('设置保存成功')
           // 关闭模态框
           this.hideGlobalSettings()
-          console.log('全局设置保存成功')
         } else {
           this.showToast('设置保存失败')
           console.error('保存返回失败状态')
@@ -519,15 +557,30 @@ export default {
     // 加载全局设置
     loadGlobalSettings() {
       try {
+        console.log('开始加载全局设置...')
         const settings = storage.loadGlobalSettings()
-        if (settings.requestMode) this.updateProperty('requestMode', settings.requestMode)
-        if (settings.proxyUrl) this.updateProperty('proxyUrl', settings.proxyUrl)
-        if (settings.baseUrl) this.updateProperty('baseUrl', settings.baseUrl)
-        if (settings.timeout) this.updateProperty('timeout', settings.timeout)
-        if (settings.globalParams) this.updateProperty('globalParams', settings.globalParams)
-        if (settings.globalParamMode) this.updateProperty('globalParamMode', settings.globalParamMode)
-        if (settings.globalJsonInput) this.updateProperty('globalJsonInput', settings.globalJsonInput)
-        if (settings.headers) this.updateProperty('headers', settings.headers)
+        console.log('从localStorage加载的设置:', settings)
+        
+        // 使用updateState一次性更新所有设置，确保完整更新
+        const settingsToUpdate = {
+          requestMode: settings.requestMode || 'proxy',
+          proxyUrl: settings.proxyUrl || 'api-test-worker.php',
+          baseUrl: settings.baseUrl || 'https://jsonplaceholder.typicode.com',
+          timeout: settings.timeout || 30000,
+          globalParams: settings.globalParams ? JSON.parse(JSON.stringify(settings.globalParams)) : [{ name: '', value: '', visible: true }],
+          globalParamMode: settings.globalParamMode || 'kv',
+          globalJsonInput: settings.globalJsonInput || '',
+          headers: settings.headers ? JSON.parse(JSON.stringify(settings.headers)) : [{ name: 'Content-Type', value: 'application/json', visible: true }],
+          globalParamMethod: settings.globalParamMethod || 'GET'
+        }
+        
+        console.log('准备更新到store的设置:', settingsToUpdate)
+        this.updateState(settingsToUpdate)
+        
+        // 同时更新组件的本地属性
+        Object.assign(this, settingsToUpdate)
+        
+        console.log('全局设置加载完成')
       } catch (error) {
         console.error('加载全局设置失败:', error)
       }
@@ -1018,6 +1071,8 @@ export default {
     // 重构后的收集请求配置方法 - 确保请求参数与页面参数完全独立
     collectRequestConfig() {
       // 创建页面参数的深拷贝，确保不影响原页面参数
+      // 确保使用最新的全局参数
+      console.log('在collectRequestConfig中获取的全局参数:', this.globalParams);
       const pageGlobalParams = JSON.parse(JSON.stringify(this.globalParams))
       const pageApiParams = JSON.parse(JSON.stringify(this.apiParams))
       const pageHeaders = JSON.parse(JSON.stringify(this.headers))
@@ -1175,9 +1230,11 @@ export default {
       
       // 收集全局参数
       const globalParams = collectRequestGlobalParams()
+      console.log('收集到的全局参数:', globalParams)
       
       // 处理接口参数
       const apiParams = processRequestApiParams()
+      console.log('处理后的接口参数:', apiParams)
       
       // 根据全局参数提交方式决定如何处理全局参数
       let params = {} // URL参数
@@ -1189,11 +1246,15 @@ export default {
       // 全局参数根据提交方式处理
       if (pageGlobalParamMethod === 'GET') {
         // GET请求：全局参数合并到URL参数
+        console.log('GET模式：合并全局参数到URL参数')
         this.mergeParams(params, globalParams)
       } else {
         // 非GET请求：全局参数合并到请求体
+        console.log('非GET模式：全局参数设置为请求体参数')
         bodyParams = globalParams
       }
+      console.log('合并后的URL参数:', params)
+      console.log('准备的请求体参数:', bodyParams)
       
       // 构建请求配置
       const { url, targetUrl } = buildRequestUrlInfo(params)
@@ -1205,6 +1266,8 @@ export default {
       
       // 合并请求体数据
       let finalData = apiRequestBody
+      console.log('原始请求体数据:', apiRequestBody)
+      console.log('是否需要合并请求体:', hasBody && bodyParams && Object.keys(bodyParams).length > 0)
       if (hasBody && bodyParams && Object.keys(bodyParams).length > 0) {
         // 如果接口已有请求体，深度合并全局参数
         if (typeof apiRequestBody === 'object' && apiRequestBody !== null) {
@@ -1238,7 +1301,15 @@ export default {
           this.updateProperty('apiName', defaultName.replace(/\//g, '-'));
         }
         
+        // 打印全局参数信息，用于调试
+        console.log('发送请求前的全局参数:', this.globalParams)
+        console.log('发送请求前的全局参数模式:', this.globalParamMode)
+        console.log('发送请求前的全局参数提交方式:', this.globalParamMethod)
+        
         const config = this.collectRequestConfig()
+        
+        // 打印最终请求配置，用于调试
+        console.log('最终请求配置:', config)
         
         // 根据请求模式设置axios配置
         let axiosConfig = {

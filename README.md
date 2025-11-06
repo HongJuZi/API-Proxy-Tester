@@ -1,9 +1,10 @@
 # API Proxy Tester
 
-API代理测试工具，基于Vue 3和Vite构建。
+API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内网环境的接口测试及对接开发，提供简单易用的界面和强大的功能。
 
 ## 功能特性
 
+- 基于Vue 3和Vite构建，快速开发和部署
 - 支持多种HTTP方法（GET, POST, PUT, DELETE等）
 - 可配置全局参数和请求头
 - 请求体支持键值对和JSON原始数据两种模式

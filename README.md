@@ -18,6 +18,12 @@ API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内�
 - 参数占位符自动替换
 - 历史请求记录
 
+## DEMO演示
+
+![首页](./demo/index.index)
+![API Proxy Tester Demo](./demo/api.png)
+![全局设置](./demo/config.png)
+
 ## 项目结构
 
 ```

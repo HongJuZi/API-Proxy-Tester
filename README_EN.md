@@ -18,6 +18,13 @@ API Proxy Testing Tool built with Vue 3 and Vite. Core goal is for interface tes
 - Parameter placeholder automatic replacement
 - Historical request records
 
+
+## DEMO演示
+
+![Home Page](./demo/index.index)
+![API Proxy Tester Demo](./demo/api.png)
+![Global Setting](./demo/config.png)
+
 ## Project Structure
 
 ```

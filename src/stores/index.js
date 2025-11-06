@@ -27,6 +27,7 @@ export const useMainStore = defineStore('main', {
     showGlobalSettings: false,
     requestHistory: [],
     toastMessage: '',
+    toastVisible: false,
     headers: [
       {
         name: 'Content-Type',
@@ -259,12 +260,13 @@ export const useMainStore = defineStore('main', {
     
     // 显示提示
     showToast(message = '操作成功！') {
-      modalHelper.success(message)
+      this.toastMessage = message;
+      this.toastVisible = true;
     },
     
-    // 隐藏提示（保持兼容性）
+    // 隐藏提示
     hideToast() {
-      // 不再需要实现，因为modalHelper会自动处理
+      this.toastVisible = false;
     },
     
     // 切换展开状态

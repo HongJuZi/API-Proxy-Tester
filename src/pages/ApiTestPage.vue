@@ -138,8 +138,12 @@
     <!-- 帮助模态框 -->
     <HelpModal v-if="showHelp" @close="hideHelp" />
     
-    <!-- 复制提示 -->
-    <Toast v-if="showCopyToast" :message="toastMessage" />
+    <!-- 操作提示 -->
+      <Toast 
+        :message="toastMessage" 
+        :visible="toastVisible"
+        @close="hideToast"
+      />
     
     <!-- 页脚 -->
     <footer class="mt-8 py-4 text-center text-sm text-gray-500 border-t border-gray-200">
@@ -225,7 +229,7 @@ export default {
       'apiAuthor',
       'showDocumentPreview',
       'documentContent',
-      'showCopyToast',
+      'toastVisible',
       'documentFormat',
       'showHelp',
       'expandedSections',
@@ -295,6 +299,7 @@ export default {
       'updateResponseData',
       'updateDocumentPreview',
       'showToast',
+      'hideToast',
       'toggleExpand'
     ]),
     

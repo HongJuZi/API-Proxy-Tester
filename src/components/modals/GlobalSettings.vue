@@ -16,25 +16,37 @@
         <!-- 请求方式设置 -->
         <div class="mb-4">
           <label class="block text-sm font-medium text-dark-2 mb-1">请求方式</label>
-          <div class="flex items-center space-x-4">
-            <label class="flex items-center cursor-pointer">
+          <div class="inline-flex bg-light-1 rounded-lg p-1">
+            <label 
+              class="flex items-center cursor-pointer px-4 py-2 rounded-md transition-all-300"
+              :class="requestMode === 'proxy' ? 'bg-white shadow-sm text-dark' : 'text-dark-2 hover:text-dark'"
+            >
               <input 
                 type="radio" 
                 :value="'proxy'"
                 :checked="requestMode === 'proxy'"
                 @change="$emit('update:requestMode', 'proxy')"
-                class="mr-2"
+                class="sr-only"
               >
+              <div class="w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center" :class="requestMode === 'proxy' ? 'border-primary' : 'border-dark-3'">
+                <div v-if="requestMode === 'proxy'" class="w-2 h-2 rounded-full bg-primary"></div>
+              </div>
               <span>代理请求</span>
             </label>
-            <label class="flex items-center cursor-pointer">
+            <label 
+              class="flex items-center cursor-pointer px-4 py-2 rounded-md transition-all-300"
+              :class="requestMode === 'direct' ? 'bg-white shadow-sm text-dark' : 'text-dark-2 hover:text-dark'"
+            >
               <input 
                 type="radio" 
                 :value="'direct'"
                 :checked="requestMode === 'direct'"
                 @change="$emit('update:requestMode', 'direct')"
-                class="mr-2"
+                class="sr-only"
               >
+              <div class="w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center" :class="requestMode === 'direct' ? 'border-primary' : 'border-dark-3'">
+                <div v-if="requestMode === 'direct'" class="w-2 h-2 rounded-full bg-primary"></div>
+              </div>
               <span>直接请求</span>
             </label>
           </div>

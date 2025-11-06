@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-xl shadow-card p-5 hover:shadow-hover transition-all-300 mt-4">
-    <div class="flex items-center justify-between mb-4">
+    <div class="mb-3 flex items-center justify-between">
       <h2 class="text-lg font-semibold flex items-center">
         <i class="fa fa-history text-primary mr-2"></i>历史请求
       </h2>
@@ -9,9 +9,20 @@
       </button>
     </div>
     
+    <!-- 搜索框单独一行 -->
+    <div class="relative mb-4">
+      <input 
+        v-model="searchQuery"
+        type="text" 
+        placeholder="搜索接口名称或地址..." 
+        class="pl-9 pr-4 py-2 bg-light-1 border border-light-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all-300 w-full"
+      >
+      <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-3"></i>
+    </div>
+    
     <div class="animate-fade-in">
       <div class="space-y-3 max-h-[350px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
-        <div v-for="(historyItem, index) in requestHistory" :key="index" 
+        <div v-for="(historyItem, index) in filteredHistory" :key="index" 
              class="p-4 bg-light-1 rounded-lg hover:bg-light-2 transition-all-300 cursor-pointer border border-light-2 shadow-sm hover:shadow transition-all-300"
              @click="loadHistoryItem(index)">
           <!-- 第一行：接口名称 -->
@@ -45,8 +56,10 @@
             {{ formatDate(historyItem.timestamp) }}
           </div>
         </div>
-        <div v-if="requestHistory.length === 0" class="text-center text-dark-2 py-4">
-          暂无历史请求记录
+        <div v-if="filteredHistory.length === 0" class="text-center text-dark-2 py-4">
+          <i class="fa fa-search text-dark-3 mb-2"></i>
+          <p v-if="searchQuery">未找到匹配的历史记录</p>
+          <p v-else>暂无历史请求记录</p>
         </div>
       </div>
     </div>
@@ -58,6 +71,28 @@ export default {
   name: 'RequestHistory',
   props: {
     requestHistory: Array
+  },
+  data() {
+    return {
+      searchQuery: ''
+    }
+  },
+  computed: {
+    filteredHistory() {
+      if (!this.searchQuery.trim()) {
+        return this.requestHistory
+      }
+      
+      const query = this.searchQuery.toLowerCase().trim()
+      return this.requestHistory.filter(item => {
+        // 搜索接口名称
+        const apiName = (item.apiName || item.path || '').toLowerCase()
+        // 搜索接口地址
+        const url = (item.targetUrl || item.url || '').toLowerCase()
+        
+        return apiName.includes(query) || url.includes(query)
+      })
+    }
   },
   methods: {
     clearHistory() {

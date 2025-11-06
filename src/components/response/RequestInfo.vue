@@ -119,6 +119,8 @@
 </template>
 
 <script>
+import modalHelper from '../../utils/modalHelper.js'
+
 export default {
   name: 'RequestInfo',
   props: {
@@ -220,7 +222,7 @@ export default {
         this.showToast(`${label}已复制`)
       } catch (err) {
         console.error('复制失败:', err)
-        alert(`${label}复制失败！`)
+        modalHelper.error(`${label}复制失败！`)
       } finally {
         document.body.removeChild(textArea)
       }

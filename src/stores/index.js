@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import storage from '../utils/storage.js'
+import modalHelper from '../utils/modalHelper.js'
 
 // 定义主 store
 export const useMainStore = defineStore('main', {
@@ -257,17 +259,12 @@ export const useMainStore = defineStore('main', {
     
     // 显示提示
     showToast(message = '操作成功！') {
-      this.showCopyToast = true
-      this.toastMessage = message
-      // 3秒后自动隐藏
-      setTimeout(() => {
-        this.showCopyToast = false
-      }, 3000)
+      modalHelper.success(message)
     },
     
-    // 隐藏提示
+    // 隐藏提示（保持兼容性）
     hideToast() {
-      this.showCopyToast = false
+      // 不再需要实现，因为modalHelper会自动处理
     },
     
     // 切换展开状态

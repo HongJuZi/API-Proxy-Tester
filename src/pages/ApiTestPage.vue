@@ -169,6 +169,7 @@ import paramProcessor from '../utils/paramProcessor.js'
 import storage from '../utils/storage.js'
 import documentGenerator from '../utils/documentGenerator.js'
 import Helpers from '../utils/helpers.js'
+import modalHelper from '../utils/modalHelper.js'
 
 export default {
   name: 'ApiTestPage',
@@ -529,29 +530,29 @@ export default {
     validateGlobalJson() {
       try {
         if (!this.globalJsonInput.trim()) {
-          alert('请输入JSON内容')
+          modalHelper.warning('请输入JSON内容')
           return
         }
         const result = Helpers.validateJson(this.globalJsonInput)
         if (result.valid) {
-          alert('JSON格式正确')
+          modalHelper.success('JSON格式正确')
         } else {
-          alert('JSON格式错误: ' + result.error)
+          modalHelper.error('JSON格式错误: ' + result.error)
         }
       } catch (error) {
-        alert('JSON格式错误: ' + error.message)
+        modalHelper.error('JSON格式错误: ' + error.message)
       }
     },
     // 导入JSON为键值对
     importGlobalJson() {
       try {
         if (!this.globalJsonInput.trim()) {
-          alert('请输入JSON内容')
+          modalHelper.warning('请输入JSON内容')
           return
         }
         const result = Helpers.validateJson(this.globalJsonInput)
         if (!result.valid) {
-          alert('JSON格式错误: ' + result.error)
+          modalHelper.error('JSON格式错误: ' + result.error)
           return
         }
         const jsonData = JSON.parse(this.globalJsonInput)
@@ -565,9 +566,9 @@ export default {
         }
         this.updateProperty('globalParams', newParams)
         this.updateProperty('globalParamMode', 'kv')
-        alert('导入成功')
+        modalHelper.success('导入成功')
       } catch (error) {
-        alert('导入失败: ' + error.message)
+        modalHelper.error('导入失败: ' + error.message)
       }
     },
     // 获取请求体JSON数据
@@ -650,10 +651,10 @@ export default {
         if (result.valid) {
           this.updateProperty('jsonRawInput', result.formatted)
         } else {
-          alert(`JSON格式错误: ${result.error}`)
+          modalHelper.error(`JSON格式错误: ${result.error}`)
         }
       } catch (e) {
-        alert(`JSON格式错误: ${e.message}`)
+        modalHelper.error(`JSON格式错误: ${e.message}`)
       }
     },
     // 格式化全局参数JSON
@@ -663,10 +664,10 @@ export default {
         if (result.valid) {
           this.updateProperty('globalJsonInput', result.formatted)
         } else {
-          alert(`JSON格式错误: ${result.error}`)
+          modalHelper.error(`JSON格式错误: ${result.error}`)
         }
       } catch (e) {
-        alert(`JSON格式错误: ${e.message}`)
+        modalHelper.error(`JSON格式错误: ${e.message}`)
       }
     },
     // 加载历史请求
@@ -808,19 +809,19 @@ export default {
       const text = JSON.stringify(config, null, 2)
       navigator.clipboard.writeText(text)
         .then(() => this.showToast('请求配置已复制'))
-        .catch(() => alert('复制失败！'))
+        .catch(() => modalHelper.error('复制失败！'))
     },
     // 验证JSON格式
     validateJson() {
       try {
         const result = Helpers.validateJson(this.jsonRawInput)
         if (result.valid) {
-          alert('JSON格式正确！')
+          modalHelper.success('JSON格式正确！')
         } else {
-          alert(`JSON格式错误: ${result.error}`)
+          modalHelper.error(`JSON格式错误: ${result.error}`)
         }
       } catch (e) {
-        alert(`JSON格式错误: ${e.message}`)
+        modalHelper.error(`JSON格式错误: ${e.message}`)
       }
     },
     // 处理输入模式切换
@@ -1320,7 +1321,7 @@ export default {
         }
         // 请求失败时也保存到历史记录，标记为错误状态或超时状态
         this.saveToHistory(config, errorResponse)
-        alert(`请求失败: ${error.message}`)
+        modalHelper.error(`请求失败: ${error.message}`)
       }
     },
     // 复制响应内容
@@ -1359,7 +1360,7 @@ export default {
         this.showToast('响应内容已复制')
       } catch (error) {
         console.error('复制失败:', error)
-        alert('复制失败！请手动复制内容')
+        modalHelper.error('复制失败！请手动复制内容')
       } finally {
         document.body.removeChild(textArea)
       }
@@ -1414,7 +1415,7 @@ export default {
     copyDocument() {
       navigator.clipboard.writeText(this.documentContent)
         .then(() => this.showToast('文档已复制'))
-        .catch(() => alert('复制失败！'))
+        .catch(() => modalHelper.error('复制失败！'))
     },
     // 下载文档
     downloadDocument() {

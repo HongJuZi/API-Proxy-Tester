@@ -1,3 +1,6 @@
+[中文](./README.md) | [English](./README_EN.md)
+---
+
 # API Proxy Tester
 
 API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内网环境的接口测试及对接开发，提供简单易用的界面和强大的功能。
@@ -99,3 +102,19 @@ API-Proxy-Tester/
 - `${s16}` - 生成16位随机字符串
 
 示例：在JSON中使用 `{"timestamp": "${datetime}", "request_id": "${UUID}"}` 将自动替换为实际值。
+
+---
+
+## 第三方链接
+
+- [Discord](https://discord.com/invite/deepseek)
+- [Twitter](https://twitter.com/deepseek_ai)
+- [GitHub](https://github.com/deepseek-ai)
+
+## 许可证
+
+MIT License
+
+---
+
+[查看英文版README](./README_EN.md)

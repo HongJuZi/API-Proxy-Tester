@@ -1,0 +1,1432 @@
+<template>
+  <div id="api-test-page">
+    <!-- 顶部导航栏 -->
+    <AppHeader 
+      @toggle-theme="toggleTheme" 
+      @show-global-settings="handleShowGlobalSettings"
+      @show-help="handleShowHelp"
+    />
+    
+    <main class="container mx-auto px-4 py-6">
+      <!-- 文档预览模态框 -->
+      <DocumentPreview 
+        v-if="showDocumentPreview"
+        :document-content="documentContent"
+        @copy-document="copyDocument"
+        @download-document="downloadDocument"
+        @close-preview="closeDocumentPreview"
+      />
+      <!-- 工具主体区域 -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        <!-- 左侧：全局设置 (占1列) -->
+        <div class="lg:col-span-1 space-y-6">
+          <!-- 文档配置卡片 -->
+          <DocumentConfig 
+            v-model:api-name="apiName"
+            v-model:api-description="apiDescription"
+            v-model:api-author="apiAuthor"
+            :expanded-sections="expandedSections"
+            @toggle-expand="toggleExpand"
+            @generate-document="generateDocument"
+          />
+          <!-- 历史请求卡片 -->
+          <RequestHistory 
+            :request-history="requestHistory"
+            @clear-history="clearHistory"
+            @load-history-item="loadHistoryItem"
+          />
+        </div>
+        
+        <!-- 右侧：接口配置 + 响应展示区 + 文档预览 (占2列) -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- 接口配置卡片 -->
+          <!-- 首次使用提醒 -->
+        <div v-if="showFirstUseReminder" class="bg-warning-light border border-warning rounded-lg p-4 mb-4">
+          <div class="flex items-start">
+            <i class="fa fa-info-circle text-warning mt-1 mr-3"></i>
+            <div>
+              <h4 class="font-medium text-dark-1 mb-1">首次使用提醒</h4>
+              <p class="text-sm text-dark-2 mb-2">为了更好地使用接口测试工具，请先配置全局参数</p>
+              <button @click="showGlobalSettings = true" class="bg-primary hover:bg-primary/90 text-white text-sm px-3 py-1 rounded transition-colors">
+                去配置全局参数
+              </button>
+              <button @click="dismissFirstUseReminder" class="ml-2 text-sm text-dark-2 hover:text-dark-1">
+                稍后再说
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <ApiConfig
+            v-model:selected-method="selectedMethod"
+            :methods="methods"
+            v-model:api-path="apiPath"
+            v-model:api-name="apiName"
+            v-model:api-params="apiParams"
+            v-model:input-mode="inputMode"
+            v-model:kv-pairs="kvPairs"
+            v-model:json-raw-input="jsonRawInput"
+            v-model:json-preview-content="jsonPreviewContent"
+            :expanded-sections="expandedSections"
+            @toggle-expand="toggleExpand"
+            @add-param="addParam"
+            @remove-param="removeParam"
+            @add-kv-pair="addKvPair"
+            @remove-kv-pair="removeKvPair"
+            @update-json-preview="updateJsonPreview"
+            @format-json-preview="formatJsonPreview"
+            @format-json-input="formatJsonInput"
+            @validate-json="validateJson"
+            @import-json-to-kv-pairs="importJsonToKvPairs"
+            @copy-request-config="copyRequestConfig"
+            @send-request="sendRequest"
+            @clear-api-config="clearApiConfig"
+          />
+          
+          <!-- 请求信息卡片 -->
+          <RequestInfo
+            v-if="showResponse"
+            :request-method="requestMethod"
+            :request-url="requestUrl"
+            :request-headers="requestHeaders"
+            :request-params="requestParams"
+            :request-body="requestData"
+          />
+          
+          <!-- 响应信息卡片 -->
+          <ResponseInfo 
+            v-if="showResponse"
+            :response-code="responseCode"
+            :response-time="responseTime"
+            :response-size="responseSize"
+            :response-url="responseUrl"
+            :formatted-response-content="formattedResponseContent"
+            @copy-response="copyResponse"
+            @download-response="downloadResponse"
+          />
+          
+        </div>
+      </div>
+    </main>
+    
+    <!-- 全局设置模态框 -->
+      <GlobalSettings 
+        v-if="showGlobalSettings"
+        v-model:request-mode="requestMode"
+        v-model:global-param-mode="globalParamMode"
+        v-model:proxy-url="proxyUrl"
+        v-model:base-url="baseUrl"
+        v-model:timeout="timeout"
+        v-model:global-params="globalParams"
+        v-model:global-json-input="globalJsonInput"
+        v-model:headers="headers"
+        v-model:global-param-method="globalParamMethod"
+        @close="hideGlobalSettings"
+        @save="saveGlobalSettings"
+        @add-param="addParam"
+        @remove-param="removeParam"
+        @validate-global-json="validateGlobalJson"
+        @format-global-json="formatGlobalJson"
+        @import-global-json="importGlobalJson"
+        @update:requestMode="handleRequestModeChange"
+        @update:globalParamMode="handleGlobalParamModeChange"
+        @update:globalParamMethod="handleGlobalParamMethodChange"
+      />
+    
+    <!-- 帮助模态框 -->
+    <HelpModal v-if="showHelp" @close="hideHelp" />
+    
+    <!-- 复制提示 -->
+    <Toast v-if="showCopyToast" :message="toastMessage" />
+    
+    <!-- 页脚 -->
+    <footer class="mt-8 py-4 text-center text-sm text-gray-500 border-t border-gray-200">
+      <p>© 2025 红橘子科技</p>
+    </footer>
+  </div>
+</template>
+
+<script>
+// 从pinia中导入useMainStore
+import { mapState, mapActions } from 'pinia'
+import { useMainStore } from '../stores/index.js'
+
+import AppHeader from '../components/layout/AppHeader.vue'
+import DocumentConfig from '../components/settings/DocumentConfig.vue'
+import RequestHistory from '../components/layout/RequestHistory.vue'
+import ApiConfig from '../components/forms/ApiConfig.vue'
+import ResponseInfo from '../components/response/ResponseInfo.vue'
+import RequestInfo from '../components/response/RequestInfo.vue'
+import DocumentPreview from '../components/response/DocumentPreview.vue'
+import GlobalSettings from '../components/modals/GlobalSettings.vue'
+import HelpModal from '../components/modals/HelpModal.vue'
+import Toast from '../components/layout/Toast.vue'
+
+// 导入工具模块
+import apiClient from '../utils/apiClient.js'
+import paramProcessor from '../utils/paramProcessor.js'
+import storage from '../utils/storage.js'
+import documentGenerator from '../utils/documentGenerator.js'
+import Helpers from '../utils/helpers.js'
+
+export default {
+  name: 'ApiTestPage',
+  components: {
+    AppHeader,
+    DocumentConfig,
+    RequestHistory,
+    ApiConfig,
+    ResponseInfo,
+    RequestInfo,
+    DocumentPreview,
+    GlobalSettings,
+    HelpModal,
+    Toast
+  },
+  data() {
+    return {
+      hasUsedTool: false, // 标记用户是否已经使用过工具
+      showDocumentPreview: false
+    }
+  },
+  computed: {
+    // 使用Pinia的mapState映射状态
+    ...mapState(useMainStore, [
+      'baseUrl',
+      'timeout',
+      'selectedMethod',
+      'methods',
+      'apiPath',
+      'inputMode',
+      'requestMode',
+      'proxyUrl',
+      'globalParamMode',
+      'globalJsonInput',
+      'showGlobalSettings',
+      'requestHistory',
+      'toastMessage',
+      'jsonRawInput',
+      'jsonPreviewContent',
+      'showResponse',
+      'responseCode',
+      'responseTime',
+      'responseSize',
+      'responseUrl',
+      'responseContent',
+      'formattedResponseContent',
+      'apiName',
+      'apiDescription',
+      'apiAuthor',
+      'showDocumentPreview',
+      'documentContent',
+      'showCopyToast',
+      'documentFormat',
+      'showHelp',
+      'expandedSections',
+      'globalParams',
+      'headers',
+      'apiParams',
+      'kvPairs',
+      'globalParamMethod',
+      // 请求信息
+      'requestMethod',
+      'requestUrl',
+      'requestHeaders',
+      'requestParams',
+      'requestData'
+    ]),
+    // 计算是否显示首次使用提醒
+    showFirstUseReminder() {
+      // 条件：1. 还没有使用过工具
+      // 2. 全局参数没有配置（globalParams 中没有有效的参数）
+      if (this.hasUsedTool) return false
+      
+      // 检查全局参数是否都为空
+      const hasValidGlobalParams = this.globalParams.some(param => 
+        param.name.trim() !== ''
+      )
+      
+      return !hasValidGlobalParams
+    }
+  },
+  mounted() {
+    // 初始化JSON预览
+    this.updateJsonPreview()
+    // 加载历史请求
+    this.loadHistory()
+    // 加载全局设置
+    this.loadGlobalSettings()
+    
+    // 检查是否是首次使用
+    const hasUsedBefore = localStorage.getItem('apiToolHasUsed')
+    if (hasUsedBefore) {
+      this.hasUsedTool = true
+    }
+  },
+  methods: {
+    // 显示文档预览模态框
+    showDocumentPreviewModal() {
+      this.showDocumentPreview = true
+    },
+    
+
+    
+    // 使用Pinia的mapActions映射actions
+    ...mapActions(useMainStore, [
+      'updateProperty',
+      'updateState',
+      'setGlobalSettingsVisible',
+      'setHelpVisible',
+      'addGlobalParam',
+      'removeGlobalParam',
+      'addHeader',
+      'removeHeader',
+      'addApiParam',
+      'removeApiParam',
+      'addKvPair',
+      'removeKvPairAction', // 重命名以避免冲突
+      'updateJsonPreview',
+      'updateResponseData',
+      'updateDocumentPreview',
+      'showToast',
+      'toggleExpand'
+    ]),
+    
+    // 关闭文档预览
+    closeDocumentPreview() {
+      this.showDocumentPreview = false
+      this.updateDocumentPreview({ showDocumentPreview: false, documentContent: '' })
+    },
+    
+    // 切换主题
+    toggleTheme() {
+      console.log('切换主题');
+      // 简单的主题切换实现
+      const body = document.body;
+      if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+      } else {
+        body.classList.add('dark-mode');
+      }
+      this.showToast('主题已切换');
+    },
+    
+    // 刷新JSON预览（本地方法）
+    refreshJsonPreview() {
+      console.log('刷新JSON预览');
+      try {
+        // 获取请求体JSON数据
+        const jsonData = this.getRequestBodyJson();
+        // 调用store中的updateJsonPreview方法，传入格式化后的JSON
+        this.updateJsonPreview(JSON.stringify(jsonData, null, 2));
+      } catch (e) {
+        console.error('刷新JSON预览失败:', e);
+        this.updateJsonPreview(`// JSON格式错误: ${e.message}`);
+      }
+    },
+    
+    // 处理显示全局设置
+    handleShowGlobalSettings() {
+      console.log('===== ApiTestPage: 收到显示全局设置事件 =====')
+      console.log('setGlobalSettingsVisible 方法存在:', !!this.setGlobalSettingsVisible)
+      try {
+        this.setGlobalSettingsVisible(true)
+        console.log('调用 setGlobalSettingsVisible(true) 成功')
+        // 立即检查状态
+        setTimeout(() => {
+          console.log('设置后 showGlobalSettings 状态:', this.showGlobalSettings)
+        }, 0)
+      } catch (error) {
+        console.error('调用 setGlobalSettingsVisible 失败:', error)
+      }
+    },
+    
+    // 隐藏全局设置
+    hideGlobalSettings() {
+      console.log('===== ApiTestPage: 隐藏全局设置 =====')
+      try {
+        this.setGlobalSettingsVisible(false)
+        console.log('调用 setGlobalSettingsVisible(false) 成功')
+      } catch (error) {
+        console.error('调用 setGlobalSettingsVisible(false) 失败:', error)
+      }
+    },
+    
+    // 处理显示帮助
+    handleShowHelp() {
+      console.log('===== ApiTestPage: 收到显示帮助事件 =====')
+      try {
+        this.setHelpVisible(true)
+        console.log('调用 setHelpVisible(true) 成功')
+      } catch (error) {
+        console.error('调用 setHelpVisible 失败:', error)
+      }
+    },
+    
+    // 隐藏帮助
+    hideHelp() {
+      console.log('===== ApiTestPage: 隐藏帮助 =====')
+      try {
+        this.setHelpVisible(false)
+        console.log('调用 setHelpVisible(false) 成功')
+      } catch (error) {
+        console.error('调用 setHelpVisible(false) 失败:', error)
+      }
+    },
+    
+    // 添加参数
+    addParam(type) {
+      switch (type) {
+        case 'global':
+          this.addGlobalParam()
+          break
+        case 'header':
+          this.addHeader()
+          break
+        case 'api':
+          this.addApiParam()
+          break
+      }
+    },
+    
+    // 移除参数
+    removeParam(type, index) {
+      switch (type) {
+        case 'global':
+          this.removeGlobalParam(index)
+          break
+        case 'header':
+          this.removeHeader(index)
+          break
+        case 'api':
+          this.removeApiParam(index)
+          break
+      }
+    },
+    
+    // 移除键值对
+    removeKvPair(index) {
+      console.log('移除键值对，索引:', index);
+      this.removeKvPairAction(index)
+    },
+    
+    // 处理从ApiConfig组件传递的add-kv-pair事件
+    addKvPair() {
+      console.log('处理添加键值对事件');
+      // 使用从mapActions映射的方法
+      this.addKvPairAction();
+      // 标记用户已使用工具
+      this.markAsUsed();
+    },
+    
+    // 清空API配置参数
+    clearApiConfig() {
+      // 重置API参数
+      this.updateProperty('apiParams', [{ name: '', value: '', visible: true }]);
+      
+      // 重置请求体键值对
+      this.updateProperty('kvPairs', [{ type: 'string', key: '', value: '', visible: true }]);
+      
+      // 重置JSON原始输入
+      this.updateProperty('jsonRawInput', '');
+      
+      // 重置请求路径
+      this.updateProperty('apiPath', '');
+      
+      // 显示成功提示
+      this.showToast('已重置接口配置参数');
+    },
+    
+    // 标记用户已使用工具
+    markAsUsed() {
+      this.hasUsedTool = true;
+      localStorage.setItem('apiToolHasUsed', 'true');
+    },
+    
+    // 关闭首次使用提醒
+    dismissFirstUseReminder() {
+      this.markAsUsed();
+    },
+    
+    // 处理请求方式切换
+    handleRequestModeChange(mode) {
+      console.log('===== ApiTestPage: 处理请求方式切换 =====');
+      console.log('切换到模式:', mode);
+      try {
+        this.updateProperty('requestMode', mode);
+        console.log('更新requestMode成功，当前值:', this.requestMode);
+      } catch (error) {
+        console.error('更新requestMode失败:', error);
+      }
+    },
+    
+    // 处理全局参数模式切换
+    handleGlobalParamModeChange(mode) {
+      console.log('===== ApiTestPage: 处理全局参数模式切换 =====');
+      console.log('切换到模式:', mode);
+      try {
+        this.updateProperty('globalParamMode', mode);
+        console.log('更新globalParamMode成功，当前值:', this.globalParamMode);
+      } catch (error) {
+        console.error('更新globalParamMode失败:', error);
+      }
+    },
+    // 处理全局参数提交方式切换
+    handleGlobalParamMethodChange(method) {
+      this.setGlobalParamMethod(method)
+    },
+    
+    // 保存全局设置到localStorage
+    saveGlobalSettings() {
+      try {
+        const settings = {
+          requestMode: this.requestMode,
+          proxyUrl: this.proxyUrl,
+          baseUrl: this.baseUrl,
+          timeout: this.timeout,
+          globalParams: this.globalParams,
+          globalParamMode: this.globalParamMode,
+          globalJsonInput: this.globalJsonInput,
+          headers: this.headers
+        }
+        const success = storage.saveGlobalSettings(settings)
+        if (success) {
+          // 显示保存成功提示
+          this.showToast('设置保存成功')
+          // 关闭模态框
+          this.hideGlobalSettings()
+          console.log('全局设置保存成功')
+        } else {
+          this.showToast('设置保存失败')
+          console.error('保存返回失败状态')
+        }
+      } catch (error) {
+        console.error('保存全局设置失败:', error)
+        this.showToast('设置保存失败')
+      }
+    },
+    // 加载全局设置
+    loadGlobalSettings() {
+      try {
+        const settings = storage.loadGlobalSettings()
+        if (settings.requestMode) this.updateProperty('requestMode', settings.requestMode)
+        if (settings.proxyUrl) this.updateProperty('proxyUrl', settings.proxyUrl)
+        if (settings.baseUrl) this.updateProperty('baseUrl', settings.baseUrl)
+        if (settings.timeout) this.updateProperty('timeout', settings.timeout)
+        if (settings.globalParams) this.updateProperty('globalParams', settings.globalParams)
+        if (settings.globalParamMode) this.updateProperty('globalParamMode', settings.globalParamMode)
+        if (settings.globalJsonInput) this.updateProperty('globalJsonInput', settings.globalJsonInput)
+        if (settings.headers) this.updateProperty('headers', settings.headers)
+      } catch (error) {
+        console.error('加载全局设置失败:', error)
+      }
+    },
+    // 验证全局JSON参数
+    validateGlobalJson() {
+      try {
+        if (!this.globalJsonInput.trim()) {
+          alert('请输入JSON内容')
+          return
+        }
+        const result = Helpers.validateJson(this.globalJsonInput)
+        if (result.valid) {
+          alert('JSON格式正确')
+        } else {
+          alert('JSON格式错误: ' + result.error)
+        }
+      } catch (error) {
+        alert('JSON格式错误: ' + error.message)
+      }
+    },
+    // 导入JSON为键值对
+    importGlobalJson() {
+      try {
+        if (!this.globalJsonInput.trim()) {
+          alert('请输入JSON内容')
+          return
+        }
+        const result = Helpers.validateJson(this.globalJsonInput)
+        if (!result.valid) {
+          alert('JSON格式错误: ' + result.error)
+          return
+        }
+        const jsonData = JSON.parse(this.globalJsonInput)
+        const newParams = []
+        for (const [key, value] of Object.entries(jsonData)) {
+          newParams.push({
+            name: key,
+            value: String(value),
+            visible: true
+          })
+        }
+        this.updateProperty('globalParams', newParams)
+        this.updateProperty('globalParamMode', 'kv')
+        alert('导入成功')
+      } catch (error) {
+        alert('导入失败: ' + error.message)
+      }
+    },
+    // 获取请求体JSON数据
+    getRequestBodyJson() {
+      let jsonData = {}
+      
+      if (this.inputMode === 'json') {
+        // JSON原始数据模式
+        const rawJson = this.jsonRawInput.trim()
+        if (!rawJson) {
+          return {}
+        }
+        try {
+          jsonData = JSON.parse(rawJson)
+        } catch (e) {
+          throw new Error(`JSON解析错误: ${e.message}`)
+        }
+      } else {
+        // 键值对模式
+        this.kvPairs.forEach(pair => {
+          if (!pair.visible) return
+          
+          const key = pair.key.trim()
+          if (!key) return
+          
+          const value = pair.value.trim()
+          
+          // 根据类型转换值
+          switch(pair.type) {
+            case 'string':
+              jsonData[key] = value
+              break
+            case 'number':
+              jsonData[key] = value ? parseFloat(value) : 0
+              break
+            case 'boolean':
+              jsonData[key] = value.toLowerCase() === 'true' || value === '1'
+              break
+            case 'array':
+              try {
+                jsonData[key] = value ? JSON.parse(value) : []
+              } catch (e) {
+                // 如果不是有效的JSON数组，尝试用逗号分割
+                jsonData[key] = value ? value.split(',').map(item => item.trim()) : []
+              }
+              break
+            case 'object':
+              try {
+                jsonData[key] = value ? JSON.parse(value) : {}
+              } catch (e) {
+                console.error('对象解析失败:', e)
+                jsonData[key] = {}
+              }
+              break
+            case 'null':
+              jsonData[key] = null
+              break
+            default:
+              jsonData[key] = value
+          }
+        })
+      }
+      
+      // 应用占位符替换
+      return paramProcessor.processPlaceholdersInObject(jsonData)
+    },
+    // 格式化JSON预览
+    formatJsonPreview() {
+      try {
+        const jsonData = this.getRequestBodyJson()
+        this.updateJsonPreview(JSON.stringify(jsonData, null, 2))
+      } catch (e) {
+        this.updateJsonPreview(`// JSON格式错误: ${e.message}`)
+      }
+    },
+    // 格式化JSON输入
+    formatJsonInput() {
+      try {
+        const result = Helpers.formatJson(this.jsonRawInput)
+        if (result.valid) {
+          this.updateProperty('jsonRawInput', result.formatted)
+        } else {
+          alert(`JSON格式错误: ${result.error}`)
+        }
+      } catch (e) {
+        alert(`JSON格式错误: ${e.message}`)
+      }
+    },
+    // 格式化全局参数JSON
+    formatGlobalJson() {
+      try {
+        const result = Helpers.formatJson(this.globalJsonInput)
+        if (result.valid) {
+          this.updateProperty('globalJsonInput', result.formatted)
+        } else {
+          alert(`JSON格式错误: ${result.error}`)
+        }
+      } catch (e) {
+        alert(`JSON格式错误: ${e.message}`)
+      }
+    },
+    // 加载历史请求
+    loadHistory() {
+      try {
+        const history = storage.loadHistory()
+        if (history) {
+          this.updateProperty('requestHistory', history)
+          if (this.requestHistory.length > 50) {
+            this.updateProperty('requestHistory', this.requestHistory.slice(0, 50))
+          }
+        }
+      } catch (e) {
+        console.error('加载历史记录失败:', e)
+      }
+    },
+    // 保存请求到历史
+    saveToHistory(config, response) {
+      // 创建合并后的参数的深拷贝，确保存储的是发送请求时使用的实际参数
+      // 确定请求状态
+      let requestStatus = 'error';
+      let responseCode = null;
+      
+      if (response) {
+        if (response === 'timeout') {
+          requestStatus = 'timeout';
+        } else {
+          requestStatus = response.status >= 200 && response.status < 400 ? 'success' : 'error';
+          responseCode = response.status;
+        }
+      }
+      
+      const historyItem = {
+        url: config.url,
+        method: config.method,
+        path: this.apiPath,
+        apiName: this.apiName.trim() || this.apiPath.replace(/\//g, '-') || '未命名接口',
+        params: JSON.parse(JSON.stringify(config.params || {})),
+        headers: JSON.parse(JSON.stringify(config.headers || {})),
+        data: config.data ? JSON.parse(JSON.stringify(config.data)) : null,
+        timestamp: Date.now(),
+        targetUrl: config.targetUrl || null,
+        requestStatus: requestStatus,
+        responseCode: responseCode,
+        // 保存全局配置（原始页面参数）
+        globalConfig: {
+          globalParams: JSON.parse(JSON.stringify(this.globalParams)),
+          globalParamMode: this.globalParamMode,
+          globalJsonInput: this.globalJsonInput,
+          baseUrl: this.baseUrl,
+          timeout: this.timeout,
+          requestMode: this.requestMode,
+          proxyUrl: this.proxyUrl,
+          headers: JSON.parse(JSON.stringify(this.headers))
+        }
+      }
+      
+      const newHistory = [historyItem, ...this.requestHistory]
+      
+      // 限制历史记录最多保存500个
+      if (newHistory.length > 500) {
+        this.updateProperty('requestHistory', newHistory.slice(0, 500))
+      } else {
+        this.updateProperty('requestHistory', newHistory)
+      }
+      
+      try {
+        storage.saveHistory(this.requestHistory)
+      } catch (e) {
+        console.error('保存历史记录失败:', e)
+      }
+    },
+    // 加载历史记录项（优先使用合并后的参数）
+    loadHistoryItem(index) {
+      const item = this.requestHistory[index]
+      
+      // 1. 优先恢复页面基本配置
+      if (item.globalConfig) {
+        // 恢复全局配置（页面显示用）
+        this.updateProperty('globalParamMode', item.globalConfig.globalParamMode || 'kv')
+        this.updateProperty('globalJsonInput', item.globalConfig.globalJsonInput || '{}')
+        this.updateProperty('baseUrl', item.globalConfig.baseUrl || 'https://jsonplaceholder.typicode.com')
+        this.updateProperty('timeout', item.globalConfig.timeout || 5000)
+        this.updateProperty('requestMode', item.globalConfig.requestMode || 'proxy')
+        this.updateProperty('proxyUrl', item.globalConfig.proxyUrl || 'api-test-worker.php')
+        
+        // 恢复请求头配置
+        this.updateProperty('headers', JSON.parse(JSON.stringify(item.globalConfig.headers || [
+          { name: 'Content-Type', value: 'application/json', visible: true },
+          { name: 'Accept', value: 'application/json', visible: true }
+        ])))
+        
+        // 恢复全局参数配置（但这些参数不会直接影响已保存的请求参数）
+        this.updateProperty('globalParams', JSON.parse(JSON.stringify(item.globalConfig.globalParams || [{ name: '', value: '', visible: true }])))
+      }
+      
+      // 2. 恢复请求基本信息
+      this.updateProperty('selectedMethod', item.method)
+      this.updateProperty('apiPath', item.path)
+      
+      // 3. 优先使用存储的合并后参数，而不是重新计算
+      // 转换参数格式为UI显示所需的格式
+      if (item.params) {
+        // 过滤掉代理模式下的target_url参数（如果存在）
+        const filteredParams = { ...item.params }
+        delete filteredParams.target_url
+        
+        this.updateProperty('apiParams', Object.entries(filteredParams).map(([name, value]) => ({
+          name,
+          value: String(value),
+          visible: true
+        })))
+      } else {
+        this.updateProperty('apiParams', [{ name: '', value: '', visible: true }])
+      }
+      
+      // 4. 处理请求体
+      if (['POST', 'PUT', 'PATCH'].includes(item.method) && item.data) {
+        this.updateProperty('jsonRawInput', JSON.stringify(item.data, null, 2))
+        this.updateProperty('inputMode', 'json')
+        this.updateJsonPreview()
+      }
+      
+      this.showToast('已加载历史请求（全量恢复）')
+    },
+    // 清空历史记录
+    clearHistory() {
+      if (confirm('确定要清空所有历史请求记录吗？')) {
+        this.updateProperty('requestHistory', [])
+        storage.remove('api-test-history')
+        this.showToast('历史记录已清空')
+      }
+    },
+    // 复制请求配置
+    copyRequestConfig() {
+      const config = this.collectRequestConfig()
+      const text = JSON.stringify(config, null, 2)
+      navigator.clipboard.writeText(text)
+        .then(() => this.showToast('请求配置已复制'))
+        .catch(() => alert('复制失败！'))
+    },
+    // 验证JSON格式
+    validateJson() {
+      try {
+        const result = Helpers.validateJson(this.jsonRawInput)
+        if (result.valid) {
+          alert('JSON格式正确！')
+        } else {
+          alert(`JSON格式错误: ${result.error}`)
+        }
+      } catch (e) {
+        alert(`JSON格式错误: ${e.message}`)
+      }
+    },
+    // 处理输入模式切换
+    handleInputModeChange(newMode) {
+      console.log('切换输入模式:', newMode);
+      this.updateProperty('inputMode', newMode);
+      // 当切换到JSON模式时，尝试从键值对生成JSON
+      if (newMode === 'json') {
+        this.refreshJsonPreview();
+      }
+    },
+    
+    // 导入JSON为键值对
+    importJsonToKvPairs() {
+      try {
+        console.log('导入JSON为键值对');
+        const result = Helpers.validateJson(this.jsonRawInput)
+        if (!result.valid) {
+          this.showToast(`JSON格式错误: ${result.error}`)
+          return
+        }
+        const jsonData = JSON.parse(this.jsonRawInput)
+        const newPairs = []
+        
+        Object.keys(jsonData).forEach(key => {
+          const value = jsonData[key]
+          let type
+          let valueStr
+          
+          if (value === null) {
+            type = 'null'
+            valueStr = ''
+          } else if (typeof value === 'string') {
+            type = 'string'
+            valueStr = value
+          } else if (typeof value === 'number') {
+            type = 'number'
+            valueStr = value.toString()
+          } else if (typeof value === 'boolean') {
+            type = 'boolean'
+            valueStr = value.toString()
+          } else if (Array.isArray(value)) {
+            type = 'array'
+            valueStr = JSON.stringify(value)
+          } else if (typeof value === 'object' && value !== null) {
+            // 确保对象类型的值正确转换为JSON字符串
+            type = 'object'
+            try {
+              valueStr = JSON.stringify(value)
+            } catch (e) {
+              console.error('对象转换为JSON字符串失败:', e)
+              valueStr = String(value)
+            }
+          } else {
+            type = 'string'
+            valueStr = String(value)
+          }
+          
+          newPairs.push({
+            type,
+            key,
+            value: valueStr,
+            visible: true
+          })
+        })
+        
+        if (newPairs.length > 0) {
+          this.updateProperty('kvPairs', newPairs)
+          this.updateProperty('inputMode', 'kv')
+          this.updateJsonPreview()
+          this.showToast('导入成功！')
+        } else {
+          this.showToast('未找到可导入的数据！')
+        }
+      } catch (e) {
+        this.showToast(`导入失败: ${e.message}`)
+      }
+    },
+    // 收集请求配置
+    // 处理键值对参数
+    processKeyValuePairs(kvPairs) {
+      const result = {}
+      kvPairs.forEach(param => {
+        if (!param.visible || !param.name.trim()) return
+        
+        const name = param.name.trim()
+        let value = paramProcessor.replacePlaceholders(param.value)
+        
+        // 尝试解析可能的JSON字符串
+        result[name] = this.parseJsonIfPossible(value)
+      })
+      return result
+    },
+    
+    // 尝试解析JSON字符串
+    parseJsonIfPossible(value) {
+      if (!value) return value
+      
+      try {
+        if (value.startsWith('{') && value.endsWith('}') || value.startsWith('[') && value.endsWith(']')) {
+          const parsed = JSON.parse(value)
+          if (typeof parsed === 'object' && parsed !== null) {
+            return parsed
+          }
+        }
+      } catch (e) {
+        // 解析失败，返回原始值
+      }
+      return value
+    },
+    
+    // 深度合并参数对象
+    mergeParams(target, source) {
+      for (const key in source) {
+        if (!Object.prototype.hasOwnProperty.call(source, key)) continue
+        
+        const targetVal = target[key]
+        const sourceVal = source[key]
+        
+        if (targetVal && typeof targetVal === 'object' && targetVal !== null &&
+            typeof sourceVal === 'object' && sourceVal !== null) {
+          // 对嵌套对象进行深度合并
+          target[key] = paramProcessor.deepMerge(targetVal, sourceVal)
+        } else {
+          target[key] = sourceVal
+        }
+      }
+      return target
+    },
+    
+    // 收集全局参数
+    collectGlobalParams() {
+      const params = {}
+      
+      if (this.globalParamMode === 'json') {
+        this.collectJsonGlobalParams(params)
+      } else {
+        const kvParams = this.processKeyValuePairs(this.globalParams)
+        this.mergeParams(params, kvParams)
+      }
+      
+      return params
+    },
+    
+    // 收集JSON格式的全局参数
+    collectJsonGlobalParams(target) {
+      try {
+        if (!this.globalJsonInput.trim()) return
+        
+        const globalJson = JSON.parse(this.globalJsonInput)
+        if (typeof globalJson === 'object' && globalJson !== null && !Array.isArray(globalJson)) {
+          const processedJson = paramProcessor.processPlaceholdersInObject(globalJson)
+          this.mergeParams(target, processedJson)
+        }
+      } catch (e) {
+        console.warn('全局参数JSON解析失败:', e)
+        this.showToast('全局参数JSON格式错误，请检查')
+      }
+    },
+    
+    // 构建请求头
+    buildHeaders() {
+      const headers = {}
+      this.headers.forEach(header => {
+        if (header.visible && header.name.trim()) {
+          headers[header.name.trim()] = header.value
+        }
+      })
+      return headers
+    },
+    
+    // 构建请求URL和目标URL
+    buildRequestInfo(params) {
+      let url = ''
+      let targetUrl = ''
+      
+      if (this.requestMode === 'direct') {
+        url = this.apiPath.trim()
+        targetUrl = url
+      } else {
+        url = this.proxyUrl
+        targetUrl = `${this.baseUrl.replace(/\/$/, '')}/${this.apiPath.replace(/^\//, '')}`
+      }
+      
+      return { url, targetUrl }
+    },
+    
+    // 重构后的收集请求配置方法 - 确保请求参数与页面参数完全独立
+    collectRequestConfig() {
+      // 创建页面参数的深拷贝，确保不影响原页面参数
+      const pageGlobalParams = JSON.parse(JSON.stringify(this.globalParams))
+      const pageApiParams = JSON.parse(JSON.stringify(this.apiParams))
+      const pageHeaders = JSON.parse(JSON.stringify(this.headers))
+      const pageKvPairs = JSON.parse(JSON.stringify(this.kvPairs))
+      const pageJsonRawInput = this.jsonRawInput
+      const pageGlobalJsonInput = this.globalJsonInput
+      const pageSelectedMethod = this.selectedMethod
+      const pageRequestMode = this.requestMode
+      const pageProxyUrl = this.proxyUrl
+      const pageBaseUrl = this.baseUrl
+      const pageApiPath = this.apiPath
+      const pageGlobalParamMode = this.globalParamMode
+      const pageGlobalParamMethod = this.globalParamMethod
+      const pageInputMode = this.inputMode
+      const pageTimeout = this.timeout
+      
+      // 独立的全局参数收集方法
+      const collectRequestGlobalParams = () => {
+        const params = {}
+        
+        if (pageGlobalParamMode === 'json') {
+          try {
+            if (pageGlobalJsonInput.trim()) {
+              const globalJson = JSON.parse(pageGlobalJsonInput)
+              if (typeof globalJson === 'object' && globalJson !== null && !Array.isArray(globalJson)) {
+                const processedJson = paramProcessor.processPlaceholdersInObject(globalJson)
+                this.mergeParams(params, processedJson)
+              }
+            }
+          } catch (e) {
+            console.warn('全局参数JSON解析失败:', e)
+            this.showToast('全局参数JSON格式错误，请检查')
+          }
+        } else {
+          pageGlobalParams.forEach(param => {
+            if (!param.visible || !param.name.trim()) return
+            
+            const name = param.name.trim()
+            let value = paramProcessor.replacePlaceholders(param.value)
+            
+            // 尝试解析可能的JSON字符串
+            params[name] = this.parseJsonIfPossible(value)
+          })
+        }
+        
+        return params
+      }
+      
+      // 独立的接口参数处理方法
+      const processRequestApiParams = () => {
+        const result = {}
+        pageApiParams.forEach(param => {
+          if (!param.visible || !param.name.trim()) return
+          
+          const name = param.name.trim()
+          let value = paramProcessor.replacePlaceholders(param.value)
+          
+          // 尝试解析可能的JSON字符串
+          result[name] = this.parseJsonIfPossible(value)
+        })
+        return result
+      }
+      
+      // 独立的请求头构建方法
+      const buildRequestHeaders = () => {
+        const headers = {}
+        pageHeaders.forEach(header => {
+          if (header.visible && header.name.trim()) {
+            headers[header.name.trim()] = header.value
+          }
+        })
+        return headers
+      }
+      
+      // 独立的请求体获取方法
+      const getRequestRequestBodyJson = () => {
+        let jsonData = {}
+        
+        if (pageInputMode === 'json') {
+          // JSON原始数据模式
+          const rawJson = pageJsonRawInput.trim()
+          if (!rawJson) {
+            return {}
+          }
+          try {
+            jsonData = JSON.parse(rawJson)
+          } catch (e) {
+            throw new Error(`JSON解析错误: ${e.message}`)
+          }
+        } else {
+          // 键值对模式
+          pageKvPairs.forEach(pair => {
+            if (!pair.visible) return
+            
+            const key = pair.key.trim()
+            if (!key) return
+            
+            const value = pair.value.trim()
+            
+            // 根据类型转换值
+            switch(pair.type) {
+              case 'string':
+                jsonData[key] = value
+                break
+              case 'number':
+                jsonData[key] = value ? parseFloat(value) : 0
+                break
+              case 'boolean':
+                jsonData[key] = value.toLowerCase() === 'true' || value === '1'
+                break
+              case 'array':
+                try {
+                  jsonData[key] = value ? JSON.parse(value) : []
+                } catch (e) {
+                  // 如果不是有效的JSON数组，尝试用逗号分割
+                  jsonData[key] = value ? value.split(',').map(item => item.trim()) : []
+                }
+                break
+              case 'object':
+                try {
+                  jsonData[key] = value ? JSON.parse(value) : {}
+                } catch (e) {
+                  console.error('对象解析失败:', e)
+                  jsonData[key] = {}
+                }
+                break
+              case 'null':
+                jsonData[key] = null
+                break
+              default:
+                jsonData[key] = value
+            }
+          })
+        }
+        
+        // 应用占位符替换
+        return paramProcessor.processPlaceholdersInObject(jsonData)
+      }
+      
+      // 独立的URL构建方法
+      const buildRequestUrlInfo = (params) => {
+        let url = ''
+        let targetUrl = ''
+        
+        if (pageRequestMode === 'direct') {
+          url = pageApiPath.trim()
+          targetUrl = url
+        } else {
+          url = pageProxyUrl
+          targetUrl = `${pageBaseUrl.replace(/\/$/, '')}/${pageApiPath.replace(/^\//, '')}`
+        }
+        
+        return { url, targetUrl }
+      }
+      
+      // 收集全局参数
+      const globalParams = collectRequestGlobalParams()
+      
+      // 处理接口参数
+      const apiParams = processRequestApiParams()
+      
+      // 根据全局参数提交方式决定如何处理全局参数
+      let params = {} // URL参数
+      let bodyParams = {} // 请求体参数
+      
+      // 接口参数始终合并到URL参数中
+      this.mergeParams(params, apiParams)
+      
+      // 全局参数根据提交方式处理
+      if (pageGlobalParamMethod === 'GET') {
+        // GET请求：全局参数合并到URL参数
+        this.mergeParams(params, globalParams)
+      } else {
+        // 非GET请求：全局参数合并到请求体
+        bodyParams = globalParams
+      }
+      
+      // 构建请求配置
+      const { url, targetUrl } = buildRequestUrlInfo(params)
+      const headers = buildRequestHeaders()
+      const hasBody = ['POST', 'PUT', 'PATCH'].includes(pageSelectedMethod)
+      
+      // 获取接口的请求体
+      const apiRequestBody = hasBody ? getRequestRequestBodyJson() : null
+      
+      // 合并请求体数据
+      let finalData = apiRequestBody
+      if (hasBody && bodyParams && Object.keys(bodyParams).length > 0) {
+        // 如果接口已有请求体，深度合并全局参数
+        if (typeof apiRequestBody === 'object' && apiRequestBody !== null) {
+          finalData = this.mergeParams({...apiRequestBody}, bodyParams)
+        } else {
+          // 如果接口没有请求体，直接使用全局参数作为请求体
+          finalData = bodyParams
+        }
+      }
+      
+      return {
+        url,
+        targetUrl,
+        method: pageSelectedMethod,
+        params,
+        headers,
+        timeout: pageTimeout,
+        data: finalData,
+        requestMode: pageRequestMode
+      }
+    },
+    // 发送请求
+    async sendRequest() {
+      try {
+        // 标记用户已使用工具
+        this.markAsUsed();
+        
+        // 处理默认接口名称：如果未填写，使用apiPath并将/转换为-
+        if (!this.apiName.trim()) {
+          const defaultName = this.apiPath.trim() || '未命名接口';
+          this.updateProperty('apiName', defaultName.replace(/\//g, '-'));
+        }
+        
+        const config = this.collectRequestConfig()
+        
+        // 根据请求模式设置axios配置
+        let axiosConfig = {
+          ...config,
+          validateStatus: () => true // 不抛出HTTP错误
+        }
+        
+        // 直接请求模式下，确保使用完整URL
+        if (this.requestMode === 'direct' && config.url) {
+          // 在直接请求模式下，确保URL是完整的
+          if (!config.url.startsWith('http://') && !config.url.startsWith('https://')) {
+            this.showToast('直接请求模式下请输入完整URL（包含http://或https://）')
+            return
+          }
+        } else if (this.requestMode === 'proxy') {
+          // 代理模式：构建标准的代理请求格式
+        // 1. 设置代理URL
+        axiosConfig.url = this.proxyUrl
+        // 2. 构建请求数据，包含所有必要信息
+        axiosConfig.method = 'POST' // 代理请求使用POST方法
+        axiosConfig.data = {
+          url: config.targetUrl, // 直接使用targetUrl
+          method: config.method, // 原始请求方法
+          params: config.params, // URL参数
+          headers: config.headers, // 请求头
+          data: config.data, // 请求体数据
+          timeout: config.timeout // 超时时间
+        }
+        // 3. 清除URL参数，避免重复
+        axiosConfig.params = {}
+        }
+        
+        const result = await apiClient.sendRequest(axiosConfig)
+        const response = result.response
+        const responseTime = result.responseTime
+        
+        // 格式化响应内容
+        const formattedContent = apiClient.formatResponseContent(response.data)
+        
+        // 准备请求信息数据
+        // 在代理模式下，显示实际发送给代理服务器的完整请求数据
+        let requestData = config.data
+        let requestHeaders = config.headers
+        let requestParams = config.params
+        let requestMethod = config.method
+        
+        // 如果是代理模式，使用实际发送的代理请求数据
+        if (this.requestMode === 'proxy') {
+          requestData = {
+            url: config.targetUrl,
+            method: config.method,
+            params: config.params,
+            headers: config.headers,
+            data: config.data,
+            timeout: config.timeout
+          }
+        }
+        
+        // 更新响应数据，同时包含请求信息
+        this.updateResponseData({
+          showResponse: true,
+          responseCode: response.status,
+          responseTime: responseTime,
+          responseSize: apiClient.calculateResponseSize(formattedContent),
+          responseUrl: config.url,
+          responseContent: formattedContent,
+          formattedResponseContent: formattedContent,
+          // 请求信息
+          requestMethod: this.requestMode === 'proxy' ? 'POST' : config.method,
+          requestUrl: config.targetUrl || config.url,
+          requestHeaders: requestHeaders,
+          requestParams: requestParams,
+          requestBody: requestData
+        })
+        
+        // 保存到历史记录，传递响应对象以获取状态信息
+        this.saveToHistory(config, response)
+        
+        // 发送请求成功后不再自动生成文档预览
+      } catch (error) {
+        // 判断是否是超时错误
+        let errorResponse = null;
+        if (error.code === 'ECONNABORTED' || error.message.includes('timeout') || error.message.includes('超时')) {
+          // 超时错误，传递'timeout'标识
+          errorResponse = 'timeout';
+        }
+        // 请求失败时也保存到历史记录，标记为错误状态或超时状态
+        this.saveToHistory(config, errorResponse)
+        alert(`请求失败: ${error.message}`)
+      }
+    },
+    // 复制响应内容
+    copyResponse() {
+      // 使用格式化的响应内容，确保复制的是用户看到的内容
+      const contentToCopy = this.formattedResponseContent || this.responseContent || ''
+      
+      // 方法1：使用navigator.clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(contentToCopy)
+          .then(() => {
+            this.showToast('响应内容已复制')
+          })
+          .catch(() => {
+            // 降级到方法2
+            this.fallbackCopyText(contentToCopy)
+          })
+      } else {
+        // 降级到方法2
+        this.fallbackCopyText(contentToCopy)
+      }
+    },
+    // 降级复制方法，兼容不支持clipboard API的环境
+    fallbackCopyText(text) {
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      textArea.style.top = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      
+      try {
+        document.execCommand('copy')
+        this.showToast('响应内容已复制')
+      } catch (error) {
+        console.error('复制失败:', error)
+        alert('复制失败！请手动复制内容')
+      } finally {
+        document.body.removeChild(textArea)
+      }
+    },
+    // 下载响应内容
+    downloadResponse() {
+      const blob = new Blob([this.responseContent], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `response_${new Date().getTime()}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    },
+    // 生成文档
+    generateDocument(type) {
+      const config = this.collectRequestConfig()
+      let content = ''
+      
+      // 准备响应数据（如果有）
+      let responseData = null
+      if (this.showResponse) {
+        responseData = {
+          code: this.responseCode,
+          time: this.responseTime,
+          size: this.responseSize,
+          content: this.responseContent
+        }
+      }
+      
+      if (type === 'markdown') {
+        content = documentGenerator.generateDocument(config, type, this.apiName, this.apiDescription, this.apiAuthor, responseData)
+        this.updateDocumentPreview({
+          showDocumentPreview: true,
+          documentContent: documentGenerator.markdownToHtml(content)
+        })
+        // 显示文档预览模态框
+        this.showDocumentPreview = true
+      } else if (type === 'html') {
+        content = documentGenerator.generateDocument(config, type, this.apiName, this.apiDescription, this.apiAuthor, responseData)
+        this.updateDocumentPreview({
+          showDocumentPreview: true,
+          documentContent: content
+        })
+        // 显示文档预览模态框
+        this.showDocumentPreview = true
+      }
+    },
+    // 复制文档
+    copyDocument() {
+      navigator.clipboard.writeText(this.documentContent)
+        .then(() => this.showToast('文档已复制'))
+        .catch(() => alert('复制失败！'))
+    },
+    // 下载文档
+    downloadDocument() {
+      const blob = new Blob([this.documentContent], { type: 'text/html' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `api-doc_${new Date().getTime()}.html`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    },
+
+  }
+}
+</script>
+
+<style scoped>
+/* 页面特定样式 */
+</style>

@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* 滚动条样式 */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thumb-rounded {
+    scrollbar-color: #c1c1c1 transparent;
+  }
+  
+  .scrollbar-thumb-rounded::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: #c1c1c1;
+  }
+  
+  .scrollbar-thumb-rounded::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  /* 内容可见性优化 */
+  .content-auto {
+    content-visibility: auto;
+  }
+  
+  /* 文本阴影 */
+  .text-shadow {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 过渡动画 */
+  .transition-all-300 {
+    transition: all 0.3s ease;
+  }
+}

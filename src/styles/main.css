@@ -1,0 +1,171 @@
+/* 导入所有组件样式 */
+@import './components/header.css';
+@import './components/forms.css';
+@import './components/response.css';
+@import './components/modals.css';
+
+/* ==================== 
+ * 基础样式
+ * ==================== */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #F7F8FA;
+  color: #1D2129;
+  line-height: 1.6;
+}
+
+/* ==================== 
+ * 动画效果
+ * ==================== */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* ==================== 
+ * 过渡动画
+ * ==================== */
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+  max-height: 500px;
+  overflow: hidden;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+
+/* ==================== 
+ * 表单元素
+ * ==================== */
+.form-input, 
+.form-textarea, 
+.form-select {
+  @apply border border-light-2 rounded-lg px-3 py-2 text-sm;
+  border: 1px #f0f0f0 solid;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus, 
+.form-textarea:focus, 
+.form-select:focus {
+  @apply ring-2 ring-primary/30 border-primary;
+  outline: none;
+}
+
+/* ==================== 
+ * 卡片样式
+ * ==================== */
+.card {
+  @apply bg-white rounded-xl shadow-card p-5 hover:shadow-hover transition-all-300;
+}
+
+.card-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.card-title {
+  @apply text-lg font-semibold flex items-center;
+}
+
+/* ==================== 
+ * 按钮样式
+ * ==================== */
+.btn {
+  @apply font-medium rounded-lg transition-all-300 flex items-center justify-center space-x-1;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  @apply bg-primary hover:bg-primary/90 text-white;
+}
+
+.btn-secondary {
+  @apply bg-secondary hover:bg-secondary/90 text-white;
+}
+
+.btn-icon {
+  @apply p-2 rounded-full hover:bg-light-1 transition-all-300;
+}
+
+/* ==================== 
+ * 响应式布局
+ * ==================== */
+@media (max-width: 768px) {
+  .mobile-col {
+    flex-direction: column;
+  }
+  
+  .kv-item {
+    flex-direction: column;
+    gap: 1rem !important;
+  }
+  
+  .kv-item select {
+    width: 100% !important;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+}
+
+/* ==================== 
+ * Markdown预览
+ * ==================== */
+.markdown-preview h1 { @apply text-2xl font-bold mb-4; }
+.markdown-preview h2 { @apply text-xl font-bold mb-3; }
+.markdown-preview h3 { @apply text-lg font-bold mb-2; }
+.markdown-preview p { @apply mb-2; }
+.markdown-preview ul { @apply list-disc pl-6 mb-2; }
+.markdown-preview table { @apply w-full border-collapse mb-4; }
+.markdown-preview th { @apply border border-gray-300 bg-gray-50 p-2 text-left; }
+.markdown-preview td { @apply border border-gray-300 p-2; }
+.markdown-preview code { @apply bg-gray-100 px-1 py-0.5 rounded text-sm; }
+.markdown-preview pre { @apply bg-gray-100 p-3 rounded overflow-auto my-2 text-sm; }
+
+/* ==================== 
+ * 状态颜色
+ * ==================== */
+.text-success {
+  color: #00B42A;
+}
+
+.text-warning {
+  color: #FF7D00;
+}
+
+.text-danger {
+  color: #F53F3F;
+}
+
+/* ==================== 
+ * 工具类
+ * ==================== */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

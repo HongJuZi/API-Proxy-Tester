@@ -1,0 +1,64 @@
+/* 表单相关样式 */
+
+/* API配置表单 */
+.api-config-content {
+  space-y: 1rem;
+}
+
+/* 参数项 */
+.api-param-item,
+.global-param-item,
+.header-item,
+.kv-item {
+  display: flex;
+  align-items: center;
+  space-x: 0.5rem;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* 按钮样式 */
+.remove-api-param,
+.remove-global-param,
+.remove-header,
+.remove-kv-pair {
+  padding: 0.5rem;
+  color: #4E5969;
+  transition: all 0.3s ease;
+}
+
+.remove-api-param:hover,
+.remove-global-param:hover,
+.remove-header:hover,
+.remove-kv-pair:hover {
+  color: #F53F3F;
+}
+
+/* 键值对项 */
+.kv-item {
+  background-color: #F2F3F5;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+/* JSON预览 */
+.json-preview {
+  background-color: #1D21290D;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.json-preview-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4E5969;
+  margin-bottom: 0.25rem;
+}
+
+.json-preview-content {
+  font-size: 0.875rem;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  overflow: auto;
+  max-height: 8rem;
+}

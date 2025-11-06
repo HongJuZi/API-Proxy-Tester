@@ -130,8 +130,8 @@
             <div v-for="(param, index) in globalParamsModel" :key="`global-${index}`" 
                   class="global-param-item flex items-center space-x-2 animate-fade-in" 
                   :style="{ opacity: param.visible ? 1 : 0 }">
-              <input v-model="param.name" type="text" placeholder="参数名" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
-              <input v-model="param.value" type="text" placeholder="参数值" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input :value="param.name" @input="handleGlobalParamNameChange(index, $event.target.value)" type="text" placeholder="参数名" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input :value="param.value" @input="handleGlobalParamValueChange(index, $event.target.value)" type="text" placeholder="参数值" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('global', index)" class="remove-global-param p-2 text-dark-2 hover:text-danger transition-all-300">
                 <i class="fa fa-trash-o"></i>
               </button>
@@ -177,8 +177,8 @@
             <div v-for="(header, index) in headersModel" :key="`header-${index}`" 
                   class="header-item flex items-center space-x-2 animate-fade-in" 
                   :style="{ opacity: header.visible ? 1 : 0 }">
-              <input v-model="header.name" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
-              <input v-model="header.value" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input :value="header.name" @input="handleHeaderNameChange(index, $event.target.value)" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input :value="header.value" @input="handleHeaderValueChange(index, $event.target.value)" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('header', index)" class="remove-header p-2 text-dark-2 hover:text-danger transition-all-300">
                 <i class="fa fa-trash-o"></i>
               </button>
@@ -336,6 +336,38 @@ export default {
       setTimeout(() => {
         this.saveSettings()
       }, 0)
+    },
+    // 处理全局参数名称变更
+    handleGlobalParamNameChange(index, name) {
+      const newParams = [...this.globalParamsModel]
+      newParams[index] = { ...newParams[index], name }
+      this.globalParamsModel = newParams
+      this.$emit('update:globalParams', newParams)
+      this.saveSettings()
+    },
+    // 处理全局参数值变更
+    handleGlobalParamValueChange(index, value) {
+      const newParams = [...this.globalParamsModel]
+      newParams[index] = { ...newParams[index], value }
+      this.globalParamsModel = newParams
+      this.$emit('update:globalParams', newParams)
+      this.saveSettings()
+    },
+    // 处理请求头名称变更
+    handleHeaderNameChange(index, name) {
+      const newHeaders = [...this.headersModel]
+      newHeaders[index] = { ...newHeaders[index], name }
+      this.headersModel = newHeaders
+      this.$emit('update:headers', newHeaders)
+      this.saveSettings()
+    },
+    // 处理请求头值变更
+    handleHeaderValueChange(index, value) {
+      const newHeaders = [...this.headersModel]
+      newHeaders[index] = { ...newHeaders[index], value }
+      this.headersModel = newHeaders
+      this.$emit('update:headers', newHeaders)
+      this.saveSettings()
     }
   }
 }

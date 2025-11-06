@@ -116,12 +116,12 @@
       v-if="showGlobalSettings"
       v-model:request-mode="requestMode"
       v-model:global-param-mode="globalParamMode"
-      v-model:proxy-url="proxyUrl"
-      v-model:base-url="baseUrl"
-      v-model:timeout="timeout"
-      v-model:global-params="globalParams"
+      :proxy-url="proxyUrl"
+      :base-url="baseUrl"
+      :timeout="timeout"
+      :global-params="globalParams"
       v-model:global-json-input="globalJsonInput"
-      v-model:headers="headers"
+      :headers="headers"
       v-model:global-param-method="globalParamMethod"
       @close="hideGlobalSettings"
       @save="saveGlobalSettings"
@@ -130,6 +130,11 @@
       @validate-global-json="validateGlobalJson"
       @format-global-json="formatGlobalJson"
       @import-global-json="importGlobalJson"
+      @update:global-params="handleGlobalParamsUpdate"
+      @update:headers="handleHeadersUpdate"
+      @update:proxy-url="handleProxyUrlUpdate"
+      @update:base-url="handleBaseUrlUpdate"
+      @update:timeout="handleTimeoutUpdate"
     />
     
     <!-- 帮助模态框 -->
@@ -380,6 +385,36 @@ export default {
       } catch (error) {
         console.error('调用 setHelpVisible(false) 失败:', error)
       }
+    },
+    
+    // 处理代理URL更新
+    handleProxyUrlUpdate(newProxyUrl) {
+      // 使用store的updateProperty方法更新代理URL
+      this.updateProperty('proxyUrl', newProxyUrl)
+    },
+    
+    // 处理基础URL更新
+    handleBaseUrlUpdate(newBaseUrl) {
+      // 使用store的updateProperty方法更新基础URL
+      this.updateProperty('baseUrl', newBaseUrl)
+    },
+    
+    // 处理超时设置更新
+    handleTimeoutUpdate(newTimeout) {
+      // 使用store的updateProperty方法更新超时设置
+      this.updateProperty('timeout', newTimeout)
+    },
+    
+    // 处理全局参数更新
+    handleGlobalParamsUpdate(newParams) {
+      // 使用store的updateProperty方法更新全局参数
+      this.updateProperty('globalParams', newParams)
+    },
+    
+    // 处理请求头更新
+    handleHeadersUpdate(newHeaders) {
+      // 使用store的updateProperty方法更新请求头
+      this.updateProperty('headers', newHeaders)
     },
     
     // 添加参数

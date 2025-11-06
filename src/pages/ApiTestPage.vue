@@ -112,28 +112,25 @@
     </main>
     
     <!-- 全局设置模态框 -->
-      <GlobalSettings 
-        v-if="showGlobalSettings"
-        v-model:request-mode="requestMode"
-        v-model:global-param-mode="globalParamMode"
-        v-model:proxy-url="proxyUrl"
-        v-model:base-url="baseUrl"
-        v-model:timeout="timeout"
-        v-model:global-params="globalParams"
-        v-model:global-json-input="globalJsonInput"
-        v-model:headers="headers"
-        v-model:global-param-method="globalParamMethod"
-        @close="hideGlobalSettings"
-        @save="saveGlobalSettings"
-        @add-param="addParam"
-        @remove-param="removeParam"
-        @validate-global-json="validateGlobalJson"
-        @format-global-json="formatGlobalJson"
-        @import-global-json="importGlobalJson"
-        @update:requestMode="handleRequestModeChange"
-        @update:globalParamMode="handleGlobalParamModeChange"
-        @update:globalParamMethod="handleGlobalParamMethodChange"
-      />
+    <GlobalSettings 
+      v-if="showGlobalSettings"
+      v-model:request-mode="requestMode"
+      v-model:global-param-mode="globalParamMode"
+      v-model:proxy-url="proxyUrl"
+      v-model:base-url="baseUrl"
+      v-model:timeout="timeout"
+      v-model:global-params="globalParams"
+      v-model:global-json-input="globalJsonInput"
+      v-model:headers="headers"
+      v-model:global-param-method="globalParamMethod"
+      @close="hideGlobalSettings"
+      @save="saveGlobalSettings"
+      @add-param="addParam"
+      @remove-param="removeParam"
+      @validate-global-json="validateGlobalJson"
+      @format-global-json="formatGlobalJson"
+      @import-global-json="importGlobalJson"
+    />
     
     <!-- 帮助模态框 -->
     <HelpModal v-if="showHelp" @close="hideHelp" />
@@ -495,44 +492,26 @@ export default {
         
         // 创建设置的深拷贝，确保不引用原始对象
         const settings = JSON.parse(JSON.stringify(settingsFromModal))
-        
         // 直接保存到localStorage
         const success = storage.saveGlobalSettings(settings)
         
         if (success) {
-          // 立即重新加载设置，确保获取的是最新保存的值
-          const loadedSettings = storage.loadGlobalSettings()
-          
-          // 强制更新store中的所有全局设置属性
+          // 使用从模态框传递的设置数据直接更新store和组件属性，而不是重新加载
+          // 使用updateState方法更新store中的所有全局设置属性
           this.updateState({
-            requestMode: loadedSettings.requestMode,
-            proxyUrl: loadedSettings.proxyUrl,
-            baseUrl: loadedSettings.baseUrl,
-            timeout: loadedSettings.timeout,
-            globalParams: JSON.parse(JSON.stringify(loadedSettings.globalParams)),
-            globalParamMode: loadedSettings.globalParamMode,
-            globalJsonInput: loadedSettings.globalJsonInput,
-            headers: JSON.parse(JSON.stringify(loadedSettings.headers)),
-            globalParamMethod: loadedSettings.globalParamMethod || 'GET' // 添加全局参数提交方式，默认GET
-          })
-          
-          // 同时更新组件的本地属性，确保立即生效
-          Object.assign(this, {
-            requestMode: loadedSettings.requestMode,
-            proxyUrl: loadedSettings.proxyUrl,
-            baseUrl: loadedSettings.baseUrl,
-            timeout: loadedSettings.timeout,
-            globalParams: JSON.parse(JSON.stringify(loadedSettings.globalParams)),
-            globalParamMode: loadedSettings.globalParamMode,
-            globalJsonInput: loadedSettings.globalJsonInput,
-            headers: JSON.parse(JSON.stringify(loadedSettings.headers)),
-            globalParamMethod: loadedSettings.globalParamMethod || 'GET' // 添加全局参数提交方式，默认GET
+            requestMode: settings.requestMode,
+            proxyUrl: settings.proxyUrl,
+            baseUrl: settings.baseUrl,
+            timeout: settings.timeout,
+            globalParams: JSON.parse(JSON.stringify(settings.globalParams)),
+            globalParamMode: settings.globalParamMode,
+            globalJsonInput: settings.globalJsonInput,
+            headers: JSON.parse(JSON.stringify(settings.headers)),
+            globalParamMethod: settings.globalParamMethod || 'GET'
           })
           
           // 显示保存成功提示
-          this.showToast('设置保存成功')
-          // 关闭模态框
-          this.hideGlobalSettings()
+          this.showToast('设置已保存')
         } else {
           this.showToast('设置保存失败')
         }
@@ -561,9 +540,6 @@ export default {
         
         console.log('准备更新到store的设置:', settingsToUpdate)
         this.updateState(settingsToUpdate)
-        
-        // 同时更新组件的本地属性
-        Object.assign(this, settingsToUpdate)
         
         console.log('全局设置加载完成')
       } catch (error) {

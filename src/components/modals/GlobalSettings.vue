@@ -25,7 +25,7 @@
                 type="radio" 
                 :value="'proxy'"
                 :checked="requestMode === 'proxy'"
-                @change="$emit('update:requestMode', 'proxy')"
+                @change="handleRequestModeChange('proxy')"
                 class="sr-only"
               >
               <div class="w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center" :class="requestMode === 'proxy' ? 'border-primary' : 'border-dark-3'">
@@ -41,7 +41,7 @@
                 type="radio" 
                 :value="'direct'"
                 :checked="requestMode === 'direct'"
-                @change="$emit('update:requestMode', 'direct')"
+                @change="handleRequestModeChange('direct')"
                 class="sr-only"
               >
               <div class="w-4 h-4 rounded-full border-2 mr-2 flex items-center justify-center" :class="requestMode === 'direct' ? 'border-primary' : 'border-dark-3'">
@@ -57,8 +57,7 @@
         <div class="mb-4" v-if="requestMode === 'proxy'">
           <label class="block text-sm font-medium text-dark-2 mb-1">代理URL</label>
           <input 
-            :value="proxyUrl" 
-            @input="$emit('update:proxyUrl', $event.target.value)"
+            v-model="proxyUrlModel"
             type="text" 
             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
             placeholder="代理服务器地址"
@@ -70,8 +69,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-dark-2 mb-1">基础URL</label>
           <input 
-            :value="baseUrl"
-            @input="$emit('update:baseUrl', $event.target.value)"
+            v-model="baseUrlModel"
             type="text" 
             placeholder="https://api.example.com" 
             class="w-full form-input rounded-lg border-light-2 px-3 py-2 text-sm"
@@ -82,8 +80,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-dark-2 mb-1">请求超时 (ms)</label>
           <input 
-            :value="timeout"
-            @input="$emit('update:timeout', Number($event.target.value))"
+            v-model.number="timeoutModel"
             type="number" 
             placeholder="5000" 
             class="w-full form-input rounded-lg border-light-2 px-3 py-2 text-sm"
@@ -97,8 +94,7 @@
             <div class="flex items-center space-x-2">
               <!-- 请求方式选择 -->
               <select 
-                :value="globalParamMethod"
-                @change="$emit('update:globalParamMethod', $event.target.value)"
+                v-model="globalParamMethodModel"
                 class="text-xs px-2 py-1 rounded border border-light-2 bg-white"
               >
                 <option value="POST">POST</option>
@@ -109,13 +105,13 @@
               <!-- 模式切换 -->
               <div class="inline-flex p-0.5 bg-light-1 rounded-lg">
                 <button 
-                  @click="$emit('update:globalParamMode', 'kv')"
+                  @click="handleGlobalParamModeChange('kv')"
                   :class="['text-xs px-2 py-1 rounded', globalParamMode === 'kv' ? 'bg-white shadow-sm text-dark' : 'text-dark-2']"
                 >
                   键值对
                 </button>
                 <button 
-                  @click="$emit('update:globalParamMode', 'json')"
+                  @click="handleGlobalParamModeChange('json')"
                   :class="['text-xs px-2 py-1 rounded', globalParamMode === 'json' ? 'bg-white shadow-sm text-dark' : 'text-dark-2']"
                 >
                   JSON
@@ -131,11 +127,11 @@
           <!-- KV模式 -->
           <div v-if="globalParamMode === 'kv'" class="space-y-2">
             <!-- 全局参数项 -->
-            <div v-for="(param, index) in globalParams" :key="`global-${index}`" 
+            <div v-for="(param, index) in globalParamsModel" :key="`global-${index}`" 
                   class="global-param-item flex items-center space-x-2 animate-fade-in" 
                   :style="{ opacity: param.visible ? 1 : 0 }">
-              <input :value="param.name" @input="$emit('update:globalParams', [...globalParams.slice(0, index), {...param, name: $event.target.value}, ...globalParams.slice(index+1)])" type="text" placeholder="参数名" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
-              <input :value="param.value" @input="$emit('update:globalParams', [...globalParams.slice(0, index), {...param, value: $event.target.value}, ...globalParams.slice(index+1)])" type="text" placeholder="参数值" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input v-model="param.name" type="text" placeholder="参数名" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input v-model="param.value" type="text" placeholder="参数值" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('global', index)" class="remove-global-param p-2 text-dark-2 hover:text-danger transition-all-300">
                 <i class="fa fa-trash-o"></i>
               </button>
@@ -145,8 +141,7 @@
           <!-- JSON模式 -->
           <div v-else class="space-y-2">
             <textarea 
-              :value="globalJsonInput" 
-              @input="$emit('update:globalJsonInput', $event.target.value)"
+              v-model="globalJsonInputModel"
               placeholder="输入JSON格式的全局参数"
               class="w-full form-input rounded-lg border-light-2 px-3 py-2 text-sm min-h-[120px] font-mono"
             ></textarea>
@@ -179,11 +174,11 @@
           </div>
           <div class="space-y-2">
             <!-- 请求头项 -->
-            <div v-for="(header, index) in headers" :key="`header-${index}`" 
+            <div v-for="(header, index) in headersModel" :key="`header-${index}`" 
                   class="header-item flex items-center space-x-2 animate-fade-in" 
                   :style="{ opacity: header.visible ? 1 : 0 }">
-              <input :value="header.name" @input="$emit('update:headers', [...headers.slice(0, index), {...header, name: $event.target.value}, ...headers.slice(index+1)])" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
-              <input :value="header.value" @input="$emit('update:headers', [...headers.slice(0, index), {...header, value: $event.target.value}, ...headers.slice(index+1)])" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input v-model="header.name" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
+              <input v-model="header.value" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('header', index)" class="remove-header p-2 text-dark-2 hover:text-danger transition-all-300">
                 <i class="fa fa-trash-o"></i>
               </button>
@@ -192,11 +187,7 @@
         </div>
       </div>
       
-      <!-- 模态框底部 -->
-      <div class="flex justify-end px-6 py-4 border-t space-x-3">
-        <button class="px-4 py-2 border border-light-2 rounded-lg hover:bg-light-1 transition-all-300" @click="close">取消</button>
-        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all-300" @click="save">保存</button>
-      </div>
+      <!-- 移除模态框底部的按钮 -->
     </div>
   </div>
 </template>
@@ -215,43 +206,102 @@ export default {
     headers: Array,
     globalParamMethod: String
   },
+  data() {
+    return {
+      // 创建本地响应式数据模型
+      proxyUrlModel: this.proxyUrl,
+      baseUrlModel: this.baseUrl,
+      timeoutModel: this.timeout,
+      globalParamsModel: JSON.parse(JSON.stringify(this.globalParams || [])),
+      globalJsonInputModel: this.globalJsonInput,
+      headersModel: JSON.parse(JSON.stringify(this.headers || [])),
+      globalParamMethodModel: this.globalParamMethod
+    }
+  },
+  watch: {
+    // 监听props变化并更新本地模型
+    proxyUrl(newVal) {
+      this.proxyUrlModel = newVal
+    },
+    baseUrl(newVal) {
+      this.baseUrlModel = newVal
+    },
+    timeout(newVal) {
+      this.timeoutModel = newVal
+    },
+    globalParams: {
+      handler(newVal) {
+        this.globalParamsModel = JSON.parse(JSON.stringify(newVal || []))
+      },
+      deep: true
+    },
+    globalJsonInput(newVal) {
+      this.globalJsonInputModel = newVal
+    },
+    headers: {
+      handler(newVal) {
+        this.headersModel = JSON.parse(JSON.stringify(newVal || []))
+      },
+      deep: true
+    },
+    globalParamMethod(newVal) {
+      this.globalParamMethodModel = newVal
+    },
+    // 监听本地模型变化并触发保存
+    proxyUrlModel(newVal) {
+      this.$emit('update:proxyUrl', newVal)
+      this.saveSettings()
+    },
+    baseUrlModel(newVal) {
+      this.$emit('update:baseUrl', newVal)
+      this.saveSettings()
+    },
+    timeoutModel(newVal) {
+      this.$emit('update:timeout', newVal)
+      this.saveSettings()
+    },
+    globalParamsModel: {
+      handler() {
+        this.$emit('update:globalParams', this.globalParamsModel)
+        this.saveSettings()
+      },
+      deep: true
+    },
+    globalJsonInputModel(newVal) {
+      this.$emit('update:globalJsonInput', newVal)
+      this.saveSettings()
+    },
+    headersModel: {
+      handler() {
+        this.$emit('update:headers', this.headersModel)
+        this.saveSettings()
+      },
+      deep: true
+    },
+    globalParamMethodModel(newVal) {
+      this.$emit('update:globalParamMethod', newVal)
+      setTimeout(() => {
+        this.saveSettings()
+      }, 0)
+    }
+  },
   methods: {
     close() {
       this.$emit('close')
     },
-    save() {
-      // 验证输入
-      if (this.requestMode === 'proxy' && (!this.proxyUrl || !this.baseUrl)) {
-        this.$emit('show-toast', '代理模式下必须填写代理URL和基础URL');
-        return
-      }
-      
-      if (this.globalParamMode === 'json' && this.globalJsonInput) {
-        try {
-          JSON.parse(this.globalJsonInput)
-        } catch (e) {
-          this.$emit('show-toast', '全局参数JSON格式错误');
-          return
-        }
-      }
-      
-      // 检查超时设置是否为有效数字
-      if (this.timeout && isNaN(Number(this.timeout))) {
-        this.$emit('show-toast', '超时时间必须为有效数字');
-        return
-      }
-      
+    // 实时保存方法
+    saveSettings() {
       // 准备要保存的数据，确保是深拷贝
       const settingsToSave = {
         requestMode: this.requestMode,
-        proxyUrl: this.proxyUrl,
-        baseUrl: this.baseUrl,
-        timeout: Number(this.timeout) || 30000,
-        globalParams: JSON.parse(JSON.stringify(this.globalParams)), // 深拷贝避免引用问题
+        proxyUrl: this.proxyUrlModel,
+        baseUrl: this.baseUrlModel,
+        timeout: Number(this.timeoutModel) || 30000,
+        globalParams: JSON.parse(JSON.stringify(this.globalParamsModel)), // 深拷贝避免引用问题
         globalParamMode: this.globalParamMode,
-        globalJsonInput: this.globalJsonInput,
-        headers: JSON.parse(JSON.stringify(this.headers)), // 深拷贝避免引用问题
-        globalParamMethod: this.globalParamMethod // 添加全局参数提交方式
+        globalJsonInput: this.globalJsonInputModel,
+        headers: JSON.parse(JSON.stringify(this.headersModel)), // 深拷贝避免引用问题
+        globalParamMethod: this.globalParamMethodModel // 添加全局参数提交方式
       }
       
       // 触发保存事件
@@ -271,6 +321,21 @@ export default {
     },
     importGlobalJson() {
       this.$emit('import-global-json')
+    },
+    // 处理请求方式变更
+    handleRequestModeChange(mode) {
+      this.$emit('update:requestMode', mode)
+      // 延迟保存以确保状态已更新
+      setTimeout(() => {
+        this.saveSettings()
+      }, 0)
+    },
+    // 处理全局参数模式变更
+    handleGlobalParamModeChange(mode) {
+      this.$emit('update:globalParamMode', mode)
+      setTimeout(() => {
+        this.saveSettings()
+      }, 0)
     }
   }
 }

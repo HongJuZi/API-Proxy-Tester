@@ -20,7 +20,7 @@ API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内�
 
 ## DEMO演示
 
-![首页](./demo/index.index)
+![首页](./demo/index.jpg)
 ![API Proxy Tester Demo](./demo/api.png)
 ![全局设置](./demo/config.png)
 

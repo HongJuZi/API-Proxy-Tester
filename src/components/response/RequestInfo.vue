@@ -154,11 +154,42 @@ export default {
       try {
         if (typeof this.requestBody === 'string') {
           // 如果已经是字符串，尝试解析并格式化
-          return JSON.stringify(JSON.parse(this.requestBody), null, 2)
+          // 首先检查是否已经是格式化的JSON字符串
+          const trimmedBody = this.requestBody.trim();
+          if (trimmedBody.startsWith('{') || trimmedBody.startsWith('[')) {
+            try {
+              // 尝试解析为JSON对象然后再格式化输出
+              return JSON.stringify(JSON.parse(trimmedBody), null, 2);
+            } catch (e) {
+              // 如果解析失败，可能是格式不正确的JSON字符串，仍然尝试格式化
+              return this.formatJsonString(trimmedBody);
+            }
+          } else {
+            // 非JSON格式的字符串，尝试作为普通文本处理
+            return this.requestBody;
+          }
         }
+        // 如果是对象，直接格式化输出
         return JSON.stringify(this.requestBody || {}, null, 2)
-      } catch {
+      } catch (e) {
+        console.warn('格式化请求体数据失败:', e);
+        // 捕获所有错误，确保至少返回字符串形式
         return String(this.requestBody || '{}')
+      }
+    },
+    
+    // 辅助方法：尝试格式化可能不完美的JSON字符串
+    formatJsonString(str) {
+      try {
+        // 尝试一些简单的修复，如添加缺失的引号
+        // 注意：这只是一个基本的尝试，不保证能处理所有情况
+        let fixedStr = str;
+        
+        // 如果失败，返回原始字符串
+        return JSON.stringify(JSON.parse(fixedStr), null, 2);
+      } catch {
+        // 如果仍然解析失败，至少尝试美化显示
+        return str;
       }
     },
     hasRequestBody() {

@@ -30,7 +30,7 @@
     <main class="container mx-auto px-4 py-8">
       <div class="text-center mb-12">
         <h1 class="text-3xl font-bold text-dark mb-4">欢迎使用 API Proxy Tester</h1>
-        <p class="text-lg text-dark-2 mb-8">现代化的API测试工具，帮助您轻松测试和调试API接口</p>
+        <p class="text-lg text-dark-2 mb-8">现代化的API测试工具，帮助您轻松测试和调试带VPN环境的内网API接口</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -78,7 +78,7 @@
 
     <!-- 页脚 -->
     <footer class="mt-16 py-6 text-center text-sm text-gray-500 border-t border-gray-200">
-      <p>© 2025 API Proxy Tester</p>
+      <p>© 2025 API Proxy Tester <span class="ml-2">v1.0.0</span></p>
       <p>开源许可协议：MIT</p>
     </footer>
   </div>

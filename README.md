@@ -1,5 +1,75 @@
-# API-Proxy-Tester
-Support Proxy Mode and Normal Mode Api Tester Little Tools. 支持代理测试及本地测试的API测试小工具,比如需要透到VPN内网环境的API测试
+# API Proxy Tester
 
-# 挑战AI全程写个小工具
-欢迎提Issues，AI会搞定一切！
+API代理测试工具，基于Vue 3和Vite构建。
+
+## 功能特性
+
+- 支持多种HTTP方法（GET, POST, PUT, DELETE等）
+- 可配置全局参数和请求头
+- 请求体支持键值对和JSON原始数据两种模式
+- 自动生成接口文档（Markdown/HTML）
+- 响应内容格式化和下载
+- 参数占位符自动替换
+- 历史请求记录
+
+## 项目结构
+
+```
+api-test-tool/
+├── src/                # 源代码目录
+│   ├── components/     # Vue组件
+│   │   ├── forms/      # 表单相关组件
+│   │   ├── layout/     # 布局组件
+│   │   ├── modals/     # 模态框组件
+│   │   ├── response/   # 响应相关组件
+│   │   └── settings/   # 设置相关组件
+│   ├── styles/         # 样式文件
+│   │   └── components/ # 组件样式
+│   ├── utils/          # 工具函数
+│   └── store/          # 状态管理
+├── index.html          # 入口HTML文件
+├── package.json        # 项目配置和依赖
+├── vite.config.js      # Vite配置
+├── tailwind.config.js  # Tailwind CSS配置
+└── postcss.config.js   # PostCSS配置
+```
+
+## 开发环境搭建
+
+1. 进入项目目录：
+   ```bash
+   cd api-test-tool
+   ```
+
+2. 安装依赖：
+   ```bash
+   npm install
+   ```
+
+3. 启动开发服务器：
+   ```bash
+   npm run dev
+   ```
+
+4. 构建生产版本：
+   ```bash
+   npm run build
+   ```
+
+5. 预览生产构建：
+   ```bash
+   npm run serve
+   ```
+
+## 占位符使用说明
+
+在全局参数和请求体参数中，支持以下占位符自动替换：
+
+- `${datetime}` - 当前日期时间，格式：YYYY-MM-DD HH:mm:ss
+- `${date}` - 当前日期，格式：YYYY-MM-DD
+- `${time}` - 当前时间，格式：HH:mm:ss
+- `${UUID}` - 生成唯一UUID
+- `${s32}` - 生成32位随机字符串
+- `${s16}` - 生成16位随机字符串
+
+示例：在JSON中使用 `{"timestamp": "${datetime}", "request_id": "${UUID}"}` 将自动替换为实际值。

@@ -61,7 +61,8 @@
             v-model:selected-method="selectedMethod"
             :methods="methods"
             v-model:api-path="apiPath"
-            v-model:api-name="apiName"
+            :api-name="apiName"
+            @update:apiName="updateProperty('apiName', $event)"
             v-model:api-params="apiParams"
             v-model:input-mode="inputMode"
             v-model:kv-pairs="kvPairs"
@@ -185,10 +186,13 @@ export default {
   },
   data() {
     return {
-      hasUsedTool: false, // 标记用户是否已经使用过工具
-      showDocumentPreview: false
+      hasUsedTool: false // 标记用户是否已经使用过工具
     }
   },
+  watch: {
+    // 移除apiName的watcher，避免循环更新
+  },
+  
   computed: {
     // 使用Pinia的mapState映射状态
     ...mapState(useMainStore, [
@@ -700,6 +704,8 @@ export default {
         method: config.method,
         path: this.apiPath,
         apiName: this.apiName.trim() || this.apiPath.replace(/\//g, '-') || '未命名接口',
+        // 添加唯一标识符，方便后续更新
+        id: Date.now() + Math.random().toString(36).substr(2, 9),
         params: JSON.parse(JSON.stringify(config.params || {})),
         headers: JSON.parse(JSON.stringify(config.headers || {})),
         data: config.data ? JSON.parse(JSON.stringify(config.data)) : null,

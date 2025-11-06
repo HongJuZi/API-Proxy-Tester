@@ -8,11 +8,23 @@
         </router-link>
       </div>
       <div class="flex items-center space-x-4">
-        <button @click="showGlobalSettings" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
-          <i class="fa fa-cog text-dark-2"></i>
+        <button @click="$router.push('/')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/' }]">
+          <i class="fa fa-home mr-1"></i>首页
+        </button>
+        <a href="https://www.hongjuzi.com.cn" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
+          <i class="fa fa-globe mr-1"></i>官网
+        </a>
+        <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
+          <i class="fa fa-github mr-1"></i>GitHub
+        </a>
+        <button @click="$router.push('/about')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/about' }]">
+          <i class="fa fa-info-circle mr-1"></i>关于
         </button>
         <button @click="toggleTheme" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
           <i class="fa fa-moon-o text-dark-2"></i>
+        </button>
+        <button @click="showGlobalSettings" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
+          <i class="fa fa-cog text-dark-2"></i>
         </button>
         <button @click="showHelp" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
           <i class="fa fa-question-circle text-dark-2"></i>

@@ -231,7 +231,10 @@ export default {
     },
     globalParams: {
       handler(newVal) {
-        this.globalParamsModel = JSON.parse(JSON.stringify(newVal || []))
+        // 深度比较避免不必要的更新
+        if (JSON.stringify(newVal) !== JSON.stringify(this.globalParamsModel)) {
+          this.globalParamsModel = JSON.parse(JSON.stringify(newVal || []))
+        }
       },
       deep: true
     },
@@ -240,7 +243,10 @@ export default {
     },
     headers: {
       handler(newVal) {
-        this.headersModel = JSON.parse(JSON.stringify(newVal || []))
+        // 深度比较避免不必要的更新
+        if (JSON.stringify(newVal) !== JSON.stringify(this.headersModel)) {
+          this.headersModel = JSON.parse(JSON.stringify(newVal || []))
+        }
       },
       deep: true
     },

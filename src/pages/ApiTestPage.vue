@@ -47,7 +47,7 @@
             <div>
               <h4 class="font-medium text-dark-1 mb-1">首次使用提醒</h4>
               <p class="text-sm text-dark-2 mb-2">为了更好地使用接口测试工具，请先配置全局参数</p>
-              <button @click="showGlobalSettings = true" class="bg-primary hover:bg-primary/90 text-white text-sm px-3 py-1 rounded transition-colors">
+              <button @click="handleShowGlobalSettings" class="bg-primary hover:bg-primary/90 text-white text-sm px-3 py-1 rounded transition-colors">
                 去配置全局参数
               </button>
               <button @click="dismissFirstUseReminder" class="ml-2 text-sm text-dark-2 hover:text-dark-1">
@@ -135,6 +135,7 @@
       @update:proxy-url="handleProxyUrlUpdate"
       @update:base-url="handleBaseUrlUpdate"
       @update:timeout="handleTimeoutUpdate"
+      @update:request-mode="handleRequestModeChange"
     />
     
     <!-- 帮助模态框 -->

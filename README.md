@@ -107,9 +107,9 @@ API-Proxy-Tester/
 
 ## 第三方链接
 
-- [Discord](https://discord.com/invite/deepseek)
-- [Twitter](https://twitter.com/deepseek_ai)
-- [GitHub](https://github.com/deepseek-ai)
+- [Discord](https://discord.com/invite/HongJuZi)
+- [Twitter](https://twitter.com/HongJuZi)
+- [GitHub](https://github.com/HongJuZi)
 
 ## 许可证
 

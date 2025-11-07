@@ -1,6 +1,17 @@
 <template>
   <Transition name="toast">
-    <div v-if="visible" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-dark text-white px-4 py-2 rounded-lg shadow-lg z-50">
+    <div 
+      v-if="visible" 
+      :class="[
+        'fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg z-50',
+        {
+          'bg-success text-white': toastType === 'success',
+          'bg-danger text-white': toastType === 'error',
+          'bg-warning text-dark': toastType === 'warning',
+          'bg-info text-white': toastType === 'info'
+        }
+      ]"
+    >
       {{ message || '操作成功！' }}
     </div>
   </Transition>
@@ -14,6 +25,10 @@ export default {
     visible: {
       type: Boolean,
       default: true
+    },
+    toastType: {
+      type: String,
+      default: 'success'
     }
   },
   watch: {

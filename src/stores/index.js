@@ -28,6 +28,7 @@ export const useMainStore = defineStore('main', {
     requestHistory: [],
     toastMessage: '',
     toastVisible: false,
+    toastType: 'success',
     headers: [
       {
         name: 'Content-Type',
@@ -255,8 +256,9 @@ export const useMainStore = defineStore('main', {
     },
     
     // 显示提示
-    showToast(message = '操作成功！') {
+    showToast(message = '操作成功！', type = 'success') {
       this.toastMessage = message;
+      this.toastType = type;
       this.toastVisible = true;
     },
     

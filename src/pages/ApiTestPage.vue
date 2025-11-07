@@ -279,6 +279,7 @@
     <Toast 
       :message="toastMessage" 
       :visible="toastVisible"
+      :toast-type="toastType"
       @close="hideToast"
     />
     
@@ -343,6 +344,7 @@ export default {
   computed: {
     // 使用Pinia的mapState映射状态
     ...mapState(useMainStore, [
+      'toastType',
       'baseUrl',
       'timeout',
       'selectedMethod',
@@ -1455,6 +1457,9 @@ export default {
         // 标记用户已使用工具
         this.markAsUsed();
         
+        // 显示请求发送中的提示
+        this.showToast('请求发送中...', 'info');
+        
         // 处理默认接口名称：如果未填写，使用apiPath并将/转换为-
         if (!this.apiName.trim()) {
           const defaultName = this.apiPath.trim() || '未命名接口';
@@ -1544,6 +1549,9 @@ export default {
         this.saveToHistory(config, response)
         
         // 发送请求成功后不再自动生成文档预览
+        
+        // 请求成功后显示成功提示
+        this.showToast('请求成功', 'success');
       } catch (error) {
         // 判断是否是超时错误
         let errorResponse = null;
@@ -1553,7 +1561,8 @@ export default {
         }
         // 请求失败时也保存到历史记录，标记为错误状态或超时状态
         this.saveToHistory(config, errorResponse)
-        modalHelper.error(`请求失败: ${error.message}`)
+        // 显示错误提示
+        this.showToast(`请求失败: ${error.message}`, 'error')
       }
     },
     // 复制响应内容

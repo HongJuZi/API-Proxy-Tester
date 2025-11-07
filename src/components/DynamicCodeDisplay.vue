@@ -9,7 +9,7 @@
       <div class="text-gray-300 text-sm ml-2">{{ fileName }}</div>
     </div>
     
-    <div class="h-48 overflow-y-auto p-4 font-mono text-sm">
+    <div class="h-58 overflow-y-auto p-4 font-mono text-sm">
       <div class="text-gray-400">// AI正在编写代码...</div>
       <div v-html="formattedCode"></div>
       <span v-if="isTyping" class="animate-pulse">▌</span>
@@ -118,45 +118,20 @@ export default {
   },
   computed: {
     formattedCode() {
-      let result = ''
       let tempText = this.currentText
       
-      // 修复：移除不必要的缩进处理，保留原始格式
+      // 先对文本进行HTML转义，防止代码中的HTML被解析
+      let escapedText = this.escapeHtml(tempText)
       
-      // 优化的正则表达式匹配规则，使用更简单直接的方法
-      const highlightedText = tempText
-        // 注释
-        .replace(/(\/\/[^\n]*)/g, '<span class="text-green-400">$1</span>')
-        // 双引号字符串
-        .replace(/("[^\"]*")/g, '<span class="text-yellow-400">$1</span>')
-        // 单引号字符串
-        .replace(/('(?:[^'\\]|\\.)*')/g, '<span class="text-yellow-400">$1</span>')
-        // 数字
-        .replace(/(\b\d+\b)/g, '<span class="text-purple-400">$1</span>')
-        // Vue生命周期钩子和选项
-        .replace(/(\b(methods|data|name|props|computed|mounted|beforeUnmount)\b)/g, '<span class="text-pink-400">$1</span>')
-        // 内置函数
-        .replace(/(\b(setTimeout|setInterval)\b)/g, '<span class="text-cyan-400">$1</span>')
-        // 关键字
-        .replace(/(\b(export|default|return|const|let|var|if|else|for|while|function|new|this)\b)/g, '<span class="text-blue-400">$1</span>')
-        // 属性访问
-        .replace(/(\.\w+)/g, '<span class="text-teal-400">$1</span>')
-        // 函数名
-        .replace(/(\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\()/g, '<span class="text-orange-400">$1</span>')
-        // 对象属性
-        .replace(/(\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:)/g, '<span class="text-indigo-400">$1</span>')
+      // 应用语法高亮
+      let highlightedText = this.applySyntaxHighlighting(escapedText)
       
-      // 正确处理换行符
-      result = highlightedText.replace(/\n/g, '<br/>')
+      // 处理换行符
+      highlightedText = highlightedText.replace(/\n/g, '<br/>')
       
-      return result
+      // 确保所有内容都在span标签内，默认白色
+      return '<span class="text-white">' + highlightedText + '</span>'
     }
-  },
-  mounted() {
-    this.startTyping()
-  },
-  beforeUnmount() {
-    this.stopTyping()
   },
   methods: {
     escapeHtml(text) {
@@ -216,8 +191,249 @@ export default {
       if (this.restartTimer) {
         clearTimeout(this.restartTimer)
       }
+    },
+    
+    // 应用语法高亮
+    applySyntaxHighlighting(text) {
+      // 将文本按行分割，逐行处理
+      const lines = text.split('\n')
+      const processedLines = lines.map(line => {
+        return this.highlightLine(line)
+      })
+      return processedLines.join('\n')
+    },
+    
+    // 高亮单行代码
+    highlightLine(line) {
+      // 存储所有需要高亮的部分及其位置
+      const highlights = []
+      
+      // 1. 查找字符串字面量
+      let i = 0
+      while (i < line.length) {
+        if (line[i] === '"' || line[i] === "'") {
+          const quote = line[i]
+          const start = i
+          i++
+          // 找到匹配的结束引号
+          while (i < line.length && line[i] !== quote) {
+            // 处理转义字符
+            if (line[i] === '\\' && i + 1 < line.length) {
+              i += 2
+            } else {
+              i++
+            }
+          }
+          if (i < line.length) i++ // 跳过结束引号
+          highlights.push({
+            start: start,
+            end: i,
+            type: 'string'
+          })
+        } else {
+          i++
+        }
+      }
+      
+      // 2. 查找注释
+      for (i = 0; i < line.length - 1; i++) {
+        // 单行注释
+        if (line[i] === '/' && line[i + 1] === '/') {
+          highlights.push({
+            start: i,
+            end: line.length,
+            type: 'comment'
+          })
+          break // 找到单行注释后，该行剩余部分都是注释
+        }
+        // 多行注释开始
+        else if (line[i] === '/' && line[i + 1] === '*') {
+          let end = i + 2
+          // 找到多行注释结束
+          while (end < line.length - 1 && !(line[end] === '*' && line[end + 1] === '/')) {
+            end++
+          }
+          if (end < line.length - 1) {
+            end += 2
+          }
+          highlights.push({
+            start: i,
+            end: end,
+            type: 'comment'
+          })
+          i = end - 1 // 跳过已处理的部分
+        }
+      }
+      
+      // 3. 查找关键字、函数名、属性等
+      for (i = 0; i < line.length; ) {  // 移除了自动递增，在循环内部控制
+        // 处理关键字和标识符
+        if (/[a-zA-Z_$]/.test(line[i])) {
+          const start = i
+          // 提取完整单词
+          while (i < line.length && /[a-zA-Z0-9_$]/.test(line[i])) {
+            i++
+          }
+          const word = line.substring(start, i)
+          
+          // 检查是否需要高亮
+          let type = null
+          if (['export', 'default', 'return', 'const', 'let', 'var', 'if', 'else', 'for', 'while', 
+              'function', 'new', 'this', 'class', 'extends', 'import', 'from', 'async', 'await', 
+              'try', 'catch', 'finally', 'throw'].includes(word)) {
+            type = 'keyword'
+          } 
+          else if (['methods', 'data', 'name', 'props', 'computed', 'mounted', 'beforeUnmount', 
+                   'created', 'beforeCreate', 'beforeUpdate', 'updated', 'destroyed', 'beforeDestroy'].includes(word)) {
+            type = 'lifecycle'
+          }
+          else if (['setTimeout', 'setInterval', 'console.log', 'alert', 'confirm', 'prompt'].includes(word)) {
+            type = 'builtin'
+          }
+          else if (i < line.length && line[i] === '(') {
+            type = 'function'
+          }
+          else if (i < line.length && line[i] === ':') {
+            type = 'property'
+          }
+          
+          if (type) {
+            highlights.push({
+              start: start,
+              end: i,
+              type: type
+            })
+          }
+        }
+        // 处理数字
+        else if (/[0-9]/.test(line[i])) {
+          const start = i
+          // 提取完整数字（包括小数）
+          while (i < line.length && /[0-9.]/.test(line[i])) {
+            i++
+          }
+          // 确保提取到的是有效数字
+          const numberStr = line.substring(start, i)
+          if (/^\d+(\.\d+)?$/.test(numberStr)) {
+            highlights.push({
+              start: start,
+              end: i,
+              type: 'number'
+            })
+          }
+        }
+        // 处理属性访问
+        else if (line[i] === '.' && i + 1 < line.length && /[a-zA-Z_$]/.test(line[i+1])) {
+          const start = i
+          i++ // 跳过点号
+          const propStart = i
+          // 提取属性名
+          while (i < line.length && /[a-zA-Z0-9_$]/.test(line[i])) {
+            i++
+          }
+          highlights.push({
+            start: start,
+            end: i,
+            type: 'property-access'
+          })
+        }
+        // 其他情况递增i
+        else {
+          i++
+        }
+      }
+      
+      // 根据位置排序高亮部分，避免重叠
+      highlights.sort((a, b) => a.start - b.start)
+      
+      // 合并重叠的高亮部分，保留优先级高的
+      const mergedHighlights = []
+      for (const highlight of highlights) {
+        if (mergedHighlights.length === 0) {
+          mergedHighlights.push(highlight)
+        } else {
+          const last = mergedHighlights[mergedHighlights.length - 1]
+          // 如果当前高亮与上一个重叠
+          if (highlight.start < last.end) {
+            // 保留优先级高的（按类型优先级）
+            const priority = {
+              'string': 5,
+              'comment': 4,
+              'keyword': 3,
+              'lifecycle': 3,
+              'builtin': 3,
+              'function': 2,
+              'property': 2,
+              'property-access': 2,
+              'number': 1
+            }
+            
+            if (priority[highlight.type] > priority[last.type]) {
+              mergedHighlights[mergedHighlights.length - 1] = highlight
+            }
+            // 否则保留原有的
+          } else {
+            mergedHighlights.push(highlight)
+          }
+        }
+      }
+      
+      // 应用高亮标签
+      let result = ''
+      let lastIndex = 0
+      for (const highlight of mergedHighlights) {
+        // 添加高亮前的普通文本
+        if (highlight.start > lastIndex) {
+          result += line.substring(lastIndex, highlight.start)
+        }
+        
+        // 添加高亮文本
+        const highlightedText = line.substring(highlight.start, highlight.end)
+        switch (highlight.type) {
+          case 'string':
+            result += `<span class="text-yellow-400">${highlightedText}</span>`
+            break
+          case 'comment':
+            result += `<span class="text-green-400">${highlightedText}</span>`
+            break
+          case 'keyword':
+          case 'lifecycle':
+          case 'builtin':
+            result += `<span class="text-blue-400">${highlightedText}</span>`
+            break
+          case 'function':
+            result += `<span class="text-orange-400">${highlightedText}</span>`
+            break
+          case 'property':
+            result += `<span class="text-pink-400">${highlightedText}</span>`
+            break
+          case 'property-access':
+            result += `<span class="text-teal-400">${highlightedText}</span>`
+            break
+          case 'number':
+            result += `<span class="text-purple-400">${highlightedText}</span>`
+            break
+          default:
+            result += highlightedText
+        }
+        
+        lastIndex = highlight.end
+      }
+      
+      // 添加最后一段普通文本
+      if (lastIndex < line.length) {
+        result += line.substring(lastIndex)
+      }
+      
+      return result
     }
-  }
+  },
+  mounted() {
+    this.startTyping()
+  },
+  beforeUnmount() {
+    this.stopTyping()
+  },
 }
 </script>
 

@@ -145,21 +145,28 @@ export default {
     },
     formattedParams() {
       try {
-        // 处理参数对象，确保对象值被正确序列化
-        const processedParams = {}
-        for (const key in this.requestParams) {
-          if (Object.prototype.hasOwnProperty.call(this.requestParams, key)) {
-            const value = this.requestParams[key]
-            // 如果值是对象，将其转换为JSON字符串
-            if (typeof value === 'object' && value !== null) {
-              processedParams[key] = JSON.stringify(value)
-            } else {
-              processedParams[key] = value
+        // 深拷贝参数对象，确保正确序列化所有嵌套对象
+        const cloneObject = (obj) => {
+          if (obj === null || typeof obj !== 'object') {
+            return obj
+          }
+          if (Array.isArray(obj)) {
+            return obj.map(item => cloneObject(item))
+          }
+          const cloned = {}
+          for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+              cloned[key] = cloneObject(obj[key])
             }
           }
+          return cloned
         }
-        return JSON.stringify(processedParams || {}, null, 2)
-      } catch {
+        
+        // 克隆参数对象以避免修改原始数据
+        const clonedParams = cloneObject(this.requestParams)
+        return JSON.stringify(clonedParams || {}, null, 2)
+      } catch (error) {
+        console.error('格式化参数时出错:', error)
         return String(this.requestParams || '{}')
       }
     },

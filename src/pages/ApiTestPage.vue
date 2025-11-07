@@ -316,7 +316,7 @@ export default {
     
     // 切换主题
     toggleTheme() {
-      console.log('切换主题');
+  
       // 简单的主题切换实现
       const body = document.body;
       if (body.classList.contains('dark-mode')) {
@@ -329,42 +329,41 @@ export default {
     
     // 刷新JSON预览（本地方法）
     refreshJsonPreview() {
-      console.log('刷新JSON预览');
+  
       try {
         // 获取请求体JSON数据
         const jsonData = this.getRequestBodyJson();
         // 调用store中的updateJsonPreview方法，传入格式化后的JSON
         this.updateJsonPreview(JSON.stringify(jsonData, null, 2));
       } catch (e) {
-        console.error('刷新JSON预览失败:', e);
+    
         this.updateJsonPreview(`// JSON格式错误: ${e.message}`);
       }
     },
     
     // 处理显示全局设置
     handleShowGlobalSettings() {
-      console.log('===== ApiTestPage: 收到显示全局设置事件 =====')
-      console.log('setGlobalSettingsVisible 方法存在:', !!this.setGlobalSettingsVisible)
+      
       try {
         this.setGlobalSettingsVisible(true)
-        console.log('调用 setGlobalSettingsVisible(true) 成功')
+    
         // 立即检查状态
         setTimeout(() => {
-          console.log('设置后 showGlobalSettings 状态:', this.showGlobalSettings)
+      
         }, 0)
       } catch (error) {
-        console.error('调用 setGlobalSettingsVisible 失败:', error)
+    
       }
     },
     
     // 隐藏全局设置
     hideGlobalSettings() {
-      console.log('===== ApiTestPage: 隐藏全局设置 =====')
+  
       try {
         this.setGlobalSettingsVisible(false)
-        console.log('调用 setGlobalSettingsVisible(false) 成功')
+    
       } catch (error) {
-        console.error('调用 setGlobalSettingsVisible(false) 失败:', error)
+    
       }
     },
     
@@ -1300,10 +1299,7 @@ export default {
           this.updateProperty('apiName', defaultName.replace(/\//g, '-'));
         }
         
-        // 打印全局参数信息，用于调试
-        console.log('发送请求前的全局参数:', this.globalParams)
-        console.log('发送请求前的全局参数模式:', this.globalParamMode)
-        console.log('发送请求前的全局参数提交方式:', this.globalParamMethod)
+
         
         const config = this.collectRequestConfig()
         

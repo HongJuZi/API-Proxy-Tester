@@ -145,7 +145,20 @@ export default {
     },
     formattedParams() {
       try {
-        return JSON.stringify(this.requestParams || {}, null, 2)
+        // 处理参数对象，确保对象值被正确序列化
+        const processedParams = {}
+        for (const key in this.requestParams) {
+          if (Object.prototype.hasOwnProperty.call(this.requestParams, key)) {
+            const value = this.requestParams[key]
+            // 如果值是对象，将其转换为JSON字符串
+            if (typeof value === 'object' && value !== null) {
+              processedParams[key] = JSON.stringify(value)
+            } else {
+              processedParams[key] = value
+            }
+          }
+        }
+        return JSON.stringify(processedParams || {}, null, 2)
       } catch {
         return String(this.requestParams || '{}')
       }

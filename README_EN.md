@@ -44,26 +44,52 @@ API Proxy Tester solves the above pain points through:
 
 ```
 API-Proxy-Tester/
+├── .env.example        # Environment variables configuration example file
 ├── .gitignore          # Git ignore file configuration
+├── BUILD_CONFIG.md     # Build configuration documentation (Chinese)
+├── BUILD_CONFIG_EN.md  # Build configuration documentation (English)
 ├── LICENSE             # License file
 ├── README.md           # Project documentation (Chinese)
 ├── README_EN.md        # Project documentation (English)
 ├── backend/            # Backend related files
 │   └── api-test-worker.php
+├── dist/               # Build output directory
 ├── index.html          # Entry HTML file
 ├── package-lock.json   # Dependency lock file
 ├── package.json        # Project configuration and dependencies
 ├── postcss.config.js   # PostCSS configuration
 ├── public/             # Static resources directory
+│   └── demo/           # Demo images directory
+│       ├── ai-coding.jpg
+│       ├── api.jpg
+│       ├── config.jpg
+│       └── index.jpg
+├── scripts/            # Script tools directory
+│   ├── check-image-dimensions.js
+│   └── process-images.js
 ├── src/                # Source code directory
 │   ├── App.vue         # Root component
 │   ├── assets/         # Resource files
 │   ├── components/     # Vue components
+│   │   ├── DynamicCodeDisplay.vue
+│   │   ├── JsonEditor.vue
 │   │   ├── forms/      # Form related components
+│   │   │   └── ApiConfig.vue
 │   │   ├── layout/     # Layout components
+│   │   │   ├── AppFooter.vue
+│   │   │   ├── AppHeader.vue
+│   │   │   ├── RequestHistory.vue
+│   │   │   └── Toast.vue
 │   │   ├── modals/     # Modal components
+│   │   │   ├── GlobalSettings.vue
+│   │   │   ├── HelpModal.vue
+│   │   │   └── StatusModal.vue
 │   │   ├── response/   # Response related components
+│   │   │   ├── DocumentPreview.vue
+│   │   │   ├── RequestInfo.vue
+│   │   │   └── ResponseInfo.vue
 │   │   └── settings/   # Settings related components
+│   │       └── DocumentConfig.vue
 │   ├── main.js         # Entry JavaScript file
 │   ├── pages/          # Page components
 │   │   ├── AboutPage.vue
@@ -75,6 +101,10 @@ API-Proxy-Tester/
 │   │   └── index.js
 │   ├── styles/         # Style files
 │   │   ├── components/ # Component styles
+│   │   │   ├── forms.css
+│   │   │   ├── header.css
+│   │   │   ├── modals.css
+│   │   │   └── response.css
 │   │   ├── main.css    # Main style file
 │   │   └── tailwind.css # Tailwind CSS style
 │   └── utils/          # Utility functions
@@ -105,7 +135,7 @@ API-Proxy-Tester/
    npm run dev
    ```
 
-4. Build for production:
+4. Build production version:
    ```bash
    npm run build
    ```
@@ -114,6 +144,20 @@ API-Proxy-Tester/
    ```bash
    npm run serve
    ```
+
+## Advanced Build Configuration
+
+The project supports flexible build configurations that can be customized according to different deployment requirements. For detailed configuration instructions, please refer to:
+
+- [Build Configuration Documentation](./BUILD_CONFIG_EN.md)
+
+Main build options include:
+
+- Custom base path (default: `/tools/`)
+- Custom output directory (default: `dist/`)
+- Custom static assets directory (default: `assets`)
+- Predefined build scripts (root path build, custom mode, etc.)
+- Environment configuration file support
 
 ## Project Roadmap
 

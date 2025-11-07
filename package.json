@@ -10,7 +10,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "build:root": "VITE_BASE_DIR=/ VITE_OUT_DIR=dist-root/ vite build",
+    "build:custom": "vite build --mode custom",
+    "build:specific": "VITE_BASE_DIR=/custom/ VITE_OUT_DIR=dist-custom/ VITE_ASSETS_DIR=static vite build",
+    "build:prod": "vite build --mode prod",
+    "build:work": "vite build --mode work",
+    "serve": "vite preview",
+    "serve:root": "VITE_BASE_DIR=/ vite preview"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.0.0",

@@ -44,25 +44,52 @@ API Proxy Tester通过以下方式解决上述痛点：
 
 ```
 API-Proxy-Tester/
+├── .env.example        # 环境变量配置示例文件
 ├── .gitignore          # Git忽略文件配置
+├── BUILD_CONFIG.md     # 构建配置说明文档
+├── BUILD_CONFIG_EN.md  # 英文构建配置说明文档
 ├── LICENSE             # 许可证文件
-├── README.md           # 项目说明文档
+├── README.md           # 项目说明文档（中文）
+├── README_EN.md        # 项目说明文档（英文）
 ├── backend/            # 后端相关文件
 │   └── api-test-worker.php
+├── dist/               # 构建输出目录
 ├── index.html          # 入口HTML文件
 ├── package-lock.json   # 依赖锁定文件
 ├── package.json        # 项目配置和依赖
 ├── postcss.config.js   # PostCSS配置
 ├── public/             # 静态资源目录
+│   └── demo/           # 演示图片目录
+│       ├── ai-coding.jpg
+│       ├── api.jpg
+│       ├── config.jpg
+│       └── index.jpg
+├── scripts/            # 脚本工具目录
+│   ├── check-image-dimensions.js
+│   └── process-images.js
 ├── src/                # 源代码目录
 │   ├── App.vue         # 根组件
 │   ├── assets/         # 资源文件
 │   ├── components/     # Vue组件
+│   │   ├── DynamicCodeDisplay.vue
+│   │   ├── JsonEditor.vue
 │   │   ├── forms/      # 表单相关组件
+│   │   │   └── ApiConfig.vue
 │   │   ├── layout/     # 布局组件
+│   │   │   ├── AppFooter.vue
+│   │   │   ├── AppHeader.vue
+│   │   │   ├── RequestHistory.vue
+│   │   │   └── Toast.vue
 │   │   ├── modals/     # 模态框组件
+│   │   │   ├── GlobalSettings.vue
+│   │   │   ├── HelpModal.vue
+│   │   │   └── StatusModal.vue
 │   │   ├── response/   # 响应相关组件
+│   │   │   ├── DocumentPreview.vue
+│   │   │   ├── RequestInfo.vue
+│   │   │   └── ResponseInfo.vue
 │   │   └── settings/   # 设置相关组件
+│   │       └── DocumentConfig.vue
 │   ├── main.js         # 入口JavaScript文件
 │   ├── pages/          # 页面组件
 │   │   ├── AboutPage.vue
@@ -74,6 +101,10 @@ API-Proxy-Tester/
 │   │   └── index.js
 │   ├── styles/         # 样式文件
 │   │   ├── components/ # 组件样式
+│   │   │   ├── forms.css
+│   │   │   ├── header.css
+│   │   │   ├── modals.css
+│   │   │   └── response.css
 │   │   ├── main.css    # 主样式文件
 │   │   └── tailwind.css # Tailwind CSS样式
 │   └── utils/          # 工具函数
@@ -130,6 +161,22 @@ API-Proxy-Tester/
    ```bash
    npm run serve
    ```
+
+## 高级构建配置
+
+项目支持灵活的构建配置，可以根据不同的部署需求自定义构建参数。详细配置说明请参考：
+
+- [构建配置文档](./BUILD_CONFIG.md)
+
+> 注：英文版本README_EN.md中的构建配置文档链接也已更新为指向正确的文档
+
+主要构建选项包括：
+
+- 自定义基础路径（默认为 `/tools/`）
+- 自定义输出目录（默认为 `dist/`）
+- 自定义静态资源目录（默认为 `assets`）
+- 预定义的构建脚本（根路径构建、自定义模式等）
+- 环境配置文件支持
 
 ## 项目路线图 (Roadmap)
 

@@ -15,7 +15,7 @@ class Logger {
      * 日志文件路径
      * @var string
      */
-    private static $logFilePath = __DIR__ . '/log/api-test.log';
+    private static $logFilePath = __DIR__ . '/../log/api-test.log';
     
     /**
      * 记录API请求和响应日志

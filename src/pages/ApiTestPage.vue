@@ -1453,6 +1453,9 @@ export default {
     },
     // 发送请求
     async sendRequest() {
+      // 提前定义config变量，确保在try-catch整个作用域内都可用
+      const config = this.collectRequestConfig();
+      
       try {
         // 标记用户已使用工具
         this.markAsUsed();
@@ -1465,10 +1468,6 @@ export default {
           const defaultName = this.apiPath.trim() || '未命名接口';
           this.updateProperty('apiName', defaultName.replace(/\//g, '-'));
         }
-        
-
-        
-        const config = this.collectRequestConfig()
         
         // 根据请求模式设置axios配置
         let axiosConfig = {

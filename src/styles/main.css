@@ -138,7 +138,10 @@ body {
 .markdown-preview th { @apply border border-gray-300 bg-gray-50 p-2 text-left; }
 .markdown-preview td { @apply border border-gray-300 p-2; }
 .markdown-preview code { @apply bg-gray-100 px-1 py-0.5 rounded text-sm; }
-.markdown-preview pre { @apply bg-gray-100 p-3 rounded overflow-auto my-2 text-sm; }
+.markdown-preview pre { @apply bg-gray-100 p-3 rounded my-2 text-sm; word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; }
+
+/* 全局pre标签样式 */
+pre { word-wrap: break-word; white-space: pre-wrap; overflow-wrap: break-word; }
 
 /* ==================== 
  * 状态颜色

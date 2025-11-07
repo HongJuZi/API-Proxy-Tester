@@ -1307,9 +1307,6 @@ export default {
         
         const config = this.collectRequestConfig()
         
-        // 打印最终请求配置，用于调试
-        console.log('最终请求配置:', config)
-        
         // 根据请求模式设置axios配置
         let axiosConfig = {
           ...config,

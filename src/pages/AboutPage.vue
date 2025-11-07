@@ -1,60 +1,11 @@
 <template>
   <div class="about-page">
     <!-- 顶部导航栏 -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-      <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <i class="fa fa-exchange text-primary text-2xl"></i>
-          <h1 class="text-xl md:text-2xl font-bold text-dark">API Proxy Tester</h1>
-        </div>
-        <!-- 桌面端导航 -->
-        <div class="hidden md:flex items-center space-x-4">
-          <button @click="$router.push('/')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/' }]">
-            <i class="fa fa-home mr-1"></i>首页
-          </button>
-          <a href="https://www.hongjuzi.com.cn" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
-            <i class="fa fa-globe mr-1"></i>官网
-          </a>
-          <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
-            <i class="fa fab fa-github mr-1"></i>GitHub
-          </a>
-          <button @click="$router.push('/about')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/about' }]">
-            <i class="fa fa-info-circle mr-1"></i>关于
-          </button>
-          <button @click="toggleTheme" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
-            <i class="fa fa-moon-o text-dark-2"></i>
-          </button>
-        </div>
-        <!-- 移动端菜单按钮 -->
-        <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-full hover:bg-light-1 transition-all-300">
-          <i class="fa fa-bars text-dark-2"></i>
-        </button>
-      </div>
-      <!-- 移动端导航菜单 -->
-      <div v-if="showMobileMenu" class="md:hidden bg-white border-t border-light-2 py-2 px-4">
-        <div class="flex flex-col space-y-3">
-          <button @click="navigateTo('/')"
-            :class="['flex items-center py-2 px-4 rounded-lg', { 'bg-primary/10 text-primary font-medium': $route.path === '/' }]">
-            <i class="fa fa-home mr-2"></i>首页
-          </button>
-          <a href="https://www.hongjuzi.com.cn" target="_blank" rel="noopener noreferrer"
-            class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-            <i class="fa fa-globe mr-2"></i>官网
-          </a>
-          <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer"
-            class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-            <i class="fa fab fa-github mr-2"></i>GitHub
-          </a>
-          <button @click="navigateTo('/about')"
-            :class="['flex items-center py-2 px-4 rounded-lg', { 'bg-primary/10 text-primary font-medium': $route.path === '/about' }]">
-            <i class="fa fa-info-circle mr-2"></i>关于
-          </button>
-          <button @click="toggleTheme" class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-            <i class="fa fa-moon-o mr-2"></i>切换主题
-          </button>
-        </div>
-      </div>
-    </header>
+    <AppHeader 
+      @toggle-theme="toggleTheme" 
+      @show-global-settings="handleShowGlobalSettings"
+      @show-help="handleShowHelp"
+    />
 
     <main class="container mx-auto px-4 py-8">
       <div class="max-w-6xl mx-auto">
@@ -343,19 +294,23 @@
     </main>
 
     <!-- 页脚 -->
-    <footer class="mt-12 md:mt-16 py-6 md:py-8 text-center text-sm md:text-base text-gray-500 border-t border-gray-200">
-      <p>© 2025 API Proxy Tester By AI Coder <span class="ml-2">v1.0.0</span></p>
-      <p class="mt-1">开源许可协议：MIT</p>
-    </footer>
+    <AppFooter />
   </div>
 </template>
 
 <script>
+import AppHeader from '../components/layout/AppHeader.vue'
+import AppFooter from '../components/layout/AppFooter.vue'
+
 export default {
   name: 'AboutPage',
+  components: {
+    AppHeader,
+    AppFooter
+  },
   data() {
     return {
-      showMobileMenu: false
+      // 数据已移至组件中管理
     }
   },
   methods: {
@@ -369,15 +324,13 @@ export default {
       }
     },
     
-    // 移动端菜单切换
-    toggleMobileMenu() {
-      this.showMobileMenu = !this.showMobileMenu
+    // 处理显示全局设置
+    handleShowGlobalSettings() {
+      this.setGlobalSettingsVisible(true)
     },
-    
-    // 导航方法
-    navigateTo(path) {
-      this.$router.push(path)
-      this.showMobileMenu = false // 关闭移动端菜单
+    // 处理显示帮助
+    handleShowHelp() {
+      this.setHelpVisible(true)
     }
   }
 }

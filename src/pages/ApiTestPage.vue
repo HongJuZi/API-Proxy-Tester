@@ -151,10 +151,7 @@
       />
     
     <!-- 页脚 -->
-    <footer class="mt-8 py-4 text-center text-sm text-gray-500 border-t border-gray-200">
-      <p>© 2025 API Proxy Tester By AI Coder <span class="ml-2">v1.0.0</span></p>
-      <p class="mt-1">开源许可协议：MIT</p>
-    </footer>
+    <AppFooter />
   </div>
 </template>
 
@@ -164,6 +161,7 @@ import { mapState, mapActions } from 'pinia'
 import { useMainStore } from '../stores/index.js'
 
 import AppHeader from '../components/layout/AppHeader.vue'
+import AppFooter from '../components/layout/AppFooter.vue'
 import DocumentConfig from '../components/settings/DocumentConfig.vue'
 import RequestHistory from '../components/layout/RequestHistory.vue'
 import ApiConfig from '../components/forms/ApiConfig.vue'
@@ -186,6 +184,7 @@ export default {
   name: 'ApiTestPage',
   components: {
     AppHeader,
+    AppFooter,
     DocumentConfig,
     RequestHistory,
     ApiConfig,

@@ -18,7 +18,7 @@
           class="text-danger text-sm border border-danger/20 hover:text-danger/90 hover:bg-danger/5 transition-all duration-300 px-3 py-2 rounded-md flex items-center gap-1 whitespace-nowrap"
           title="清空历史"
         >
-          <i class="fa fa-trash-o"></i>
+          <i class="fa fa-trash-can"></i>
           <span>清空</span>
         </button>
       </div>

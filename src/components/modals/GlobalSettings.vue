@@ -133,7 +133,7 @@
               <input :value="param.name" @input="handleGlobalParamNameChange(index, $event.target.value)" type="text" placeholder="参数名" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <input :value="param.value" @input="handleGlobalParamValueChange(index, $event.target.value)" type="text" placeholder="参数值" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('global', index)" class="remove-global-param p-2 text-dark-2 hover:text-danger transition-all-300">
-                <i class="fa fa-trash-o"></i>
+                <i class="fa fa-trash-can"></i>
               </button>
             </div>
           </div>
@@ -144,6 +144,7 @@
               v-model="globalJsonInputModel"
               placeholder="输入JSON格式的全局参数"
               class="w-full form-input rounded-lg border-light-2 px-3 py-2 text-sm min-h-[120px] font-mono"
+              @keydown="handleTabKey($event)"
             ></textarea>
             <div class="text-xs text-dark-2 mt-1">
               支持JSON格式，例如：{"token": "value", "user_id": "123"}
@@ -180,7 +181,7 @@
               <input :value="header.name" @input="handleHeaderNameChange(index, $event.target.value)" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <input :value="header.value" @input="handleHeaderValueChange(index, $event.target.value)" type="text" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('header', index)" class="remove-header p-2 text-dark-2 hover:text-danger transition-all-300">
-                <i class="fa fa-trash-o"></i>
+                <i class="fa fa-trash-can"></i>
               </button>
             </div>
           </div>
@@ -374,6 +375,27 @@ export default {
       this.headersModel = newHeaders
       this.$emit('update:headers', newHeaders)
       this.saveSettings()
+    },
+    // 处理Tab键，插入4个空格
+    handleTabKey(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        
+        const textarea = event.target;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        
+        // 插入4个空格
+        const spaces = '    ';
+        
+        // 在光标位置插入4个空格
+        this.globalJsonInputModel = this.globalJsonInputModel.substring(0, start) + spaces + this.globalJsonInputModel.substring(end);
+        
+        // 使用$nextTick确保DOM更新后正确设置光标位置
+        this.$nextTick(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + spaces.length;
+        });
+      }
     }
   }
 }

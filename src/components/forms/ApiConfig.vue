@@ -87,93 +87,126 @@
               <input :value="param.name" @input="$emit('update:apiParams', [...apiParams.slice(0, index), {...param, name: $event.target.value}, ...apiParams.slice(index+1)])" type="text" placeholder="参数名" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <input :value="param.value" @input="$emit('update:apiParams', [...apiParams.slice(0, index), {...param, value: $event.target.value}, ...apiParams.slice(index+1)])" type="text" placeholder="参数值" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
               <button @click="removeParam('api', index)" class="remove-api-param p-2 text-dark-2 hover:text-danger transition-all-300">
-                <i class="fa fa-trash-o"></i>
+                <i class="fa fa-trash-can"></i>
               </button>
             </div>
           </div>
         </div>
         
         <!-- 请求体Tab面板 -->
-        <div v-show="activeTab === 'body' && ['POST', 'PUT', 'PATCH'].includes(selectedMethod)" class="animate-fade-in w-full">
-          <!-- 输入模式切换 -->
-          <div class="flex items-center justify-between mb-2 w-full">
-            <!-- 模式切换选项卡 -->
-            <div class="flex bg-light-1 rounded-lg p-1">
-              <button @click="changeInputMode('kv')" 
-                      class="px-3 py-1 text-sm rounded-md" 
-                      :class="inputMode === 'kv' ? 'bg-primary text-white' : 'text-dark-2 hover:text-primary'">
-                键值对
+        <div v-show="activeTab === 'body'" class="animate-fade-in w-full">
+          <!-- 请求体输入模式切换 -->
+          <div class="mb-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-lg border border-blue-100 shadow-sm">
+            <span class="text-sm font-medium text-blue-800 font-semibold">输入模式</span>
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+              <button
+                type="button"
+                @click="localInputMode = 'kv'"
+                :class="[
+                  'px-4 py-2 text-sm font-medium',
+                  localInputMode === 'kv' 
+                    ? 'bg-primary text-white shadow-md' 
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300',
+                  'first:rounded-l-lg last:rounded-r-lg transition-all duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none'
+                ]"
+              >
+                <i class="fa fa-key mr-1.5"></i>键值对
               </button>
-              <button @click="changeInputMode('json')" 
-                      class="px-3 py-1 text-sm rounded-md" 
-                      :class="inputMode === 'json' ? 'bg-primary text-white' : 'text-dark-2 hover:text-primary'">
-                JSON原始数据
+              <button
+                type="button"
+                @click="localInputMode = 'json'"
+                :class="[
+                  'px-4 py-2 text-sm font-medium',
+                  localInputMode === 'json' 
+                    ? 'bg-primary text-white shadow-md' 
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300',
+                  'first:rounded-l-lg last:rounded-r-lg transition-all duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none'
+                ]"
+              >
+                <i class="fa fa-code mr-1.5"></i>JSON
               </button>
             </div>
-            <!-- 键值对模式下显示添加按钮 -->
-            <button v-show="inputMode === 'kv'" @click="addKvPair" class="text-primary text-sm hover:text-secondary transition-all-300">
-              <i class="fa fa-plus-circle mr-1"></i>添加键值对
-            </button>
-            <!-- JSON模式下显示格式化按钮 -->
-            <button v-show="inputMode === 'json'" @click="formatJsonInput" class="text-primary text-sm hover:text-secondary transition-all-300">
-              <i class="fa fa-indent mr-1"></i>格式化JSON
+          </div>
+          
+          <!-- 键值对输入模式 -->
+          <div v-if="localInputMode === 'kv'" class="space-y-3">
+            <div 
+              v-for="(pair, index) in kvPairs" 
+              :key="index"
+              v-show="pair.visible"
+              class="flex items-center space-x-2"
+            >
+              <select v-model="pair.type" class="text-sm p-1.5 border border-gray-300 rounded-md bg-white w-20">
+                <option value="string">字符串</option>
+                <option value="number">数字</option>
+                <option value="boolean">布尔值</option>
+                <option value="array">数组</option>
+                <option value="object">对象</option>
+                <option value="null">null</option>
+              </select>
+              <input 
+                v-model="pair.key"
+                type="text" 
+                placeholder="键"
+                class="flex-1 text-sm p-1.5 border border-gray-300 rounded-md bg-white"
+              >
+              <input 
+                v-model="pair.value"
+                type="text" 
+                placeholder="值"
+                class="flex-1 text-sm p-1.5 border border-gray-300 rounded-md bg-white"
+              >
+              <button 
+                @click="removeKvPair(index)"
+                class="p-1.5 text-red-500 hover:text-red-700 rounded-md hover:bg-red-100 transition-colors"
+                title="删除"
+              >
+                <i class="fa fa-trash-can"></i>
+              </button>
+            </div>
+            <button 
+              @click="addKvPair"
+              class="text-sm text-primary hover:text-primary/80 flex items-center"
+            >
+              <i class="fa fa-plus mr-1"></i> 添加键值对
             </button>
           </div>
           
-          <!-- 键值对列表模式 -->
-          <div v-show="inputMode === 'kv'" class="animate-fade-in w-full">
-            <!-- 键值对列表 -->
-            <div class="space-y-3">
-              <!-- 键值对项 -->
-              <div v-for="(pair, index) in kvPairs" :key="`kv-${index}`" 
-                   class="kv-item flex items-center space-x-2 bg-light-1 p-3 rounded-lg animate-fade-in" 
-                   :style="{ opacity: pair.visible ? 1 : 0 }">
-                <select :value="pair.type" @input="$emit('update:kvPairs', [...kvPairs.slice(0, index), {...pair, type: $event.target.value}, ...kvPairs.slice(index+1)])" class="w-24 form-select rounded-lg border-light-2 px-3 py-2 text-sm">
-                  <option value="string">字符串</option>
-                  <option value="number">数字</option>
-                  <option value="boolean">布尔值</option>
-                  <option value="array">数组</option>
-                  <option value="object">对象</option>
-                  <option value="null">Null</option>
-                </select>
-                <input :value="pair.key" @input="$emit('update:kvPairs', [...kvPairs.slice(0, index), {...pair, key: $event.target.value}, ...kvPairs.slice(index+1)])" type="text" placeholder="键名 (key)" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
-                <input :value="pair.value" @input="$emit('update:kvPairs', [...kvPairs.slice(0, index), {...pair, value: $event.target.value}, ...kvPairs.slice(index+1)])" type="text" placeholder="值 (value)" class="flex-1 form-input rounded-lg border-light-2 px-3 py-2 text-sm">
-                <button @click="removeKvPair(index)" class="remove-kv-pair p-2 text-dark-2 hover:text-danger transition-all-300">
-                  <i class="fa fa-trash-o"></i>
+          <!-- JSON输入模式 -->
+          <div v-if="localInputMode === 'json'" class="space-y-3">
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-dark-2">JSON输入:</span>
+              <div class="flex space-x-2">
+                <button 
+                  @click="formatJsonInput"
+                  class="text-xs px-2 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center"
+                  title="格式化JSON"
+                >
+                  <i class="fa fa-indent mr-1"></i> 格式化
+                </button>
+                <button 
+                  @click="validateJson"
+                  class="text-xs px-2 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center"
+                  title="验证JSON"
+                >
+                  <i class="fa fa-check mr-1"></i> 验证
+                </button>
+                <button 
+                  @click="importJsonToKvPairs"
+                  class="text-xs px-2 py-1 bg-purple-500 text-white rounded-md hover:bg-purple-600 transition-colors flex items-center"
+                  title="导入到键值对"
+                >
+                  <i class="fa fa-exchange mr-1"></i> 导入
                 </button>
               </div>
             </div>
-            
-            <!-- JSON预览区域 -->
-            <div class="mt-4 bg-dark/5 p-3 rounded-lg">
-              <label class="block text-sm font-medium text-dark-2 mb-1">JSON预览</label>
-              <pre ref="jsonPreview" class="text-sm font-mono overflow-auto max-h-32 scrollbar-thin scrollbar-thumb-rounded">{{ jsonPreviewContent }}</pre>
-            </div>
-            
-            <button @click="formatJsonPreview" class="mt-2 text-primary text-sm hover:text-secondary transition-all-300">
-              <i class="fa fa-indent mr-1"></i>格式化JSON
-            </button>
-          </div>
-          
-          <!-- JSON原始数据模式 -->
-          <div v-show="inputMode === 'json'" class="animate-fade-in">
-            <div class="bg-dark/5 rounded-lg">
-              <textarea 
-                :value="jsonRawInput"
-                @input="$emit('update:jsonRawInput', $event.target.value)"
-                class="w-full h-64 form-textarea rounded-lg border-light-2 p-3 text-sm font-mono resize-none scrollbar-thin scrollbar-thumb-rounded" 
-                placeholder="请输入JSON格式的数据..."
-              ></textarea>
-            </div>
-            
-            <div class="mt-2 flex items-center justify-between">
-              <button @click="validateJson" class="text-primary text-sm hover:text-secondary transition-all-300">
-                <i class="fa fa-check-circle mr-1"></i>验证JSON
-              </button>
-              <button @click="importJsonToKvPairs" class="text-secondary text-sm hover:text-primary transition-all-300">
-                <i class="fa fa-exchange mr-1"></i>导入为键值对
-              </button>
-            </div>
+            <textarea
+              v-model="localJsonInput"
+              @input="handleJsonInput"
+              placeholder="请输入JSON格式的请求体数据..."
+              class="w-full h-64 p-3 border border-gray-300 rounded-md bg-white font-mono text-sm resize-vertical"
+              @keydown="handleTabKey"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -196,9 +229,13 @@
 
 <script>
 import { useMainStore } from '../../stores/index.js'
+import JsonEditor from '../JsonEditor.vue'
 
 export default {
   name: 'ApiConfig',
+  components: {
+    JsonEditor
+  },
   props: {
     selectedMethod: String,
     methods: Array,
@@ -214,9 +251,12 @@ export default {
   data() {
     return {
       activeTab: 'params', // 默认显示接口参数标签页
-      store: useMainStore()
+      // 本地JSON输入值
+      localJsonInput: this.jsonRawInput,
+      // 本地输入模式变量
+      localInputMode: this.inputMode
     }
-  },
+    },
   watch: {
     selectedMethod(newMethod) {
       // 当非GET请求方法被选择时，自动切换到请求体标签页
@@ -225,7 +265,19 @@ export default {
       } else {
         this.activeTab = 'params'
       }
-    }
+    },
+    // 监听props变化，更新本地值
+    jsonRawInput(newVal) {
+      this.localJsonInput = newVal
+    },
+    // 监听输入模式props变化
+    inputMode(newVal) {
+      this.localInputMode = newVal
+    },
+    // 监听本地输入模式变化，发出更新事件
+     localInputMode(newVal) {
+       this.$emit('update:input-mode', newVal)
+     }
   },
   // 组件挂载时初始化activeTab
   mounted() {
@@ -260,9 +312,31 @@ export default {
     formatJsonInput() {
       this.$emit('format-json-input')
     },
+    handleJsonInput() {
+      this.$emit('update:json-raw-input', this.localJsonInput)
+    },
+    formatJson() {
+      this.$emit('format-json-input')
+    },
     validateJson() {
       this.$emit('validate-json')
     },
+    
+    // 处理JSON验证结果
+    handleJsonValidation(result) {
+      if (!result.valid && result.error) {
+        // 验证失败时显示错误信息
+        this.$emit('json-error', result.error)
+      } else if (result.valid) {
+        this.$emit('json-valid')
+      }
+    },
+    
+    // 处理JSON格式化事件
+    handleJsonFormatted(formattedJson) {
+      this.$emit('json-formatted', formattedJson)
+    },
+    
     importJsonToKvPairs() {
       this.$emit('import-json-to-kv-pairs')
     },
@@ -284,6 +358,28 @@ export default {
         this.store.updateProperty('inputMode', mode)
         // 同时发出事件以保持v-model兼容性
         this.$emit('update:inputMode', mode)
+      }
+    },
+    // 处理JSON输入
+    handleJsonInput() {
+      this.$emit('update:jsonRawInput', this.localJsonInput)
+    },
+    handleTabKey(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        
+        const textarea = event.target;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const spaces = '    '; // 4个空格
+        
+        // 在光标位置插入4个空格
+        this.localJsonInput = this.localJsonInput.substring(0, start) + spaces + this.localJsonInput.substring(end);
+        
+        // 设置新的光标位置
+        this.$nextTick(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + spaces.length;
+        });
       }
     }
   }

@@ -5,6 +5,8 @@
       @toggle-theme="toggleTheme"
     />
     
+
+    
     <!-- 左侧浮动业务导航工具条 -->
     <div class="hidden lg:block fixed left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-lg shadow-lg border border-gray-200 p-2 z-50 flex flex-col items-center space-y-3 transition-all duration-300" :class="{ 'w-16': !toolBarExpanded, 'w-48': toolBarExpanded }">
       <!-- 业务功能按钮组 -->

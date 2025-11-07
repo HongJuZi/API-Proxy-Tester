@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
 import ApiTestPage from '../pages/ApiTestPage.vue'
 import AboutPage from '../pages/AboutPage.vue'
+import JsonTestPage from '../pages/JsonTestPage.vue'
 
 // 定义路由
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     path: '/about',
     name: 'About',
     component: AboutPage
+  },
+  {
+    path: '/json-test',
+    name: 'JsonTest',
+    component: JsonTestPage
   },
   // 后续可以在这里添加更多页面路由
   // {

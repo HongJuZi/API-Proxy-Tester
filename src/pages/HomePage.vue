@@ -18,7 +18,7 @@
         </div>
         
         <p class="text-base md:text-lg text-dark-2 mb-10 max-w-3xl mx-auto leading-relaxed">
-          现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。
+          专为内网及VPN环境下API接口测试准备的工具，为解决企业内部系统接口测试难题而设计。
           本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。
         </p>
         

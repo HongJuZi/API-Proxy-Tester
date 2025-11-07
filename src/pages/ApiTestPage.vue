@@ -1311,7 +1311,8 @@ export default {
         // 直接请求模式下，确保使用完整URL
         if (this.requestMode === 'direct' && config.url) {
           // 在直接请求模式下，确保URL是完整的
-          if (!config.url.startsWith('http://') && !config.url.startsWith('https://')) {
+          const trimmedUrl = config.url.trim();
+          if (!trimmedUrl.startsWith('http://') && !trimmedUrl.startsWith('https://')) {
             this.showToast('直接请求模式下请输入完整URL（包含http://或https://）')
             return
           }

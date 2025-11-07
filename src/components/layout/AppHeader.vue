@@ -39,10 +39,10 @@
         </button>
         <div v-if="$route.path === '/api-test'" class="h-5 w-px bg-gray-200 mx-1"></div>
         <button v-if="$route.path === '/api-test'" @click="showGlobalSettings" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
-          <i class="fa fa-cog"></i>
+          <i class="fa fa-cog"></i> 全局设置
         </button>
         <button v-if="$route.path === '/api-test'" @click="showHelp" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
-          <i class="fa fa-question-circle"></i>
+          <i class="fa fa-question-circle"></i> 帮助
         </button>
       </div>
       <!-- 移动端菜单按钮 -->

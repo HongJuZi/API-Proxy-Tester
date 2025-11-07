@@ -216,7 +216,7 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
         <!-- API测试工具卡片 -->
         <div class="bg-white rounded-2xl shadow-card p-6 hover:shadow-hover transition-all-300 cursor-pointer transform hover:-translate-y-1" 
              @click="$router.push('/api-test')">
@@ -258,6 +258,119 @@
         </div>
       </div>
       
+      <!-- AI编程模拟效果卡片 -->
+      <div class="max-w-4xl mx-auto px-4 mb-12">
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-dark mb-4 flex items-center">
+            <i class="fa fa-robot text-blue-500 mr-2"></i>
+            AI编程实时协作演示
+          </h2>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Chat区域 -->
+            <div class="bg-white rounded-xl shadow-card p-4">
+              <div class="flex items-center mb-3">
+                <i class="fa fa-comments text-primary mr-2"></i>
+                <h3 class="font-semibold">AI对话协作</h3>
+              </div>
+              
+              <!-- 消息历史 -->
+              <div class="h-48 overflow-y-auto mb-3 p-3 bg-light-1 rounded-lg">
+                <div class="mb-3">
+                  <div class="text-xs text-dark-2 mb-1">用户</div>
+                  <div class="bg-primary/10 text-dark-2 text-sm p-2 rounded-lg">
+                    帮我创建一个API测试工具的首页组件，包含导航栏和轮播图
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <div class="text-xs text-dark-2 mb-1">AI助手</div>
+                  <div class="bg-secondary/10 text-dark-2 text-sm p-2 rounded-lg">
+                    好的，我来帮您创建一个API测试工具的首页组件。我会使用Vue 3和Tailwind CSS来实现，包含响应式导航栏和自动轮播图功能。
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="text-xs text-dark-2 mb-1">用户</div>
+                  <div class="bg-primary/10 text-dark-2 text-sm p-2 rounded-lg">
+                    轮播图需要自适应图片高度，并且要有平滑的过渡效果
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 输入区域 -->
+              <div class="flex">
+                <input 
+                  type="text" 
+                  placeholder="向AI助手提问..." 
+                  class="flex-1 border border-light-2 rounded-l-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                  value="帮我优化一下轮播图的自动适应高度功能"
+                />
+                <button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-r-lg text-sm transition-all-300">
+                  <i class="fa fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- 代码编辑区域 -->
+            <div class="bg-gray-900 rounded-xl shadow-card overflow-hidden">
+              <div class="flex items-center px-4 py-2 bg-gray-800">
+                <div class="flex space-x-1">
+                  <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-gray-300 text-sm ml-2">HomePage.vue</div>
+              </div>
+              
+              <div class="h-48 overflow-y-auto p-4 font-mono text-sm">
+                <div class="text-gray-400">// AI正在编写代码...</div>
+                <span class="text-blue-400">export</span> 
+                <span class="text-green-400">default</span> {&lt;br/&gt;
+                <span class="ml-4 text-blue-400">name:</span> 
+                <span class="text-yellow-400">'HomePage'</span>,&lt;br/&gt;
+                <span class="ml-4 text-blue-400">data()</span> {&lt;br/&gt;
+                <span class="ml-8 text-blue-400">return</span> {&lt;br/&gt;
+                <span class="ml-12 text-blue-400">currentIndex:</span> 
+                <span class="text-purple-400">0</span>,&lt;br/&gt;
+                <span class="ml-12 text-blue-400">imageHeights:</span> [],&lt;br/&gt;
+                <span class="ml-8">}</span>&lt;br/&gt;
+                <span class="ml-4">},</span>&lt;br/&gt;
+                <span class="ml-4 text-blue-400">methods:</span> {&lt;br/&gt;
+                <span class="ml-8 text-blue-400">adjustCarouselHeight()</span> {&lt;br/&gt;
+                <span class="ml-12 text-green-400">// 根据当前图片调整轮播图高度</span>&lt;br/&gt;
+                <span class="ml-12 text-blue-400">const</span> images = 
+                <span class="text-blue-400">this</span>
+                .$refs.carouselContainer.querySelectorAll(<span class="text-yellow-400">'img'</span>);&lt;br/&gt;
+                <span class="ml-12 text-blue-400">if</span> (images.length &amp;gt; 
+                <span class="text-blue-400">this</span>.currentIndex) {&lt;br/&gt;
+                <span class="ml-16 text-blue-400">const</span>
+                 currentImage = images[<span class="text-blue-400">this</span>.currentIndex];&lt;br/&gt;
+                <span class="ml-16 text-blue-400">this</span>.$refs.carouselContainer.style.height = currentImage.offsetHeight + <span class="text-yellow-400">'px'</span>;&lt;br/&gt;
+                <span class="ml-12">}</span>&lt;br/&gt;
+                <span class="ml-8">},</span>&lt;br/&gt;
+                <span class="ml-8 text-blue-400">startAutoSlide()</span> {&lt;br/&gt;
+                <span class="ml-12 text-blue-400">setInterval</span>(() =&amp;gt; {&lt;br/&gt;
+                <span class="ml-16 text-blue-400">this</span>.nextSlide();&lt;br/&gt;
+                <span class="ml-16 text-blue-400">this</span>.adjustCarouselHeight();&lt;br/&gt;
+                <span class="ml-12">}, </span>
+                <span class="text-purple-400">5000</span>);&lt;br/&gt;
+                <span class="ml-8">}</span>&lt;br/&gt;
+                <span class="ml-4">}</span>&lt;br/&gt;
+                <span>}</span>
+                <span class="animate-pulse">&amp;#9608;</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 text-center">
+            <p class="text-dark-2 text-sm">
+              <i class="fa fa-lightbulb text-yellow-500 mr-1"></i>
+              这个演示展示了AI如何理解您的需求并实时生成代码，就像我们现在的协作一样
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
 
     <!-- 页脚 -->
@@ -389,4 +502,13 @@ export default {
 
 <style scoped>
 /* 页面特定样式 */
+/* 添加打字机效果动画 */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-pulse {
+  animation: blink 1s infinite;
+}
 </style>

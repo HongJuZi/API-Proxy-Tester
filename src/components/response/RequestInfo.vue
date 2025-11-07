@@ -70,7 +70,7 @@
           </button>
         </div>
         <div class="bg-white/80 rounded-lg p-3 text-sm font-mono overflow-auto max-h-[150px] scrollbar-thin scrollbar-thumb-rounded">
-          {{ formattedHeaders || '{}' }}
+          <pre>{{ formattedHeaders || '{}' }}</pre>
         </div>
       </div>
       
@@ -88,7 +88,7 @@
           </button>
         </div>
         <div class="bg-white/80 rounded-lg p-3 text-sm font-mono overflow-auto max-h-[150px] scrollbar-thin scrollbar-thumb-rounded">
-          {{ formattedParams || '{}' }}
+          <pre>{{ formattedParams || '{}' }}</pre>
         </div>
       </div>
       
@@ -105,8 +105,8 @@
             <i class="fa fa-copy"></i>
           </button>
         </div>
-        <div class="bg-white/80 rounded-lg p-3 text-sm font-mono overflow-auto max-h-[150px] scrollbar-thin scrollbar-thumb-rounded">
-          {{ formattedBody || '{}' }}
+        <div class="bg-white/80 rounded-lg p-3 text-sm font-mono">
+          <pre>{{ formattedBody || '{}' }}</pre>
         </div>
       </div>
     </div>

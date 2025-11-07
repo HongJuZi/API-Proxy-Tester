@@ -564,7 +564,7 @@ export default {
         // 使用updateState一次性更新所有设置，确保完整更新
         const settingsToUpdate = {
           requestMode: settings.requestMode || 'proxy',
-          proxyUrl: settings.proxyUrl || 'api-test-worker.php',
+          proxyUrl: settings.proxyUrl || 'backend/api-test-worker.php',
           baseUrl: settings.baseUrl || 'https://jsonplaceholder.typicode.com',
           timeout: settings.timeout || 30000,
           globalParams: settings.globalParams ? JSON.parse(JSON.stringify(settings.globalParams)) : [{ name: '', value: '', visible: true }],
@@ -810,7 +810,7 @@ export default {
         this.updateProperty('baseUrl', item.globalConfig.baseUrl || 'https://jsonplaceholder.typicode.com')
         this.updateProperty('timeout', item.globalConfig.timeout || 5000)
         this.updateProperty('requestMode', item.globalConfig.requestMode || 'proxy')
-        this.updateProperty('proxyUrl', item.globalConfig.proxyUrl || 'api-test-worker.php')
+        this.updateProperty('proxyUrl', item.globalConfig.proxyUrl || 'backend/api-test-worker.php')
         
         // 恢复请求头配置
         this.updateProperty('headers', JSON.parse(JSON.stringify(item.globalConfig.headers || [

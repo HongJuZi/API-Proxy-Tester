@@ -9,7 +9,7 @@ export default defineConfig({
     open: true
   },
   // 设置为相对路径，确保在任何路径下都能正常访问，包括带端口号的URL
-  base: './',
+  base: './tools/',
   build: {
     outDir: 'dist/',
     assetsDir: 'assets'

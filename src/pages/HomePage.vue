@@ -59,49 +59,7 @@
     <main class="container mx-auto px-4 py-8">
       <div class="text-center mb-8 md:mb-12">
         <h1 class="text-2xl md:text-3xl font-bold text-dark mb-4">欢迎使用 API Proxy Tester Dev By AI Coder</h1>
-        <p class="text-base md:text-lg text-dark-2 mb-6 md:mb-8">现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。</p>
-        
-        <!-- AI开发特色介绍 -->
-        <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-6 max-w-4xl mx-auto">
-          <div class="flex flex-col md:flex-row items-center">
-            <div class="md:w-1/4 mb-4 md:mb-0 flex justify-center">
-              <div class="bg-white rounded-full p-4 shadow-md">
-                <i class="fa fa-robot text-primary text-4xl"></i>
-              </div>
-            </div>
-            <div class="md:w-3/4 md:pl-6">
-              <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">AI驱动的开发模式</h2>
-              <p class="text-dark-2 mb-4 text-sm md:text-base">
-                本项目是全程由AI Coder参与开发的创新项目，从需求分析、架构设计到代码实现均由AI辅助完成。
-                我们致力于探索AI在软件开发领域的应用，让需求实现由AI来完成，推动项目迭代目标的自动化实现。
-                目前使用到的AI开发工具有：Trace CN、Qorder等先进AI编程工具。
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 合作邀请 -->
-        <div class="bg-gradient-to-r from-accent/10 to-warning/10 rounded-2xl p-6 mb-8 max-w-4xl mx-auto">
-          <div class="flex flex-col md:flex-row items-center">
-            <div class="md:w-1/4 mb-4 md:mb-0 flex justify-center">
-              <div class="bg-white rounded-full p-4 shadow-md">
-                <i class="fa fa-users text-accent text-4xl"></i>
-              </div>
-            </div>
-            <div class="md:w-3/4 md:pl-6">
-              <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">加入我们的开发社区</h2>
-              <p class="text-dark-2 mb-4 text-sm md:text-base">
-                如果您对这个项目感兴趣，有任何需求想法或改进建议，欢迎加入我们的开发社区！
-                我们鼓励开发者、测试人员和产品经理共同参与项目迭代，一起打造更强大的API测试工具。
-                请多多提Issues，您的每一个建议都可能成为下一个版本的重要功能！
-              </p>
-              <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
-                 class="inline-block bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg transition-all-300">
-                <i class="fa fa-github mr-2"></i>提交Issue
-              </a>
-            </div>
-          </div>
-        </div>
+        <p class="text-base md:text-lg text-dark-2 mb-8 md:mb-10 max-w-4xl mx-auto">现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。</p>
         
         <!-- 添加的按钮 -->
         <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
@@ -122,6 +80,56 @@
             <span>下载源码</span>
           </a>
         </div>
+        <!-- AI开发特色介绍和合作邀请 - 列排版 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10 mt-10">
+          <!-- AI开发特色介绍 -->
+          <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6">
+            <div class="flex flex-col items-center text-center">
+              <div class="mb-4">
+                <div class="bg-white rounded-full p-4 shadow-md inline-block">
+                  <i class="fa fa-robot text-primary text-4xl"></i>
+                </div>
+              </div>
+              <div class="w-full">
+                <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">AI驱动的开发模式</h2>
+                <p class="text-dark-2 mb-4 text-sm md:text-base">
+                  本项目是全程由AI Coder参与开发的创新项目，从需求分析、架构设计到代码实现均由AI辅助完成。
+                  我们致力于探索AI在软件开发领域的应用，让需求实现由AI来完成，推动项目迭代目标的自动化实现。
+                  目前使用到的AI开发工具有：Trace CN、Qorder等先进AI编程工具。
+                </p>
+                <div class="flex flex-wrap justify-center gap-2">
+                  <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs md:text-sm">AI开发</span>
+                  <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs md:text-sm">自动化实现</span>
+                  <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs md:text-sm">智能编程</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 合作邀请 -->
+          <div class="bg-gradient-to-r from-accent/10 to-warning/10 rounded-2xl p-6">
+            <div class="flex flex-col items-center text-center">
+              <div class="mb-4">
+                <div class="bg-white rounded-full p-4 shadow-md inline-block">
+                  <i class="fa fa-users text-accent text-4xl"></i>
+                </div>
+              </div>
+              <div class="w-full">
+                <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">加入我们的开发社区</h2>
+                <p class="text-dark-2 mb-4 text-sm md:text-base">
+                  如果您对这个项目感兴趣，有任何需求想法或改进建议，欢迎加入我们的开发社区！
+                  我们鼓励开发者、测试人员和产品经理共同参与项目迭代，一起打造更强大的API测试工具。
+                  请多多提Issues，您的每一个建议都可能成为下一个版本的重要功能！
+                </p>
+                <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg transition-all-300">
+                  <i class="fa fa-github mr-2"></i>提交Issue
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
 
       <!-- 轮播图组件 -->

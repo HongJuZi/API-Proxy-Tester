@@ -203,10 +203,15 @@
             <textarea
               v-model="localJsonInput"
               @input="handleJsonInput"
+              @blur="handleJsonBlur"
               placeholder="请输入JSON格式的请求体数据..."
               class="w-full h-64 p-3 border border-gray-300 rounded-md bg-white font-mono text-sm resize-vertical"
+              :class="{ 'border-danger': jsonValidationError }"
               @keydown="handleTabKey"
             ></textarea>
+            <div v-if="jsonValidationError" class="mt-1 text-xs text-danger">
+              {{ jsonValidationError }}
+            </div>
           </div>
         </div>
       </div>
@@ -230,8 +235,12 @@
 <script>
 import { useMainStore } from '../../stores/index.js'
 import JsonEditor from '../JsonEditor.vue'
+import Helpers from '../../utils/helpers.js'
 
 export default {
+  utils: {
+    helpers: Helpers
+  },
   name: 'ApiConfig',
   components: {
     JsonEditor
@@ -254,7 +263,9 @@ export default {
       // 本地JSON输入值
       localJsonInput: this.jsonRawInput,
       // 本地输入模式变量
-      localInputMode: this.inputMode
+      localInputMode: this.inputMode,
+      // JSON验证错误信息
+      jsonValidationError: ''
     }
     },
   watch: {
@@ -363,6 +374,23 @@ export default {
     // 处理JSON输入
     handleJsonInput() {
       this.$emit('update:jsonRawInput', this.localJsonInput)
+      // 清除之前的错误信息
+      this.jsonValidationError = ''
+    },
+    // 处理JSON输入框失去焦点事件
+    handleJsonBlur() {
+      // 如果有输入值，自动验证JSON格式
+      const trimmedInput = this.localJsonInput.trim()
+      if (trimmedInput) {
+        const result = this.$options.utils.helpers.validateJson(trimmedInput)
+        if (!result.valid) {
+          this.jsonValidationError = `JSON格式错误: ${result.error}`
+          this.$emit('json-error', result.error)
+        } else {
+          this.jsonValidationError = ''
+          this.$emit('json-valid')
+        }
+      }
     },
     handleTabKey(event) {
       if (event.key === 'Tab') {

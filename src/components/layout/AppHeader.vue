@@ -70,18 +70,9 @@
           <i class="fa fa-info-circle mr-3 text-lg"></i>
           <span>关于</span>
         </button>
-        <div class="h-px bg-gray-100 my-2"></div>
         <button @click="toggleTheme" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
-          <i class="fa fa-moon-o mr-3 text-lg"></i>
+          <i class="fa fa-moon mr-3 text-lg"></i>
           <span>切换主题</span>
-        </button>
-        <button v-if="$route.path === '/api-test'" @click="showGlobalSettings" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
-          <i class="fa fa-cog mr-3 text-lg"></i>
-          <span>全局设置</span>
-        </button>
-        <button v-if="$route.path === '/api-test'" @click="showHelp" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
-          <i class="fa fa-question-circle mr-3 text-lg"></i>
-          <span>帮助</span>
         </button>
       </div>
     </div>

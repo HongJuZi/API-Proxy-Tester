@@ -1509,23 +1509,11 @@ export default {
         const formattedContent = apiClient.formatResponseContent(response.data)
         
         // 准备请求信息数据
-        // 在代理模式下，显示实际发送给代理服务器的完整请求数据
-        let requestData = config.data
         let requestHeaders = config.headers
         let requestParams = config.params
         let requestMethod = config.method
-        
-        // 如果是代理模式，使用实际发送的代理请求数据
-        if (this.requestMode === 'proxy') {
-          requestData = {
-            url: config.targetUrl,
-            method: config.method,
-            params: config.params,
-            headers: config.headers,
-            data: config.data,
-            timeout: config.timeout
-          }
-        }
+        // 始终使用实际的请求体数据，而不是整个代理请求对象
+        let requestBody = config.data
         
         // 更新响应数据，同时包含请求信息
         this.updateResponseData({
@@ -1541,7 +1529,7 @@ export default {
           requestUrl: config.targetUrl || config.url,
           requestHeaders: requestHeaders,
           requestParams: requestParams,
-          requestBody: requestData
+          requestBody: requestBody
         })
         
         // 保存到历史记录，传递响应对象以获取状态信息

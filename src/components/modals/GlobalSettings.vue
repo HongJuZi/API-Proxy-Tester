@@ -143,10 +143,14 @@
             <textarea 
               v-model="globalJsonInputModel"
               placeholder="输入JSON格式的全局参数"
-              class="w-full form-input rounded-lg border-light-2 px-3 py-2 text-sm min-h-[120px] font-mono"
+              :class="['w-full form-input rounded-lg px-3 py-2 text-sm min-h-[120px] font-mono', { 'border-danger': jsonValidationError }]"
               @keydown="handleTabKey($event)"
+              @blur="handleJsonBlur"
             ></textarea>
-            <div class="text-xs text-dark-2 mt-1">
+            <div v-if="jsonValidationError" class="text-xs text-danger mt-1">
+              {{ jsonValidationError }}
+            </div>
+            <div v-else class="text-xs text-dark-2 mt-1">
               支持JSON格式，例如：{"token": "value", "user_id": "123"}
             </div>
             <div class="flex items-center justify-between">
@@ -194,6 +198,8 @@
 </template>
 
 <script>
+import Helpers from '../../utils/helpers.js'
+
 export default {
   name: 'GlobalSettings',
   props: {
@@ -216,7 +222,9 @@ export default {
       globalParamsModel: JSON.parse(JSON.stringify(this.globalParams || [])),
       globalJsonInputModel: this.globalJsonInput,
       headersModel: JSON.parse(JSON.stringify(this.headers || [])),
-      globalParamMethodModel: this.globalParamMethod
+      globalParamMethodModel: this.globalParamMethod,
+      // JSON验证错误信息
+      jsonValidationError: ''
     }
   },
   watch: {
@@ -395,6 +403,21 @@ export default {
         this.$nextTick(() => {
           textarea.selectionStart = textarea.selectionEnd = start + spaces.length;
         });
+      }
+    },
+    
+    // 处理JSON输入失去焦点事件，验证格式
+    handleJsonBlur() {
+      if (!this.globalJsonInputModel.trim()) {
+        this.jsonValidationError = '';
+        return;
+      }
+      
+      const result = Helpers.validateJson(this.globalJsonInputModel);
+      if (!result.valid) {
+        this.jsonValidationError = `JSON格式错误: ${result.error || '未知错误'}`;
+      } else {
+        this.jsonValidationError = '';
       }
     }
   }

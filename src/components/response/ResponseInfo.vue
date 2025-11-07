@@ -56,22 +56,6 @@
           </div>
         </div>
       </div>
-      
-      <!-- URL 单独占一行 -->
-      <div class="bg-success/5 rounded-lg p-3 border border-success/10 hover:border-success/30 transition-all-300 mb-4 hide">
-        <div class="flex items-start gap-2">
-          <div class="w-8 h-8 rounded-full bg-success/10 flex items-center justify-center text-success flex-shrink-0 mt-1">
-            <i class="fa fa-link"></i>
-          </div>
-          <div class="flex-1">
-            <div class="text-xs text-dark-3 uppercase tracking-wide font-medium mb-1">URL</div>
-            <div class="text-sm font-medium text-dark overflow-hidden whitespace-pre-wrap break-all max-h-[80px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
-              {{ responseUrl }}
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <!-- 响应内容 -->
       <div>
         <label class="block text-sm font-medium text-dark-2 mb-1">响应内容</label>

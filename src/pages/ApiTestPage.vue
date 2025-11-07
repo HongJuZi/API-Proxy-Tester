@@ -1215,8 +1215,8 @@ export default {
         let targetUrl = ''
         
         if (pageRequestMode === 'direct') {
-          url = pageApiPath.trim()
-          targetUrl = url
+          targetUrl = `${pageBaseUrl.replace(/\/$/, '')}/${pageApiPath.replace(/^\//, '')}`
+          url       = targetUrl
         } else {
           url = pageProxyUrl
           targetUrl = `${pageBaseUrl.replace(/\/$/, '')}/${pageApiPath.replace(/^\//, '')}`

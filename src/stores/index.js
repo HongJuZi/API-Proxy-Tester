@@ -13,7 +13,7 @@ export const useMainStore = defineStore('main', {
     apiPath: 'users',
     inputMode: 'json', // 'kv' 或 'json'
     requestMode: 'proxy', // proxy 或 direct
-    proxyUrl: 'api-test-worker.php', // 代理服务器URL
+    proxyUrl: 'backend/api-test-worker.php', // 代理服务器URL
     
     // 数据模型
     globalParams: [{

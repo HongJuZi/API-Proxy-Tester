@@ -2,10 +2,8 @@
   <header class="bg-white shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
       <div class="flex items-center space-x-2">
-        <router-link to="/" class="flex items-center space-x-2">
-          <i class="fa fa-exchange text-primary text-2xl"></i>
-          <h1 class="text-xl md:text-2xl font-bold text-dark">API Proxy Tester</h1>
-        </router-link>
+        <i class="fa fa-exchange text-primary text-2xl"></i>
+        <h1 class="text-xl md:text-2xl font-bold text-dark">API Proxy Tester</h1>
       </div>
       <!-- 桌面端导航 -->
       <div class="hidden md:flex items-center space-x-4">
@@ -103,6 +101,7 @@ export default {
       } catch (error) {
         console.error('事件触发失败:', error)
       }
+      this.showMobileMenu = false // 关闭移动端菜单
     },
     // 移动端菜单切换
     toggleMobileMenu() {

@@ -97,7 +97,7 @@
         <div class="flex items-center justify-between mb-2">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-warning/10 flex items-center justify-center text-warning">
-              <i class="fa fa-file-text-o"></i>
+              <i class="fa-regular fa-file-lines"></i>
             </div>
             <div class="text-xs text-dark-3 uppercase tracking-wide font-medium">请求体数据</div>
           </div>

@@ -37,7 +37,7 @@
             rel="noopener noreferrer"
             class="px-8 py-4 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
           >
-            <i class="fa fa-github"></i>
+            <i class="fab fa-github"></i>
             <span class="text-lg">下载源码</span>
           </a>
         </div>
@@ -61,7 +61,7 @@
           
           <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-hover transition-all-300">
             <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 mx-auto">
-              <i class="fa fa-file-text-o text-purple-500 text-2xl"></i>
+              <i class="fa-regular fa-file-lines text-purple-500 text-2xl"></i>
             </div>
             <h3 class="text-lg font-semibold text-dark mb-2">文档同步</h3>
             <p class="text-dark-2 text-sm">解决文档与实际接口不符的问题</p>
@@ -109,7 +109,7 @@
                 </p>
                 <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 transform hover:-translate-y-0.5">
-                  <i class="fa fa-github mr-2"></i>提交Issue
+                  <i class="fab fa-github mr-2"></i>提交Issue
                   <i class="fa fa-arrow-right ml-2 text-sm"></i>
                 </a>
               </div>
@@ -186,7 +186,7 @@
         <div class="bg-white rounded-2xl shadow-card p-6 hover:shadow-hover transition-all-300 cursor-pointer transform hover:-translate-y-1" 
              @click="$router.push('/api-test')">
           <div class="flex items-center mb-4">
-            <i class="fa fa-file-text-o text-secondary text-2xl mr-3"></i>
+            <i class="fa-regular fa-file-lines text-secondary text-2xl mr-3"></i>
             <h2 class="text-xl font-bold">文档生成工具</h2>
           </div>
           <p class="text-dark-2 mb-4 text-base">自动生成API文档，支持Markdown和HTML格式</p>

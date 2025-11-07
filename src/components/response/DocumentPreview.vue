@@ -4,7 +4,7 @@
       <!-- 模态框头部 -->
       <div class="modal-header">
         <h2 class="modal-title">
-          <i class="fa fa-file-text-o text-primary mr-2"></i>文档预览
+          <i class="fa-regular fa-file-lines text-primary mr-2"></i>文档预览
         </h2>
         <div class="flex items-center space-x-3">
           <button @click="copyDocument" class="text-primary text-sm hover:text-secondary transition-all-300">

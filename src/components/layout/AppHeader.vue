@@ -23,7 +23,7 @@
         </a>
         <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" 
            class="px-4 py-2 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300 flex items-center space-x-1">
-          <i class="fa fa-github"></i>
+          <i class="fab fa-github"></i>
           <span>GitHub</span>
         </a>
         <button @click="$router.push('/about')" 
@@ -33,10 +33,11 @@
           <i class="fa fa-info-circle"></i>
           <span>关于</span>
         </button>
-        <div v-if="$route.path === '/api-test'" class="h-5 w-px bg-gray-200 mx-1"></div>
         <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
-          <i class="fa fa-moon-o"></i>
+          <i class="fa fa-moon"></i>
+          <span>切换主题</span>
         </button>
+        <div v-if="$route.path === '/api-test'" class="h-5 w-px bg-gray-200 mx-1"></div>
         <button v-if="$route.path === '/api-test'" @click="showGlobalSettings" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
           <i class="fa fa-cog"></i>
         </button>
@@ -66,7 +67,7 @@
         </a>
         <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer"
            class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
-          <i class="fa fab fa-github mr-3 text-lg"></i>
+          <i class="fab fa-github mr-3 text-lg"></i>
           <span>GitHub</span>
         </a>
         <button @click="navigateTo('/about')"
@@ -123,11 +124,7 @@ export default {
     },
     toggleTheme() {
       // 主题切换逻辑将在主应用中实现
-      try {
-        this.$emit('toggle-theme')
-      } catch (error) {
-    
-      }
+      this.$emit('toggle-theme')
       this.showMobileMenu = false // 关闭移动端菜单
     },
     // 移动端菜单切换

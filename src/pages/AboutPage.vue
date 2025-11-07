@@ -73,7 +73,7 @@
                 </p>
                 <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 transform hover:-translate-y-0.5">
-                  <i class="fa fab fa-github mr-2"></i>提交Issue
+                  <i class="fab fa-github mr-2"></i>提交Issue
                   <i class="fa fa-arrow-right ml-2 text-sm"></i>
                 </a>
               </div>
@@ -101,7 +101,7 @@
             </div>
             <div class="flex flex-col items-center text-center p-6 bg-light-1 rounded-xl hover:bg-light-2 transition-all-300 transform hover:-translate-y-1">
               <div class="w-12 h-12 bg-accent-50 rounded-lg flex items-center justify-center mb-4">
-                <i class="fa fa-file-text-o text-accent text-2xl"></i>
+                <i class="fa-regular fa-file-lines text-accent text-2xl"></i>
               </div>
               <h3 class="font-bold text-lg mb-2">文档生成</h3>
               <p class="text-dark-2 text-sm">自动生成API文档（Markdown/HTML）</p>

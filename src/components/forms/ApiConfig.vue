@@ -68,7 +68,7 @@
             :class="activeTab === 'body' ? 'bg-primary text-white' : 'text-dark-2 hover:text-primary'"
             v-show="['POST', 'PUT', 'PATCH'].includes(selectedMethod)"
           >
-            <i class="fa fa-file-text-o mr-1"></i>请求体
+            <i class="fa-regular fa-file-lines mr-1"></i>请求体
           </button>
         </div>
         

@@ -120,50 +120,34 @@ export default {
     formattedCode() {
       let result = ''
       let tempText = this.currentText
-      let lastIndex = 0
       
-      const patterns = [
-        { regex: /\/\/[^\n]*/g, className: 'text-green-400' },
-        { regex: /'[^']*'/g, className: 'text-yellow-400' },
-        { regex: /"[^"]*"/g, className: 'text-yellow-400' },
-        { regex: /\b\d+\b/g, className: 'text-purple-400' },
-        { regex: /\b(export|default|return|const|if|this)\b/g, className: 'text-blue-400' },
-        { regex: /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\(/g, className: 'text-pink-400' },
-        { regex: /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:/g, className: 'text-blue-400' }
-      ]
+      // 修复：移除不必要的缩进处理，保留原始格式
       
-      tempText = tempText.split('\n').map(line => {
-          const indentLevel = Math.max(0, Math.floor((line.match(/^\s*/)[0].length - 2) / 4))
-          return ' '.repeat(indentLevel * 4) + line.trim()
-        }).join('\n')
+      // 优化的正则表达式匹配规则，使用更简单直接的方法
+      const highlightedText = tempText
+        // 注释
+        .replace(/(\/\/[^\n]*)/g, '<span class="text-green-400">$1</span>')
+        // 双引号字符串
+        .replace(/("[^\"]*")/g, '<span class="text-yellow-400">$1</span>')
+        // 单引号字符串
+        .replace(/('(?:[^'\\]|\\.)*')/g, '<span class="text-yellow-400">$1</span>')
+        // 数字
+        .replace(/(\b\d+\b)/g, '<span class="text-purple-400">$1</span>')
+        // Vue生命周期钩子和选项
+        .replace(/(\b(methods|data|name|props|computed|mounted|beforeUnmount)\b)/g, '<span class="text-pink-400">$1</span>')
+        // 内置函数
+        .replace(/(\b(setTimeout|setInterval)\b)/g, '<span class="text-cyan-400">$1</span>')
+        // 关键字
+        .replace(/(\b(export|default|return|const|let|var|if|else|for|while|function|new|this)\b)/g, '<span class="text-blue-400">$1</span>')
+        // 属性访问
+        .replace(/(\.\w+)/g, '<span class="text-teal-400">$1</span>')
+        // 函数名
+        .replace(/(\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\()/g, '<span class="text-orange-400">$1</span>')
+        // 对象属性
+        .replace(/(\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:)/g, '<span class="text-indigo-400">$1</span>')
       
-      let hasMatch = true
-      while (hasMatch) {
-        hasMatch = false
-        let earliestMatch = null
-        let earliestPattern = null
-        
-        patterns.forEach(pattern => {
-          const match = pattern.regex.exec(tempText)
-          if (match && match.index >= lastIndex && (!earliestMatch || match.index < earliestMatch.index)) {
-            earliestMatch = match
-            earliestPattern = pattern
-            hasMatch = true
-          }
-        })
-        
-        if (earliestMatch) {
-          if (earliestMatch.index > lastIndex) {
-            result += this.escapeHtml(tempText.substring(lastIndex, earliestMatch.index))
-          }
-          result += `<span class="${earliestPattern.className}">${this.escapeHtml(earliestMatch[0])}</span>`
-          lastIndex = earliestMatch.index + earliestMatch[0].length
-        }
-      }
-      
-      if (lastIndex < tempText.length) {
-        result += this.escapeHtml(tempText.substring(lastIndex))
-      }
+      // 正确处理换行符
+      result = highlightedText.replace(/\n/g, '<br/>')
       
       return result
     }
@@ -176,9 +160,15 @@ export default {
   },
   methods: {
     escapeHtml(text) {
-      const div = document.createElement('div')
-      div.textContent = text
-      return div.innerHTML.replace(/\n/g, '<br/>')
+      // 安全的HTML转义函数
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      }
+      return text.replace(/[&<>"']/g, m => map[m])
     },
     startTyping() {
       this.isTyping = true

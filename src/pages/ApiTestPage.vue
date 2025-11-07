@@ -1,13 +1,121 @@
 <template>
-  <div id="api-test-page">
-    <!-- 顶部导航栏 -->
+  <div id="api-test-page" class="min-h-screen flex flex-col">
+    <!-- 顶部导航栏 - 全屏 -->
     <AppHeader 
-      @toggle-theme="toggleTheme" 
-      @show-global-settings="handleShowGlobalSettings"
-      @show-help="handleShowHelp"
+      @toggle-theme="toggleTheme"
     />
     
-    <main class="container mx-auto px-4 py-6">
+    <!-- 左侧浮动业务导航工具条 -->
+    <div class="hidden lg:block fixed left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-lg shadow-lg border border-gray-200 p-2 z-50 flex flex-col items-center space-y-3 transition-all duration-300" :class="{ 'w-16': !toolBarExpanded, 'w-48': toolBarExpanded }">
+      <!-- 业务功能按钮组 -->
+      <div class="flex flex-col items-center space-y-2">
+        <!-- 历史请求按钮（放在第一位） -->
+        <button 
+            @click="toggleHistoryModal"
+            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            :class="{ 'bg-primary/10 text-primary': activeTool === 'history' }"
+          >
+            <i class="fa fa-history text-lg w-6 text-center"></i>
+            <span v-show="toolBarExpanded">历史请求</span>
+          </button>
+          
+          <div class="w-full h-px bg-gray-200 my-1" v-show="toolBarExpanded"></div>
+          
+          <button 
+            @click="handleShowGlobalSettings"
+            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            :class="{ 'bg-primary/10 text-primary': activeTool === 'settings' }"
+          >
+            <i class="fa fa-cog text-lg w-6 text-center"></i>
+            <span v-show="toolBarExpanded">全局设置</span>
+          </button>
+          <button 
+            @click="handleShowHelp"
+            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            :class="{ 'bg-primary/10 text-primary': activeTool === 'help' }"
+          >
+            <i class="fa fa-question-circle text-lg w-6 text-center"></i>
+            <span v-show="toolBarExpanded">帮助说明</span>
+          </button>
+          <div class="w-full h-px bg-gray-200 my-1" v-show="toolBarExpanded"></div>
+          <button 
+            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            :class="{ 'bg-primary/10 text-primary': activeBusiness === 'project' }"
+            @click="setActiveBusiness('project')"
+          >
+            <i class="fa fa-folder text-lg w-6 text-center"></i>
+            <span v-show="toolBarExpanded">项目管理</span>
+          </button>
+          <button 
+            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            :class="{ 'bg-primary/10 text-primary': activeBusiness === 'group' }"
+            @click="setActiveBusiness('group')"
+          >
+            <i class="fa fa-object-group text-lg w-6 text-center"></i>
+            <span v-show="toolBarExpanded">分组管理</span>
+          </button>
+          <!-- 分隔线 -->
+          <div class="w-full h-px bg-gray-200 my-1" v-show="toolBarExpanded"></div>
+          
+          <!-- 收起按钮 -->
+          <button 
+            @click="toggleToolBarExpanded"
+            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            title="收起工具栏"
+          >
+            <i class="fa fa-compress text-lg w-6 text-center transition-transform duration-500 ease-in-out" :class="toolBarExpanded ? 'rotate-180' : ''"></i>
+            <span v-show="toolBarExpanded">收起</span>
+          </button>
+      </div>
+    </div>
+    
+    <!-- 移动端业务导航工具条 -->
+    <div class="lg:hidden bg-white border-b border-gray-200 py-2 px-4 flex items-center justify-between z-40">
+      <div class="flex items-center space-x-2">
+        <button 
+          @click="toggleHistoryModal"
+          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          title="历史请求"
+        >
+          <i class="fa fa-history"></i>
+        </button>
+        <button 
+          @click="handleShowGlobalSettings"
+          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+        >
+          <i class="fa fa-cog"></i>
+        </button>
+        <button 
+          @click="handleShowHelp"
+          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+        >
+          <i class="fa fa-question-circle"></i>
+        </button>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button 
+          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          @click="setActiveBusiness('project')"
+        >
+          <i class="fa fa-folder"></i>
+        </button>
+        <button 
+          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          @click="setActiveBusiness('group')"
+        >
+          <i class="fa fa-object-group"></i>
+        </button>
+        <button 
+          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          @click="setActiveBusiness('template')"
+        >
+          <i class="fa fa-file-text"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 主内容区域 - 全屏 -->
+    <main class="flex-1 flex p-4 lg:pl-24 lg:pr-104">
       <!-- 文档预览模态框 -->
       <DocumentPreview 
         v-if="showDocumentPreview"
@@ -16,31 +124,23 @@
         @download-document="downloadDocument"
         @close-preview="closeDocumentPreview"
       />
-      <!-- 工具主体区域 -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        <!-- 左侧：全局设置 (占1列) -->
-        <div class="lg:col-span-1 space-y-6">
-          <!-- 文档配置卡片 -->
-          <DocumentConfig 
-            v-model:api-name="apiName"
-            v-model:api-description="apiDescription"
-            v-model:api-author="apiAuthor"
-            :expanded-sections="expandedSections"
-            @toggle-expand="toggleExpand"
-            @generate-document="generateDocument"
-          />
-          <!-- 历史请求卡片 -->
-          <RequestHistory 
-            :request-history="requestHistory"
-            @clear-history="clearHistory"
-            @load-history-item="loadHistoryItem"
-          />
-        </div>
-        
-        <!-- 右侧：接口配置 + 响应展示区 + 文档预览 (占2列) -->
-        <div class="lg:col-span-2 space-y-6">
-          <!-- 接口配置卡片 -->
-          <!-- 首次使用提醒 -->
+      
+      <!-- 左侧区域：文档配置 -->
+      <div class="w-64 min-w-64 mr-4">
+        <!-- 文档配置卡片 -->
+        <DocumentConfig 
+          v-model:api-name="apiName"
+          v-model:api-description="apiDescription"
+          v-model:api-author="apiAuthor"
+          :expanded-sections="expandedSections"
+          @toggle-expand="toggleExpand"
+          @generate-document="generateDocument"
+        />
+      </div>
+      
+      <!-- 中间区域：接口配置 + 请求信息 -->
+      <div class="flex-1 max-w-3xl mx-4">
+        <!-- 首次使用提醒 -->
         <div v-if="showFirstUseReminder" class="bg-warning-light border border-warning rounded-lg p-4 mb-4">
           <div class="flex items-start">
             <i class="fa fa-info-circle text-warning mt-1 mr-3"></i>
@@ -57,60 +157,90 @@
           </div>
         </div>
         
+        <!-- 接口配置卡片 -->
         <ApiConfig
-      v-model:selected-method="selectedMethod"
-      :methods="methods"
-      v-model:api-path="apiPath"
-      :api-name="apiName"
-      @update:apiName="updateProperty('apiName', $event)"
-      v-model:api-params="apiParams"
-      v-model:input-mode="inputMode"
-      v-model:kv-pairs="kvPairs"
-      :json-raw-input="jsonRawInput"
-      @update:json-raw-input="updateProperty('jsonRawInput', $event)"
-      v-model:json-preview-content="jsonPreviewContent"
-      :expanded-sections="expandedSections"
-      @toggle-expand="toggleExpand"
-      @add-param="addParam"
-      @remove-param="removeParam"
-      @add-kv-pair="addKvPair"
-      @remove-kv-pair="removeKvPair"
-      @update-json-preview="updateJsonPreview"
-      @format-json-preview="formatJsonPreview"
-      @format-json-input="formatJsonInput"
-      @validate-json="validateJson"
-      @import-json-to-kv-pairs="importJsonToKvPairs"
-      @copy-request-config="copyRequestConfig"
-      @send-request="sendRequest"
-      @clear-api-config="clearApiConfig"
-      @update:api-path="updateProperty('apiPath', $event)"
-    />
-          
-          <!-- 请求信息卡片 -->
-          <RequestInfo
-            v-if="showResponse"
-            :request-method="requestMethod"
-            :request-url="requestUrl"
-            :request-headers="requestHeaders"
-            :request-params="requestParams"
-            :request-body="requestData"
-          />
-          
-          <!-- 响应信息卡片 -->
-          <ResponseInfo 
-            v-if="showResponse"
-            :response-code="responseCode"
-            :response-time="responseTime"
-            :response-size="responseSize"
-            :response-url="responseUrl"
-            :formatted-response-content="formattedResponseContent"
-            @copy-response="copyResponse"
-            @download-response="downloadResponse"
-          />
-          
-        </div>
+          v-model:selected-method="selectedMethod"
+          :methods="methods"
+          v-model:api-path="apiPath"
+          :api-name="apiName"
+          @update:apiName="updateProperty('apiName', $event)"
+          v-model:api-params="apiParams"
+          v-model:input-mode="inputMode"
+          v-model:kv-pairs="kvPairs"
+          :json-raw-input="jsonRawInput"
+          @update:json-raw-input="updateProperty('jsonRawInput', $event)"
+          v-model:json-preview-content="jsonPreviewContent"
+          :expanded-sections="expandedSections"
+          @toggle-expand="toggleExpand"
+          @add-param="addParam"
+          @remove-param="removeParam"
+          @add-kv-pair="addKvPair"
+          @remove-kv-pair="removeKvPair"
+          @update-json-preview="updateJsonPreview"
+          @format-json-preview="formatJsonPreview"
+          @format-json-input="formatJsonInput"
+          @validate-json="validateJson"
+          @import-json-to-kv-pairs="importJsonToKvPairs"
+          @copy-request-config="copyRequestConfig"
+          @send-request="sendRequest"
+          @clear-api-config="clearApiConfig"
+          @update:api-path="updateProperty('apiPath', $event)"
+        />
+        
+        <!-- 请求信息卡片 -->
+        <RequestInfo
+          v-if="showResponse"
+          :request-method="requestMethod"
+          :request-url="requestUrl"
+          :request-headers="requestHeaders"
+          :request-params="requestParams"
+          :request-body="requestData"
+        />
+      </div>
+      
+      <!-- 右侧区域：响应信息 -->
+      <div class="w-full lg:w-96 min-w-96 ml-4">
+        <!-- 响应信息卡片 -->
+        <ResponseInfo 
+          v-if="showResponse"
+          :response-code="responseCode"
+          :response-time="responseTime"
+          :response-size="responseSize"
+          :response-url="responseUrl"
+          :formatted-response-content="formattedResponseContent"
+          @copy-response="copyResponse"
+          @download-response="downloadResponse"
+        />
       </div>
     </main>
+    
+    <!-- 历史请求模态框 -->
+    <div v-if="showHistoryModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- 模态框头部 -->
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="font-medium text-dark flex items-center">
+            <i class="fa fa-history text-primary mr-2"></i>
+            历史请求
+          </h3>
+          <button 
+            @click="closeHistoryModal"
+            class="text-dark-2 hover:text-dark p-2 rounded-full hover:bg-gray-100 transition-colors"
+            title="关闭"
+          >
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <!-- 模态框内容 -->
+        <div class="flex-1 overflow-y-auto p-4">
+          <RequestHistory 
+            :request-history="requestHistory"
+            @clear-history="handleClearHistory"
+            @load-history-item="handleLoadHistoryItem"
+          />
+        </div>
+      </div>
+    </div>
     
     <!-- 全局设置模态框 -->
     <GlobalSettings 
@@ -144,11 +274,11 @@
     <HelpModal v-if="showHelp" @close="hideHelp" />
     
     <!-- 操作提示 -->
-      <Toast 
-        :message="toastMessage" 
-        :visible="toastVisible"
-        @close="hideToast"
-      />
+    <Toast 
+      :message="toastMessage" 
+      :visible="toastVisible"
+      @close="hideToast"
+    />
     
     <!-- 页脚 -->
     <AppFooter />
@@ -197,7 +327,11 @@ export default {
   },
   data() {
     return {
-      hasUsedTool: false // 标记用户是否已经使用过工具
+      hasUsedTool: false, // 标记用户是否已经使用过工具
+      toolBarExpanded: true, // 业务导航工具条是否展开
+      activeTool: '', // 当前激活的工具
+      activeBusiness: '', // 当前激活的业务功能
+      showHistoryModal: false // 是否显示历史请求模态框
     }
   },
   watch: {
@@ -851,7 +985,34 @@ export default {
       
       this.showToast('已加载历史请求（全量恢复）')
     },
-    // 清空历史记录
+    // 切换历史请求模态框显示
+    toggleHistoryModal() {
+      this.activeTool = this.showHistoryModal ? '' : 'history'
+      this.showHistoryModal = !this.showHistoryModal
+    },
+    
+    // 关闭历史请求模态框
+    closeHistoryModal() {
+      this.activeTool = ''
+      this.showHistoryModal = false
+    },
+    
+    // 处理清空历史记录（在模态框中）
+    handleClearHistory() {
+      if (confirm('确定要清空所有历史请求记录吗？')) {
+        this.updateProperty('requestHistory', [])
+        storage.remove('api-test-history')
+        this.showToast('历史记录已清空')
+      }
+    },
+    
+    // 处理加载历史记录项（在模态框中）
+    handleLoadHistoryItem(index) {
+      this.loadHistoryItem(index)
+      this.closeHistoryModal() // 加载后关闭模态框
+    },
+    
+    // 清空历史记录（保留原始方法）
     clearHistory() {
       if (confirm('确定要清空所有历史请求记录吗？')) {
         this.updateProperty('requestHistory', [])
@@ -1498,6 +1659,24 @@ export default {
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
     },
+    // 切换业务导航工具条展开状态
+    toggleToolBarExpanded() {
+      this.toolBarExpanded = !this.toolBarExpanded
+    },
+    // 设置当前激活的业务功能
+    setActiveBusiness(business) {
+      this.activeBusiness = business === this.activeBusiness ? '' : business
+    },
+    // 处理显示全局设置
+    handleShowGlobalSettings() {
+      this.activeTool = 'settings'
+      this.showGlobalSettings = true
+    },
+    // 处理显示帮助说明
+    handleShowHelp() {
+      this.activeTool = 'help'
+      this.showHelp = true
+    }
 
   }
 }

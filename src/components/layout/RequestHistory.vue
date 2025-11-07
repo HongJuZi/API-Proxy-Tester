@@ -1,27 +1,31 @@
 <template>
-  <div class="bg-white rounded-xl shadow-card p-5 hover:shadow-hover transition-all-300 mt-4">
-    <div class="mb-3 flex items-center justify-between">
-      <h2 class="text-lg font-semibold flex items-center">
-        <i class="fa fa-history text-primary mr-2"></i>历史请求
-      </h2>
-      <button @click="clearHistory" class="text-danger text-sm hover:text-danger/80 transition-all-300">
-        <i class="fa fa-trash-o mr-1"></i>清空
-      </button>
-    </div>
+  <div class="bg-white rounded-xl shadow-card p-0 hover:shadow-hover transition-all-300 mt-0">
     
     <!-- 搜索框单独一行 -->
-    <div class="relative mb-4">
-      <input 
-        v-model="searchQuery"
-        type="text" 
-        placeholder="搜索接口名称或地址..." 
-        class="pl-9 pr-4 py-2 bg-light-1 border border-light-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all-300 w-full"
-      >
-      <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-3"></i>
+    <div class="relative mb-4 p-5">
+      <div class="flex items-center gap-3">
+        <div class="flex-1 relative">
+          <input 
+            v-model="searchQuery"
+            type="text" 
+            placeholder="搜索接口名称或地址..." 
+            class="pl-9 pr-4 py-2 bg-light-1 border border-light-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all-300 w-full"
+          >
+          <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-3"></i>
+        </div>
+        <button 
+          @click="clearHistory"
+          class="text-danger text-sm border border-danger/20 hover:text-danger/90 hover:bg-danger/5 transition-all duration-300 px-3 py-2 rounded-md flex items-center gap-1 whitespace-nowrap"
+          title="清空历史"
+        >
+          <i class="fa fa-trash-o"></i>
+          <span>清空</span>
+        </button>
+      </div>
     </div>
     
-    <div class="animate-fade-in">
-      <div class="space-y-3 max-h-[350px] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
+    <div class="animate-fade-in px-5 pb-5">
+      <div class="space-y-3 max-h-[calc(100vh-280px)] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
         <div v-for="(historyItem, index) in filteredHistory" :key="index" 
              class="p-4 bg-light-1 rounded-lg hover:bg-light-2 transition-all-300 cursor-pointer border border-light-2 shadow-sm hover:shadow transition-all-300"
              @click="loadHistoryItem(index)">

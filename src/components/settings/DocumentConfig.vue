@@ -53,7 +53,7 @@
             <span>生成Markdown</span>
           </button>
           <button @click="generateDocument('html')" class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all-300 flex items-center justify-center space-x-1">
-            <i class="fa fa-html5"></i>
+            <i class="fab fa-html5"></i>
             <span>生成HTML</span>
           </button>
         </div>

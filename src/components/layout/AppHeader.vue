@@ -66,7 +66,7 @@
         </a>
         <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer"
            class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
-          <i class="fa fa-github mr-3 text-lg"></i>
+          <i class="fa fab fa-github mr-3 text-lg"></i>
           <span>GitHub</span>
         </a>
         <button @click="navigateTo('/about')"

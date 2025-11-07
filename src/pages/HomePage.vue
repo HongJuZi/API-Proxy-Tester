@@ -263,55 +263,9 @@
               </div>
             </div>
             
-            <!-- 代码编辑区域 -->
-            <div class="bg-gray-900 rounded-xl shadow-card overflow-hidden">
-              <div class="flex items-center px-4 py-2 bg-gray-800">
-                <div class="flex space-x-1">
-                  <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                  <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                  <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                </div>
-                <div class="text-gray-300 text-sm ml-2">HomePage.vue</div>
-              </div>
-              
-              <div class="h-48 overflow-y-auto p-4 font-mono text-sm">
-                <div class="text-gray-400">// AI正在编写代码...</div>
-                <span class="text-blue-400">export</span> 
-                <span class="text-green-400">default</span> {<br/>
-                <span class="ml-4 text-blue-400">name:</span> 
-                <span class="text-yellow-400">'HomePage'</span>,<br/>
-                <span class="ml-4 text-blue-400">data()</span> {<br/>
-                <span class="ml-8 text-blue-400">return</span> {<br/>
-                <span class="ml-12 text-blue-400">currentIndex:</span> 
-                <span class="text-purple-400">0</span>,<br/>
-                <span class="ml-12 text-blue-400">imageHeights:</span> [],<br/>
-                <span class="ml-8">}</span><br/>
-                <span class="ml-4">},</span><br/>
-                <span class="ml-4 text-blue-400">methods:</span> {<br/>
-                <span class="ml-8 text-blue-400">adjustCarouselHeight()</span> {<br/>
-                <span class="ml-12 text-green-400">// 根据当前图片调整轮播图高度</span><br/>
-                <span class="ml-12 text-blue-400">const</span> images = 
-                <span class="text-blue-400">this</span>
-                .$refs.carouselContainer.querySelectorAll(<span class="text-yellow-400">'img'</span>);<br/>
-                <span class="ml-12 text-blue-400">if</span> (images.length &amp;gt; 
-                <span class="text-blue-400">this</span>.currentIndex) {<br/>
-                <span class="ml-16 text-blue-400">const</span>
-                 currentImage = images[<span class="text-blue-400">this</span>.currentIndex];<br/>
-                <span class="ml-16 text-blue-400">this</span>.$refs.carouselContainer.style.height = currentImage.offsetHeight + <span class="text-yellow-400">'px'</span>;<br/>
-                <span class="ml-12">}</span><br/>
-                <span class="ml-8">},</span><br/>
-                <span class="ml-8 text-blue-400">startAutoSlide()</span> {<br/>
-                <span class="ml-12 text-blue-400">setInterval</span>(() =&amp;gt; {<br/>
-                <span class="ml-16 text-blue-400">this</span>.nextSlide();<br/>
-                <span class="ml-16 text-blue-400">this</span>.adjustCarouselHeight();<br/>
-                <span class="ml-12">}, </span>
-                <span class="text-purple-400">5000</span>);<br/>
-                <span class="ml-8">}</span><br/>
-                <span class="ml-4">}</span><br/>
-                <span>}</span>
-                <span class="animate-pulse">&amp;#9608;</span>
-              </div>
-            </div>
+            <!-- 动态代码显示区域 -->
+            <DynamicCodeDisplay />
+            <!-- 动态代码显示区域 -->
           </div>
           
           <div class="mt-4 text-center">
@@ -332,12 +286,14 @@
 <script>
 import AppHeader from '../components/layout/AppHeader.vue'
 import AppFooter from '../components/layout/AppFooter.vue'
+import DynamicCodeDisplay from '../components/DynamicCodeDisplay.vue'
 
 export default {
   name: 'HomePage',
   components: {
     AppHeader,
-    AppFooter
+    AppFooter,
+    DynamicCodeDisplay
   },
   data() {
     return {

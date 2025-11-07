@@ -22,8 +22,27 @@
           本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。
         </p>
         
+        <!-- 行动按钮 -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+          <button 
+            @click="$router.push('/api-test')"
+            class="px-8 py-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
+          >
+            <i class="fa fa-rocket"></i>
+            <span class="text-lg">立即使用</span>
+          </button>
+          <a 
+            href="https://github.com/HongJuZi/API-Proxy-Tester" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="px-8 py-4 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
+          >
+            <i class="fa fa-github"></i>
+            <span class="text-lg">下载源码</span>
+          </a>
+        </div>
         <!-- 核心价值卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12 mt-10">
           <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-hover transition-all-300">
             <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 mx-auto">
               <i class="fa fa-shield text-blue-500 text-2xl"></i>
@@ -98,25 +117,6 @@
           </div>
         </div>
         
-        <!-- 行动按钮 -->
-        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-          <button 
-            @click="$router.push('/api-test')"
-            class="px-8 py-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
-          >
-            <i class="fa fa-rocket"></i>
-            <span class="text-lg">立即使用</span>
-          </button>
-          <a 
-            href="https://github.com/HongJuZi/API-Proxy-Tester" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="px-8 py-4 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
-          >
-            <i class="fa fa-github"></i>
-            <span class="text-lg">下载源码</span>
-          </a>
-        </div>
       </div>
 
       <!-- 轮播图组件 -->
@@ -210,7 +210,7 @@
       </div>
       
       <!-- AI编程模拟效果卡片 -->
-      <div class="max-w-6xl mx-auto px-4 mb-12">
+      <div class="max-w-6xl mx-auto mb-12">
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6">
           <h2 class="text-2xl font-bold text-dark mb-4 flex items-center">
             <i class="fa fa-robot text-blue-500 mr-2"></i>

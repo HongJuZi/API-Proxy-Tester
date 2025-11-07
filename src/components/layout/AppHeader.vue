@@ -33,7 +33,7 @@
           <i class="fa fa-info-circle"></i>
           <span>关于</span>
         </button>
-        <div class="h-5 w-px bg-gray-200 mx-1"></div>
+        <div v-if="$route.path === '/api-test'" class="h-5 w-px bg-gray-200 mx-1"></div>
         <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
           <i class="fa fa-moon-o"></i>
         </button>

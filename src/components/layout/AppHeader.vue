@@ -37,10 +37,10 @@
         <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
           <i class="fa fa-moon-o"></i>
         </button>
-        <button @click="showGlobalSettings" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
+        <button v-if="$route.path === '/api-test'" @click="showGlobalSettings" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
           <i class="fa fa-cog"></i>
         </button>
-        <button @click="showHelp" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
+        <button v-if="$route.path === '/api-test'" @click="showHelp" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
           <i class="fa fa-question-circle"></i>
         </button>
       </div>
@@ -81,11 +81,11 @@
           <i class="fa fa-moon-o mr-3 text-lg"></i>
           <span>切换主题</span>
         </button>
-        <button @click="showGlobalSettings" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+        <button v-if="$route.path === '/api-test'" @click="showGlobalSettings" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
           <i class="fa fa-cog mr-3 text-lg"></i>
           <span>全局设置</span>
         </button>
-        <button @click="showHelp" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+        <button v-if="$route.path === '/api-test'" @click="showHelp" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
           <i class="fa fa-question-circle mr-3 text-lg"></i>
           <span>帮助</span>
         </button>

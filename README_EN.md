@@ -3,13 +3,27 @@
 
 # API Proxy Tester
 
-API Proxy Testing Tool built with Vue 3 and Vite. Core goal is for interface testing and integration development in VPN intranet environments, providing an easy-to-use interface and powerful features.
+API Proxy Testing Tool designed to solve the challenges of enterprise internal system interface testing. When integrating with some internal systems, APIs are often not accessible from the public network, making it impossible for developers to test interfaces locally. This tool can be easily deployed in an intranet environment to provide convenient testing and real-time interface data integration for subsequent internal interface integration.
 
 [![GitHub Stars](https://img.shields.io/github/stars/HongJuZi/API-Proxy-Tester?style=social)](https://github.com/HongJuZi/API-Proxy-Tester) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Platform: Web](https://img.shields.io/badge/platform-web-blue)]()
 
+## Project Background and Pain Points Solved
+
+### Core Pain Points
+1. **Intranet API Access Challenges**: Many enterprise internal system APIs are not accessible from the public network, preventing developers from testing interfaces locally
+2. **Documentation vs. Reality**: Many enterprise custom system API documentation may have update lags, causing discrepancies between documented descriptions and actual running interface data
+3. **Complex Test Environment Setup**: Traditional methods require complex environment configurations for intranet interface testing
+
+### Solutions
+API Proxy Tester solves the above pain points through:
+- Providing an easy-to-use web interface that can be quickly deployed in intranet environments
+- Supporting proxy request mode to access restricted APIs through intranet penetration
+- Real-time acquisition of real response data to verify interface availability and correctness
+- Automatic API documentation generation to ensure documentation stays synchronized with actual interfaces
+
 ## Features
 
-- Built with Vue 3 and Vite for fast development and deployment
+- Built with Vue 3, Pinia, and Vite for fast development and deployment
 - Supports multiple HTTP methods (GET, POST, PUT, DELETE, etc.)
 - Configurable global parameters and request headers
 - Request body supports both key-value pairs and raw JSON data modes
@@ -17,9 +31,10 @@ API Proxy Testing Tool built with Vue 3 and Vite. Core goal is for interface tes
 - Response content formatting and downloading
 - Parameter placeholder automatic replacement
 - Historical request records
+- Proxy request mode support to solve intranet API access issues
+- Real-time response data viewing to ensure interface test accuracy
 
-
-## DEMO演示
+## DEMO
 
 ![Home Page](./demo/index.jpg)
 ![API Proxy Tester Demo](./demo/api.png)
@@ -99,6 +114,69 @@ API-Proxy-Tester/
    ```bash
    npm run serve
    ```
+
+## Project Roadmap
+
+### Completed Features
+- [x] Basic API testing functionality (GET/POST/PUT/DELETE requests)
+- [x] Request parameter configuration (global parameters, headers, body)
+- [x] Response data viewing and formatting
+- [x] Historical request record management
+- [x] API documentation auto-generation (Markdown/HTML)
+- [x] Parameter placeholder auto-replacement
+- [x] Proxy request mode support
+
+### Near-term Plans (v1.1 - v1.3)
+- [ ] Mock service functionality: Quickly create mock API interfaces
+- [ ] API test automation: Support test case writing and execution
+- [ ] Team collaboration features: Support for multi-user shared testing environments
+- [ ] Performance testing module: API stress testing and performance analysis
+- [ ] Data comparison functionality: Compare response data across different API versions
+
+### Mid-term Plans (v1.4 - v2.0)
+- [ ] AI-powered interface analysis: Automatically identify interface parameters and data structures
+- [ ] Code generator: Auto-generate API calling code in multiple languages
+- [ ] Interface monitoring and alerting: Real-time monitoring of interface status with alerts
+- [ ] Test report generation: Automatically generate detailed test reports
+- [ ] Plugin system: Support custom plugin extensions
+
+### Long-term Vision (v2.0+)
+- [ ] AI-driven intelligent testing: Auto-generate test cases based on historical data and API documentation
+- [ ] Natural language interface testing: Perform interface testing through natural language descriptions
+- [ ] Intelligent documentation updates: Automatically detect interface changes and update documentation
+- [ ] Predictive analytics: Predict interface performance and stability based on historical data
+
+## AI Capability Integration Plan
+
+### Current AI Applications
+- Project fully developed by AI, using AI development tools such as Trace CN and Qorder
+- AI-assisted code generation, debugging, and optimization
+
+### Future AI Capability Expansion
+1. **Intelligent Interface Analysis**
+   - Automatically identify interface parameter types and data structures
+   - AI-generated test cases based on API documentation
+   - Intelligent recommendation of common parameter combinations
+
+2. **Natural Language Processing**
+   - Support interface testing through natural language descriptions
+   - Intelligent parsing of API requirement documents to generate test configurations
+   - Auto-generate API documentation summaries and explanations
+
+3. **Intelligent Test Optimization**
+   - Optimize testing strategies based on historical test data
+   - Automatically identify API changes and remind to update test cases
+   - Intelligent performance bottleneck prediction
+
+4. **Code Generation and Optimization**
+   - Auto-generate API calling code in multiple languages based on interfaces
+   - AI-assisted code review and optimization suggestions
+   - Intelligent refactoring recommendations
+
+5. **Intelligent Collaboration**
+   - AI-assisted team collaboration and knowledge sharing
+   - Intelligent problem diagnosis and solution recommendations
+   - Context-aware intelligent help system
 
 ## Placeholder Usage Instructions
 

@@ -91,10 +91,13 @@
             :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
           >
             <div class="w-full flex-shrink-0">
-              <img src="/demo/api.png" alt="API测试界面" class="w-full h-auto object-cover">
+              <img src="/demo/ai-coding.jpg" alt="AI编码界面" class="w-full h-auto object-cover">
             </div>
             <div class="w-full flex-shrink-0">
-              <img src="/demo/config.png" alt="配置界面" class="w-full h-auto object-cover">
+              <img src="/demo/api.jpg" alt="API测试界面" class="w-full h-auto object-cover">
+            </div>
+            <div class="w-full flex-shrink-0">
+              <img src="/demo/config.jpg" alt="配置界面" class="w-full h-auto object-cover">
             </div>
             <div class="w-full flex-shrink-0">
               <img src="/demo/index.jpg" alt="首页界面" class="w-full h-auto object-cover">
@@ -187,8 +190,9 @@ export default {
       currentIndex: 0,
       showMobileMenu: false,
       slides: [
-        { image: '/demo/api.png', alt: 'API测试界面' },
-        { image: '/demo/config.png', alt: '配置界面' },
+        { image: '/demo/ai-coding.jpg', alt: 'AI编码界面' },
+        { image: '/demo/api.jpg', alt: 'API测试界面' },
+        { image: '/demo/config.jpg', alt: '配置界面' },
         { image: '/demo/index.jpg', alt: '首页界面' }
       ],
       autoSlideInterval: null

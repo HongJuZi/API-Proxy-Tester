@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-xl shadow-card p-5 hover:shadow-hover transition-all-300 mb-5">
+  <div class="bg-white rounded-xl shadow-card p-5 hover:shadow-hover transition-all-300 mb-5 mt-4">
     <div class="flex items-center justify-between mb-4 cursor-pointer" @click="toggleCollapse">
       <h2 class="text-lg font-semibold flex items-center">
         <i class="fa fa-terminal text-primary mr-2"></i>请求信息

@@ -12,7 +12,7 @@
         <!-- 历史请求按钮（放在第一位） -->
         <button 
             @click="toggleHistoryModal"
-            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
             :class="{ 'bg-primary/10 text-primary': activeTool === 'history' }"
           >
             <i class="fa fa-history text-lg w-6 text-center"></i>
@@ -23,7 +23,7 @@
           
           <button 
             @click="handleShowGlobalSettings"
-            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
             :class="{ 'bg-primary/10 text-primary': activeTool === 'settings' }"
           >
             <i class="fa fa-cog text-lg w-6 text-center"></i>
@@ -31,7 +31,7 @@
           </button>
           <button 
             @click="handleShowHelp"
-            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
             :class="{ 'bg-primary/10 text-primary': activeTool === 'help' }"
           >
             <i class="fa fa-question-circle text-lg w-6 text-center"></i>
@@ -39,7 +39,7 @@
           </button>
           <div class="w-full h-px bg-gray-200 my-1" v-show="toolBarExpanded"></div>
           <button 
-            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
             :class="{ 'bg-primary/10 text-primary': activeBusiness === 'project' }"
             @click="setActiveBusiness('project')"
           >
@@ -47,7 +47,7 @@
             <span v-show="toolBarExpanded">项目管理</span>
           </button>
           <button 
-            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
             :class="{ 'bg-primary/10 text-primary': activeBusiness === 'group' }"
             @click="setActiveBusiness('group')"
           >
@@ -60,7 +60,7 @@
           <!-- 收起按钮 -->
           <button 
             @click="toggleToolBarExpanded"
-            class="px-3 py-2 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
             title="收起工具栏"
           >
             <i class="fa fa-compress text-lg w-6 text-center transition-transform duration-500 ease-in-out" :class="toolBarExpanded ? 'rotate-180' : ''"></i>
@@ -115,7 +115,7 @@
     </div>
     
     <!-- 主内容区域 - 全屏 -->
-    <main class="flex-1 flex p-4 lg:pl-24 lg:pr-104">
+    <main class="flex-1 flex flex-wrap lg:flex-nowrap p-4 lg:pl-24 lg:pr-4 overflow-hidden">
       <!-- 文档预览模态框 -->
       <DocumentPreview 
         v-if="showDocumentPreview"
@@ -125,8 +125,8 @@
         @close-preview="closeDocumentPreview"
       />
       
-      <!-- 左侧区域：文档配置 -->
-      <div class="w-64 min-w-64 mr-4">
+      <!-- 左侧区域：文档配置 - 占屏幕宽度的20% -->
+      <div class="w-full lg:w-[20%] lg:min-w-[20%] mr-4 lg:mr-6 lg:shrink-0">
         <!-- 文档配置卡片 -->
         <DocumentConfig 
           v-model:api-name="apiName"
@@ -138,8 +138,8 @@
         />
       </div>
       
-      <!-- 中间区域：接口配置 + 请求信息 -->
-      <div class="flex-1 max-w-3xl mx-4">
+      <!-- 中间区域：接口配置 + 请求信息 - 占屏幕宽度的40% -->
+      <div class="w-full lg:w-[40%] lg:min-w-[40%] mx-2 lg:mx-6 lg:shrink-0">
         <!-- 首次使用提醒 -->
         <div v-if="showFirstUseReminder" class="bg-warning-light border border-warning rounded-lg p-4 mb-4">
           <div class="flex items-start">
@@ -198,8 +198,8 @@
         />
       </div>
       
-      <!-- 右侧区域：响应信息 -->
-      <div class="w-full lg:w-96 min-w-96 ml-4">
+      <!-- 右侧区域：响应信息 - 占屏幕宽度的40% -->
+      <div class="w-full lg:w-[33%] lg:min-w-[33%] ml-4 lg:ml-6 lg:shrink-0 lg:mr-[60px]">
         <!-- 响应信息卡片 -->
         <ResponseInfo 
           v-if="showResponse"
@@ -328,7 +328,7 @@ export default {
   data() {
     return {
       hasUsedTool: false, // 标记用户是否已经使用过工具
-      toolBarExpanded: true, // 业务导航工具条是否展开
+      toolBarExpanded: false, // 业务导航工具条是否展开
       activeTool: '', // 当前激活的工具
       activeBusiness: '', // 当前激活的业务功能
       showHistoryModal: false // 是否显示历史请求模态框
@@ -1670,12 +1670,12 @@ export default {
     // 处理显示全局设置
     handleShowGlobalSettings() {
       this.activeTool = 'settings'
-      this.showGlobalSettings = true
+      this.setGlobalSettingsVisible(true)
     },
     // 处理显示帮助说明
     handleShowHelp() {
       this.activeTool = 'help'
-      this.showHelp = true
+      this.setHelpVisible(true)
     }
 
   }

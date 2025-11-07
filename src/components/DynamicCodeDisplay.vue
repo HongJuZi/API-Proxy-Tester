@@ -8,8 +8,7 @@
       </div>
       <div class="text-gray-300 text-sm ml-2">{{ fileName }}</div>
     </div>
-    
-    <div class="h-58 overflow-y-auto p-4 font-mono text-sm">
+    <div class="h-50 overflow-hidden overflow-y-scroll p-4 font-mono text-sm scroll-thin">
       <div class="text-gray-400">// AI正在编写代码...</div>
       <div v-html="formattedCode"></div>
       <span v-if="isTyping" class="animate-pulse">▌</span>
@@ -120,8 +119,9 @@ export default {
     formattedCode() {
       let tempText = this.currentText
       
-      // 先对文本进行HTML转义，防止代码中的HTML被解析
-      let escapedText = this.escapeHtml(tempText)
+      // 先解码HTML实体，再进行HTML转义，防止代码中的HTML被解析
+      let unescapedText = this.unescapeHtml(tempText)
+      let escapedText = this.escapeHtml(unescapedText)
       
       // 应用语法高亮
       let highlightedText = this.applySyntaxHighlighting(escapedText)
@@ -134,6 +134,22 @@ export default {
     }
   },
   methods: {
+    // 添加一个方法来解码HTML实体
+    unescapeHtml(text) {
+      const map = {
+        '&amp;': '&',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&quot;': '"',
+        '&#039;': "'"
+      }
+      let result = text
+      for (const [entity, char] of Object.entries(map)) {
+        result = result.replace(new RegExp(entity, 'g'), char)
+      }
+      return result
+    },
+    
     escapeHtml(text) {
       // 安全的HTML转义函数
       const map = {
@@ -145,10 +161,12 @@ export default {
       }
       return text.replace(/[&<>"']/g, m => map[m])
     },
+    
     startTyping() {
       this.isTyping = true
       this.typeNextChar()
     },
+    
     typeNextChar() {
       if (this.currentBlockIndex >= this.codeBlocks.length) {
         this.finishTyping()
@@ -171,6 +189,7 @@ export default {
         this.animationTimer = setTimeout(() => this.typeNextChar(), this.pauseBetweenBlocks)
       }
     },
+    
     finishTyping() {
       this.isTyping = false
       
@@ -178,12 +197,14 @@ export default {
         this.resetAndRestart()
       }, this.restartDelay)
     },
+    
     resetAndRestart() {
       this.currentText = ''
       this.currentBlockIndex = 0
       this.currentCharIndex = 0
       this.startTyping()
     },
+    
     stopTyping() {
       if (this.animationTimer) {
         clearTimeout(this.animationTimer)
@@ -428,11 +449,11 @@ export default {
       return result
     }
   },
-  mounted() {
-    this.startTyping()
-  },
   beforeUnmount() {
     this.stopTyping()
+  },
+  mounted() {
+    this.startTyping()
   },
 }
 </script>

@@ -9,7 +9,7 @@ API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内�
 
 ## 功能特性
 
-- 基于Vue 3和Vite构建，快速开发和部署
+- 基于Vue 3、Pinia和Vite构建，快速开发和部署
 - 支持多种HTTP方法（GET, POST, PUT, DELETE等）
 - 可配置全局参数和请求头
 - 请求体支持键值对和JSON原始数据两种模式
@@ -70,6 +70,23 @@ API-Proxy-Tester/
 ├── tailwind.config.js  # Tailwind CSS配置
 └── vite.config.js      # Vite配置
 ```
+
+## 技术栈
+
+### 前端技术
+- Vue 3
+- Vue Router
+- Pinia
+- Tailwind CSS
+- Axios
+- Font Awesome
+
+### 构建工具
+- Vite
+- PostCSS
+- Autoprefixer
+- ESLint
+- Prettier
 
 ## 开发环境搭建
 

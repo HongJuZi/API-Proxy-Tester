@@ -59,7 +59,49 @@
     <main class="container mx-auto px-4 py-8">
       <div class="text-center mb-8 md:mb-12">
         <h1 class="text-2xl md:text-3xl font-bold text-dark mb-4">欢迎使用 API Proxy Tester Dev By AI Coder</h1>
-        <p class="text-base md:text-lg text-dark-2 mb-6 md:mb-8">现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。我是由AI全程编写的软件，欢迎给我多多提Issues，AI来帮你搞定！目前使用到的AI开发工具有:Trace CN、Qorder等。如果你也对这个项目感兴趣，对AI开发感兴趣，欢迎加入开发~</p>
+        <p class="text-base md:text-lg text-dark-2 mb-6 md:mb-8">现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。</p>
+        
+        <!-- AI开发特色介绍 -->
+        <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6 mb-6 max-w-4xl mx-auto">
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/4 mb-4 md:mb-0 flex justify-center">
+              <div class="bg-white rounded-full p-4 shadow-md">
+                <i class="fa fa-robot text-primary text-4xl"></i>
+              </div>
+            </div>
+            <div class="md:w-3/4 md:pl-6">
+              <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">AI驱动的开发模式</h2>
+              <p class="text-dark-2 mb-4 text-sm md:text-base">
+                本项目是全程由AI Coder参与开发的创新项目，从需求分析、架构设计到代码实现均由AI辅助完成。
+                我们致力于探索AI在软件开发领域的应用，让需求实现由AI来完成，推动项目迭代目标的自动化实现。
+                目前使用到的AI开发工具有：Trace CN、Qorder等先进AI编程工具。
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 合作邀请 -->
+        <div class="bg-gradient-to-r from-accent/10 to-warning/10 rounded-2xl p-6 mb-8 max-w-4xl mx-auto">
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/4 mb-4 md:mb-0 flex justify-center">
+              <div class="bg-white rounded-full p-4 shadow-md">
+                <i class="fa fa-users text-accent text-4xl"></i>
+              </div>
+            </div>
+            <div class="md:w-3/4 md:pl-6">
+              <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">加入我们的开发社区</h2>
+              <p class="text-dark-2 mb-4 text-sm md:text-base">
+                如果您对这个项目感兴趣，有任何需求想法或改进建议，欢迎加入我们的开发社区！
+                我们鼓励开发者、测试人员和产品经理共同参与项目迭代，一起打造更强大的API测试工具。
+                请多多提Issues，您的每一个建议都可能成为下一个版本的重要功能！
+              </p>
+              <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
+                 class="inline-block bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg transition-all-300">
+                <i class="fa fa-github mr-2"></i>提交Issue
+              </a>
+            </div>
+          </div>
+        </div>
         
         <!-- 添加的按钮 -->
         <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
@@ -84,23 +126,23 @@
 
       <!-- 轮播图组件 -->
       <div class="mb-8 md:mb-12 max-w-4xl mx-auto">
-        <div class="relative overflow-hidden rounded-xl shadow-lg">
+        <div class="relative overflow-hidden rounded-xl shadow-lg" ref="carouselContainer">
           <!-- 图片容器 -->
           <div 
             class="flex transition-transform duration-500 ease-in-out"
             :style="{ transform: `translateX(-${currentIndex * 100}%)` }"
           >
             <div class="w-full flex-shrink-0">
-              <img src="/demo/ai-coding.jpg" alt="AI编码界面" class="w-full h-auto object-cover">
+              <img src="/demo/ai-coding.jpg" alt="AI编码界面" class="w-full h-auto object-cover" @load="onImageLoad">
             </div>
             <div class="w-full flex-shrink-0">
-              <img src="/demo/api.jpg" alt="API测试界面" class="w-full h-auto object-cover">
+              <img src="/demo/api.jpg" alt="API测试界面" class="w-full h-auto object-cover" @load="onImageLoad">
             </div>
             <div class="w-full flex-shrink-0">
-              <img src="/demo/config.jpg" alt="配置界面" class="w-full h-auto object-cover">
+              <img src="/demo/config.jpg" alt="配置界面" class="w-full h-auto object-cover" @load="onImageLoad">
             </div>
             <div class="w-full flex-shrink-0">
-              <img src="/demo/index.jpg" alt="首页界面" class="w-full h-auto object-cover">
+              <img src="/demo/index.jpg" alt="首页界面" class="w-full h-auto object-cover" @load="onImageLoad">
             </div>
           </div>
           
@@ -195,7 +237,9 @@ export default {
         { image: '/demo/config.jpg', alt: '配置界面' },
         { image: '/demo/index.jpg', alt: '首页界面' }
       ],
-      autoSlideInterval: null
+      autoSlideInterval: null,
+      loadedImages: 0,
+      imageHeights: []
     }
   },
   methods: {
@@ -233,10 +277,42 @@ export default {
       this.currentIndex = index
     },
     
+    // 图片加载完成回调
+    onImageLoad(event) {
+      this.loadedImages++
+      // 当所有图片加载完成时，设置容器高度
+      if (this.loadedImages === this.slides.length) {
+        this.$nextTick(() => {
+          this.adjustCarouselHeight()
+        })
+      }
+    },
+    
+    // 调整轮播图容器高度
+    adjustCarouselHeight() {
+      if (this.$refs.carouselContainer) {
+        // 获取当前显示的图片
+        const images = this.$refs.carouselContainer.querySelectorAll('img')
+        if (images.length > this.currentIndex) {
+          const currentImage = images[this.currentIndex]
+          // 设置容器高度为当前图片的高度
+          this.$refs.carouselContainer.style.height = currentImage.offsetHeight + 'px'
+        }
+      }
+    },
+    
+    // 自动轮播时调整高度
+    updateCarouselHeight() {
+      this.$nextTick(() => {
+        this.adjustCarouselHeight()
+      })
+    },
+    
     // 自动轮播
     startAutoSlide() {
       this.autoSlideInterval = setInterval(() => {
         this.nextSlide()
+        this.updateCarouselHeight()
       }, 5000) // 每5秒切换一次
     },
     
@@ -254,6 +330,15 @@ export default {
   
   beforeUnmount() {
     this.stopAutoSlide()
+  },
+  
+  // 监听当前索引变化
+  watch: {
+    currentIndex() {
+      this.$nextTick(() => {
+        this.updateCarouselHeight()
+      })
+    }
   }
 }
 </script>

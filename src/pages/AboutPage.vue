@@ -78,7 +78,49 @@
             </div>
           </div>
         </div>
-
+        
+        <!-- AI开发特色 -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-card p-6 mb-8">
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/3 mb-4 md:mb-0 flex justify-center">
+              <div class="bg-white rounded-full p-4 shadow-md">
+                <i class="fa fa-robot text-blue-500 text-4xl"></i>
+              </div>
+            </div>
+            <div class="md:w-2/3 md:pl-6">
+              <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">AI驱动的开发模式</h2>
+              <p class="text-dark-2 mb-4 text-sm md:text-base">
+                本项目是全程由AI Coder参与开发的创新项目，从需求分析、架构设计到代码实现均由AI辅助完成。
+                我们致力于探索AI在软件开发领域的应用，让需求实现由AI来完成，推动项目迭代目标的自动化实现。
+                目前使用到的AI开发工具有：Trace CN、Qorder等先进AI编程工具。
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 合作邀请 -->
+        <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-2xl shadow-card p-6 mb-8">
+          <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/3 mb-4 md:mb-0 flex justify-center">
+              <div class="bg-white rounded-full p-4 shadow-md">
+                <i class="fa fa-handshake text-green-500 text-4xl"></i>
+              </div>
+            </div>
+            <div class="md:w-2/3 md:pl-6">
+              <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">加入我们的开发社区</h2>
+              <p class="text-dark-2 mb-4 text-sm md:text-base">
+                如果您对这个项目感兴趣，有任何需求想法或改进建议，欢迎加入我们的开发社区！
+                我们鼓励开发者、测试人员和产品经理共同参与项目迭代，一起打造更强大的API测试工具。
+                请多多提Issues，您的每一个建议都可能成为下一个版本的重要功能！
+              </p>
+              <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
+                 class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition-all-300 mt-2">
+                <i class="fa fa-github mr-2"></i>提交Issue
+              </a>
+            </div>
+          </div>
+        </div>
+        
         <!-- 功能亮点 -->
         <div class="bg-white rounded-2xl shadow-card p-6 mb-8">
           <h2 class="text-xl md:text-2xl font-semibold text-dark mb-4">核心功能</h2>

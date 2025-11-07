@@ -59,7 +59,7 @@
     <main class="container mx-auto px-4 py-8">
       <div class="text-center mb-8 md:mb-12">
         <h1 class="text-2xl md:text-3xl font-bold text-dark mb-4">欢迎使用 API Proxy Tester Dev By AI Coder</h1>
-        <p class="text-base md:text-lg text-dark-2 mb-6 md:mb-8">现代化的API测试工具，帮助您轻松测试和调试带VPN环境的内网API接口，我是由AI全程编写的软件，欢迎给我多多提Issues，AI来帮你搞定！目前使用到的AI开发工具有:Trace CN、Qorder等。如果你也对这个项目感兴趣，对AI开发感兴趣，欢迎加入开发~</p>
+        <p class="text-base md:text-lg text-dark-2 mb-6 md:mb-8">现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。我是由AI全程编写的软件，欢迎给我多多提Issues，AI来帮你搞定！目前使用到的AI开发工具有:Trace CN、Qorder等。如果你也对这个项目感兴趣，对AI开发感兴趣，欢迎加入开发~</p>
         
         <!-- 添加的按钮 -->
         <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">

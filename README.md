@@ -3,9 +3,23 @@
 
 # API Proxy Tester
 
-API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内网环境的接口测试及对接开发，提供简单易用的界面和强大的功能。
+API代理测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。
 
 [![GitHub Stars](https://img.shields.io/github/stars/HongJuZi/API-Proxy-Tester?style=social)](https://github.com/HongJuZi/API-Proxy-Tester) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Platform: Web](https://img.shields.io/badge/platform-web-blue)]()
+
+## 项目背景与痛点解决
+
+### 核心痛点
+1. **内网接口访问难题**：许多企业内部系统的API接口不允许外网访问，导致开发人员在本地无法直接测试接口
+2. **文档与实际不符**：很多企业定制系统的接口文档可能存在更新滞后问题，文档描述与实际运行的接口数据不一致
+3. **测试环境搭建复杂**：传统方式需要复杂的环境配置才能进行内网接口测试
+
+### 解决方案
+API Proxy Tester通过以下方式解决上述痛点：
+- 提供简单易用的Web界面，可快速部署在内网环境中
+- 支持代理请求模式，可穿透内网访问受限的API接口
+- 实时获取真实响应数据，验证接口可用性和正确性
+- 自动生成API文档，确保文档与实际接口保持同步
 
 ## 功能特性
 
@@ -17,6 +31,8 @@ API代理测试工具，基于Vue 3和Vite构建。核心目标是针对VPN内�
 - 响应内容格式化和下载
 - 参数占位符自动替换
 - 历史请求记录
+- 支持代理请求模式，解决内网接口访问问题
+- 实时响应数据查看，确保接口测试准确性
 
 ## DEMO演示
 

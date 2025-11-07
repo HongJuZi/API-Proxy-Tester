@@ -63,8 +63,9 @@
         <div class="bg-white rounded-xl shadow-card p-4 md:p-6 mb-6 md:mb-8">
           <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3 md:mb-4">项目介绍</h2>
           <p class="text-dark-2 mb-3 md:mb-4 text-sm md:text-base">
-            API Proxy Tester 是一个现代化的API代理测试工具，旨在帮助开发者和测试人员轻松测试和调试API接口。
-            该工具提供了直观的用户界面，支持多种HTTP请求方法，包括GET、POST、PUT、DELETE等。
+            API Proxy Tester 是一个现代化的API代理测试工具，专为解决企业内部系统接口测试难题而设计。
+            在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。
+            本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。
           </p>
           <p class="text-dark-2 mb-3 md:mb-4 text-sm md:text-base">
             通过API Proxy Tester，您可以：
@@ -75,7 +76,14 @@
             <li>查看详细的响应信息</li>
             <li>生成API文档</li>
             <li>保存和管理历史请求</li>
+            <li>解决内网接口访问难题</li>
+            <li>实时获取真实响应数据，验证接口可用性</li>
+            <li>解决文档与实际接口不符的问题</li>
           </ul>
+          <p class="text-dark-2 mt-3 md:mt-4 text-sm md:text-base">
+            本工具由红橘子科技开发团队创建和维护，致力于为开发者提供高质量、易用的工具，
+            帮助提高开发效率和代码质量。
+          </p>
         </div>
 
         <div class="bg-white rounded-xl shadow-card p-4 md:p-6 mb-6 md:mb-8">

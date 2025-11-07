@@ -25,7 +25,7 @@
     </div>
     
     <div class="animate-fade-in px-5 pb-5">
-      <div class="space-y-3 max-h-[calc(100vh-280px)] overflow-y-auto scrollbar-thin scrollbar-thumb-rounded">
+      <div class="space-y-3">
         <div v-for="(historyItem, index) in filteredHistory" :key="index" 
              class="p-4 bg-light-1 rounded-lg hover:bg-light-2 transition-all-300 cursor-pointer border border-light-2 shadow-sm hover:shadow transition-all-300"
              @click="loadHistoryItem(index)">

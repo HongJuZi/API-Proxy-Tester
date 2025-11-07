@@ -59,7 +59,7 @@
       <!-- 响应内容 -->
       <div>
         <label class="block text-sm font-medium text-dark-2 mb-1">响应内容</label>
-        <pre class="bg-dark/5 p-3 rounded-lg text-sm font-mono overflow-auto max-h-[500px] scrollbar-thin scrollbar-thumb-rounded">{{ formattedResponseContent }}</pre>
+        <pre class="bg-dark/5 p-3 rounded-lg text-sm font-mono">{{ formattedResponseContent }}</pre>
       </div>
     </div>
   </div>

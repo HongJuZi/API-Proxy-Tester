@@ -16,7 +16,7 @@
             <i class="fa fa-globe mr-1"></i>官网
           </a>
           <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
-            <i class="fa fa-github mr-1"></i>GitHub
+            <i class="fa fab fa-github mr-1"></i>GitHub
           </a>
           <button @click="$router.push('/about')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/about' }]">
             <i class="fa fa-info-circle mr-1"></i>关于
@@ -43,7 +43,7 @@
           </a>
           <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer"
             class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-            <i class="fa fa-github mr-2"></i>GitHub
+            <i class="fa fab fa-github mr-2"></i>GitHub
           </a>
           <button @click="navigateTo('/about')"
             :class="['flex items-center py-2 px-4 rounded-lg', { 'bg-primary/10 text-primary font-medium': $route.path === '/about' }]">
@@ -139,7 +139,7 @@
                 </p>
                 <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 transform hover:-translate-y-0.5">
-                  <i class="fa fa-github mr-2"></i>提交Issue
+                  <i class="fa fab fa-github mr-2"></i>提交Issue
                   <i class="fa fa-arrow-right ml-2 text-sm"></i>
                 </a>
               </div>
@@ -162,7 +162,7 @@
             rel="noopener noreferrer"
             class="px-8 py-4 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
           >
-            <i class="fa fa-github"></i>
+            <i class="fa fab fa-github"></i>
             <span class="text-lg">下载源码</span>
           </a>
         </div>

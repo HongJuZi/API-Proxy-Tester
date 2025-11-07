@@ -16,7 +16,7 @@
             <i class="fa fa-globe mr-1"></i>官网
           </a>
           <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
-            <i class="fa fa-github mr-1"></i>GitHub
+            <i class="fa fab fa-github mr-1"></i>GitHub
           </a>
           <button @click="$router.push('/about')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/about' }]">
             <i class="fa fa-info-circle mr-1"></i>关于
@@ -43,7 +43,7 @@
           </a>
           <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer"
             class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-            <i class="fa fa-github mr-2"></i>GitHub
+            <i class="fa fab fa-github mr-2"></i>GitHub
           </a>
           <button @click="navigateTo('/about')"
             :class="['flex items-center py-2 px-4 rounded-lg', { 'bg-primary/10 text-primary font-medium': $route.path === '/about' }]">
@@ -122,7 +122,7 @@
                 </p>
                 <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 transform hover:-translate-y-0.5">
-                  <i class="fa fa-github mr-2"></i>提交Issue
+                  <i class="fa fab fa-github mr-2"></i>提交Issue
                   <i class="fa fa-arrow-right ml-2 text-sm"></i>
                 </a>
               </div>
@@ -265,23 +265,23 @@
             </h3>
             <div class="grid grid-cols-1 gap-4">
               <div class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all-300">
-                <i class="fa fa-circle-o text-blue-500 mr-3"></i>
+                <i class="fa fa-circle text-blue-500 mr-3"></i>
                 <span class="text-dark-2">Mock服务功能：快速创建模拟API接口</span>
               </div>
               <div class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all-300">
-                <i class="fa fa-circle-o text-blue-500 mr-3"></i>
+                <i class="fa fa-circle text-blue-500 mr-3"></i>
                 <span class="text-dark-2">接口测试自动化：支持测试用例编写与执行</span>
               </div>
               <div class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all-300">
-                <i class="fa fa-circle-o text-blue-500 mr-3"></i>
+                <i class="fa fa-circle text-blue-500 mr-3"></i>
                 <span class="text-dark-2">团队协作功能：支持多人共享测试环境</span>
               </div>
               <div class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all-300">
-                <i class="fa fa-circle-o text-blue-500 mr-3"></i>
+                <i class="fa fa-circle text-blue-500 mr-3"></i>
                 <span class="text-dark-2">性能测试模块：接口压力测试与性能分析</span>
               </div>
               <div class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-all-300">
-                <i class="fa fa-circle-o text-blue-500 mr-3"></i>
+                <i class="fa fa-circle text-blue-500 mr-3"></i>
                 <span class="text-dark-2">数据对比功能：不同版本接口响应数据对比</span>
               </div>
             </div>
@@ -293,23 +293,23 @@
             </h3>
             <div class="grid grid-cols-1 gap-4">
               <div class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-all-300">
-                <i class="fa fa-circle-o text-purple-500 mr-3"></i>
+                <i class="fa fa-circle text-purple-500 mr-3"></i>
                 <span class="text-dark-2">AI智能接口分析：自动识别接口参数和数据结构</span>
               </div>
               <div class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-all-300">
-                <i class="fa fa-circle-o text-purple-500 mr-3"></i>
+                <i class="fa fa-circle text-purple-500 mr-3"></i>
                 <span class="text-dark-2">代码生成器：根据接口自动生成调用代码（多语言支持）</span>
               </div>
               <div class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-all-300">
-                <i class="fa fa-circle-o text-purple-500 mr-3"></i>
+                <i class="fa fa-circle text-purple-500 mr-3"></i>
                 <span class="text-dark-2">接口监控告警：实时监控接口状态并发送告警</span>
               </div>
               <div class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-all-300">
-                <i class="fa fa-circle-o text-purple-500 mr-3"></i>
+                <i class="fa fa-circle text-purple-500 mr-3"></i>
                 <span class="text-dark-2">测试报告生成：自动生成详细的测试报告</span>
               </div>
               <div class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-all-300">
-                <i class="fa fa-circle-o text-purple-500 mr-3"></i>
+                <i class="fa fa-circle text-purple-500 mr-3"></i>
                 <span class="text-dark-2">插件系统：支持自定义插件扩展功能</span>
               </div>
             </div>
@@ -321,19 +321,19 @@
             </h3>
             <div class="grid grid-cols-1 gap-4">
               <div class="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-all-300">
-                <i class="fa fa-circle-o text-orange-500 mr-3"></i>
+                <i class="fa fa-circle text-orange-500 mr-3"></i>
                 <span class="text-dark-2">AI驱动的智能测试：基于历史数据和接口文档自动生成测试用例</span>
               </div>
               <div class="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-all-300">
-                <i class="fa fa-circle-o text-orange-500 mr-3"></i>
+                <i class="fa fa-circle text-orange-500 mr-3"></i>
                 <span class="text-dark-2">自然语言接口测试：通过自然语言描述进行接口测试</span>
               </div>
               <div class="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-all-300">
-                <i class="fa fa-circle-o text-orange-500 mr-3"></i>
+                <i class="fa fa-circle text-orange-500 mr-3"></i>
                 <span class="text-dark-2">智能文档更新：自动检测接口变更并更新文档</span>
               </div>
               <div class="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-all-300">
-                <i class="fa fa-circle-o text-orange-500 mr-3"></i>
+                <i class="fa fa-circle text-orange-500 mr-3"></i>
                 <span class="text-dark-2">预测性分析：基于历史数据预测接口性能和稳定性</span>
               </div>
             </div>

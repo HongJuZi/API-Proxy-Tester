@@ -17,7 +17,7 @@
         @close-preview="closeDocumentPreview"
       />
       <!-- 工具主体区域 -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         <!-- 左侧：全局设置 (占1列) -->
         <div class="lg:col-span-1 space-y-6">
           <!-- 文档配置卡片 -->

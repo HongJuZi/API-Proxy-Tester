@@ -57,7 +57,7 @@
     </header>
 
     <main class="container mx-auto px-4 py-8">
-      <div class="max-w-4xl mx-auto">
+      <div class="max-w-6xl mx-auto">
         <div class="text-center mb-10">
           <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
             <i class="fa fa-info-circle text-primary text-3xl"></i>

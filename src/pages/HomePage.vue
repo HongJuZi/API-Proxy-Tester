@@ -72,7 +72,7 @@
         </p>
         
         <!-- 核心价值卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
           <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-hover transition-all-300">
             <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 mx-auto">
               <i class="fa fa-shield text-blue-500 text-2xl"></i>
@@ -99,7 +99,7 @@
         </div>
         
         <!-- AI开发特色介绍和合作邀请 - 列排版 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto mb-12">
           <!-- AI开发特色介绍 -->
           <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all-300">
             <div class="flex flex-col items-center text-center">
@@ -169,7 +169,7 @@
       </div>
 
       <!-- 轮播图组件 -->
-      <div class="mb-12 md:mb-16 max-w-4xl mx-auto">
+      <div class="mb-12 md:mb-16 max-w-6xl mx-auto">
         <div class="relative overflow-hidden rounded-2xl shadow-xl" ref="carouselContainer">
           <!-- 图片容器 -->
           <div 
@@ -259,7 +259,7 @@
       </div>
       
       <!-- AI编程模拟效果卡片 -->
-      <div class="max-w-4xl mx-auto px-4 mb-12">
+      <div class="max-w-6xl mx-auto px-4 mb-12">
         <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6">
           <h2 class="text-2xl font-bold text-dark mb-4 flex items-center">
             <i class="fa fa-robot text-blue-500 mr-2"></i>
@@ -326,37 +326,37 @@
               <div class="h-48 overflow-y-auto p-4 font-mono text-sm">
                 <div class="text-gray-400">// AI正在编写代码...</div>
                 <span class="text-blue-400">export</span> 
-                <span class="text-green-400">default</span> {&lt;br/&gt;
+                <span class="text-green-400">default</span> {<br/>
                 <span class="ml-4 text-blue-400">name:</span> 
-                <span class="text-yellow-400">'HomePage'</span>,&lt;br/&gt;
-                <span class="ml-4 text-blue-400">data()</span> {&lt;br/&gt;
-                <span class="ml-8 text-blue-400">return</span> {&lt;br/&gt;
+                <span class="text-yellow-400">'HomePage'</span>,<br/>
+                <span class="ml-4 text-blue-400">data()</span> {<br/>
+                <span class="ml-8 text-blue-400">return</span> {<br/>
                 <span class="ml-12 text-blue-400">currentIndex:</span> 
-                <span class="text-purple-400">0</span>,&lt;br/&gt;
-                <span class="ml-12 text-blue-400">imageHeights:</span> [],&lt;br/&gt;
-                <span class="ml-8">}</span>&lt;br/&gt;
-                <span class="ml-4">},</span>&lt;br/&gt;
-                <span class="ml-4 text-blue-400">methods:</span> {&lt;br/&gt;
-                <span class="ml-8 text-blue-400">adjustCarouselHeight()</span> {&lt;br/&gt;
-                <span class="ml-12 text-green-400">// 根据当前图片调整轮播图高度</span>&lt;br/&gt;
+                <span class="text-purple-400">0</span>,<br/>
+                <span class="ml-12 text-blue-400">imageHeights:</span> [],<br/>
+                <span class="ml-8">}</span><br/>
+                <span class="ml-4">},</span><br/>
+                <span class="ml-4 text-blue-400">methods:</span> {<br/>
+                <span class="ml-8 text-blue-400">adjustCarouselHeight()</span> {<br/>
+                <span class="ml-12 text-green-400">// 根据当前图片调整轮播图高度</span><br/>
                 <span class="ml-12 text-blue-400">const</span> images = 
                 <span class="text-blue-400">this</span>
-                .$refs.carouselContainer.querySelectorAll(<span class="text-yellow-400">'img'</span>);&lt;br/&gt;
+                .$refs.carouselContainer.querySelectorAll(<span class="text-yellow-400">'img'</span>);<br/>
                 <span class="ml-12 text-blue-400">if</span> (images.length &amp;gt; 
-                <span class="text-blue-400">this</span>.currentIndex) {&lt;br/&gt;
+                <span class="text-blue-400">this</span>.currentIndex) {<br/>
                 <span class="ml-16 text-blue-400">const</span>
-                 currentImage = images[<span class="text-blue-400">this</span>.currentIndex];&lt;br/&gt;
-                <span class="ml-16 text-blue-400">this</span>.$refs.carouselContainer.style.height = currentImage.offsetHeight + <span class="text-yellow-400">'px'</span>;&lt;br/&gt;
-                <span class="ml-12">}</span>&lt;br/&gt;
-                <span class="ml-8">},</span>&lt;br/&gt;
-                <span class="ml-8 text-blue-400">startAutoSlide()</span> {&lt;br/&gt;
-                <span class="ml-12 text-blue-400">setInterval</span>(() =&amp;gt; {&lt;br/&gt;
-                <span class="ml-16 text-blue-400">this</span>.nextSlide();&lt;br/&gt;
-                <span class="ml-16 text-blue-400">this</span>.adjustCarouselHeight();&lt;br/&gt;
+                 currentImage = images[<span class="text-blue-400">this</span>.currentIndex];<br/>
+                <span class="ml-16 text-blue-400">this</span>.$refs.carouselContainer.style.height = currentImage.offsetHeight + <span class="text-yellow-400">'px'</span>;<br/>
+                <span class="ml-12">}</span><br/>
+                <span class="ml-8">},</span><br/>
+                <span class="ml-8 text-blue-400">startAutoSlide()</span> {<br/>
+                <span class="ml-12 text-blue-400">setInterval</span>(() =&amp;gt; {<br/>
+                <span class="ml-16 text-blue-400">this</span>.nextSlide();<br/>
+                <span class="ml-16 text-blue-400">this</span>.adjustCarouselHeight();<br/>
                 <span class="ml-12">}, </span>
-                <span class="text-purple-400">5000</span>);&lt;br/&gt;
-                <span class="ml-8">}</span>&lt;br/&gt;
-                <span class="ml-4">}</span>&lt;br/&gt;
+                <span class="text-purple-400">5000</span>);<br/>
+                <span class="ml-8">}</span><br/>
+                <span class="ml-4">}</span><br/>
                 <span>}</span>
                 <span class="animate-pulse">&amp;#9608;</span>
               </div>

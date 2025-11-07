@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-xl shadow-card p-5 mb-6 hover:shadow-hover transition-all-300 max-w-7xl mx-auto">
+  <div class="bg-white rounded-xl shadow-card p-5 mb-6 hover:shadow-hover transition-all-300 max-w-6xl mx-auto">
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-lg font-semibold flex items-center">
         <i class="fa fa-file-text text-primary mr-2"></i>文档配置

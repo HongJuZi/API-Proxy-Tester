@@ -170,7 +170,7 @@ export default {
         
         // 处理代理模式下的请求体（包装对象）
         // 在代理模式下，requestBody可能包含完整请求信息，需要提取其中的data字段作为实际请求体
-        console.log(this.requestBody);
+    
         if (typeof this.requestBody === 'object' && 
             this.requestBody !== null && 
             'method' in this.requestBody && 
@@ -204,7 +204,7 @@ export default {
         // 最终类型检查，确保返回字符串
         return typeof result === 'string' ? result : String(result)
       } catch (e) {
-        console.warn('格式化请求体失败:', e)
+    
         // 错误处理，确保返回有效的字符串
         return this.requestBody ? String(this.requestBody) : '{}'
       }
@@ -227,7 +227,7 @@ export default {
       try {
         return JSON.stringify(obj, null, 2)
       } catch (e) {
-        console.warn('JSON格式化失败:', e)
+    
         return '{}'
       }
     },
@@ -279,7 +279,7 @@ export default {
         document.execCommand('copy')
         this.showToast(`${label}已复制`)
       } catch (err) {
-        console.error('复制失败:', err)
+    
         modalHelper.error(`${label}复制失败！`)
       } finally {
         document.body.removeChild(textArea)

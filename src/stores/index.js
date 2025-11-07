@@ -119,35 +119,31 @@ export const useMainStore = defineStore('main', {
     
     // 设置全局设置模态框可见性
     setGlobalSettingsVisible(visible) {
-      console.log('===== Store: 调用 setGlobalSettingsVisible =====')
-      console.log('传入的 visible 值:', visible, '类型:', typeof visible)
-      console.log('更新前 showGlobalSettings:', this.showGlobalSettings)
+      
       
       // 确保值是布尔类型
       const boolVisible = Boolean(visible)
-      console.log('转换后的布尔值:', boolVisible)
+  
       
       this.showGlobalSettings = boolVisible
-      console.log('更新后 showGlobalSettings:', this.showGlobalSettings)
+  
       
       // 添加一个立即的状态检查
       setTimeout(() => {
-        console.log('延迟检查 showGlobalSettings:', this.showGlobalSettings)
+    
       }, 0)
     },
     
     // 设置帮助模态框可见性
     setHelpVisible(visible) {
-      console.log('===== Store: 调用 setHelpVisible =====')
-      console.log('传入的 visible 值:', visible, '类型:', typeof visible)
-      console.log('更新前 showHelp:', this.showHelp)
+      
       
       // 确保值是布尔类型
       const boolVisible = Boolean(visible)
-      console.log('转换后的布尔值:', boolVisible)
+  
       
       this.showHelp = boolVisible
-      console.log('更新后 showHelp:', this.showHelp)
+  
     },
     
     // 添加全局参数

@@ -7,9 +7,6 @@ async function checkImageDimensions() {
   const publicDemoDir = path.join(__dirname, '..', 'public', 'demo');
   const files = fs.readdirSync(publicDemoDir);
   
-  console.log('图片尺寸信息:');
-  console.log('================');
-  
   for (const file of files) {
     const filePath = path.join(publicDemoDir, file);
     const ext = path.extname(file).toLowerCase();
@@ -17,10 +14,8 @@ async function checkImageDimensions() {
     // 只处理图片文件
     if (['.jpg', '.jpeg', '.png'].includes(ext)) {
       try {
-        const metadata = await sharp(filePath).metadata();
-        console.log(`${file}: ${metadata.width} x ${metadata.height}px`);
+        await sharp(filePath).metadata();
       } catch (error) {
-        console.error(`Error reading ${file}:`, error);
       }
     }
   }

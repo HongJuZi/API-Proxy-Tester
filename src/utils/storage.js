@@ -6,7 +6,7 @@ class Storage {
       localStorage.setItem(key, JSON.stringify(data))
       return true
     } catch (error) {
-      console.error(`保存${key}失败:`, error)
+    
       return false
     }
   }
@@ -17,7 +17,7 @@ class Storage {
       const data = localStorage.getItem(key)
       return data ? JSON.parse(data) : defaultValue
     } catch (error) {
-      console.error(`加载${key}失败:`, error)
+    
       return defaultValue
     }
   }
@@ -28,7 +28,7 @@ class Storage {
       localStorage.removeItem(key)
       return true
     } catch (error) {
-      console.error(`删除${key}失败:`, error)
+    
       return false
     }
   }
@@ -39,7 +39,7 @@ class Storage {
       localStorage.clear()
       return true
     } catch (error) {
-      console.error('清空localStorage失败:', error)
+    
       return false
     }
   }

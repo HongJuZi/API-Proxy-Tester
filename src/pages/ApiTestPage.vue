@@ -369,23 +369,23 @@ export default {
     
     // 处理显示帮助
     handleShowHelp() {
-      console.log('===== ApiTestPage: 收到显示帮助事件 =====')
+  
       try {
         this.setHelpVisible(true)
-        console.log('调用 setHelpVisible(true) 成功')
+    
       } catch (error) {
-        console.error('调用 setHelpVisible 失败:', error)
+    
       }
     },
     
     // 隐藏帮助
     hideHelp() {
-      console.log('===== ApiTestPage: 隐藏帮助 =====')
+  
       try {
         this.setHelpVisible(false)
-        console.log('调用 setHelpVisible(false) 成功')
+    
       } catch (error) {
-        console.error('调用 setHelpVisible(false) 失败:', error)
+    
       }
     },
     
@@ -451,13 +451,13 @@ export default {
     
     // 移除键值对
     removeKvPair(index) {
-      console.log('移除键值对，索引:', index);
+  
       this.removeKvPairAction(index)
     },
     
     // 处理从ApiConfig组件传递的add-kv-pair事件
     addKvPair() {
-      console.log('处理添加键值对事件');
+  
       // 使用从mapActions映射的方法
       this.addKvPairAction();
       // 标记用户已使用工具
@@ -495,13 +495,12 @@ export default {
     
     // 处理请求方式切换
     handleRequestModeChange(mode) {
-      console.log('===== ApiTestPage: 处理请求方式切换 =====');
-      console.log('切换到模式:', mode);
+      
       try {
         this.updateProperty('requestMode', mode);
-        console.log('更新requestMode成功，当前值:', this.requestMode);
+    
       } catch (error) {
-        console.error('更新requestMode失败:', error);
+    
       }
     },
     
@@ -510,7 +509,7 @@ export default {
       try {
         this.updateProperty('globalParamMode', mode);
       } catch (error) {
-        console.error('更新globalParamMode失败:', error);
+    
       }
     },
     // 处理全局参数提交方式切换
@@ -553,7 +552,7 @@ export default {
           this.showToast('设置保存失败')
         }
       } catch (error) {
-        console.error('保存全局设置失败:', error)
+    
         this.showToast('设置保存失败')
       }
     },
@@ -575,12 +574,12 @@ export default {
           globalParamMethod: settings.globalParamMethod || 'GET'
         }
         
-        console.log('准备更新到store的设置:', settingsToUpdate)
+    
         this.updateState(settingsToUpdate)
         
-        console.log('全局设置加载完成')
+    
       } catch (error) {
-        console.error('加载全局设置失败:', error)
+    
       }
     },
     // 验证全局JSON参数
@@ -676,7 +675,7 @@ export default {
               try {
                 jsonData[key] = value ? JSON.parse(value) : {}
               } catch (e) {
-                console.error('对象解析失败:', e)
+            
                 jsonData[key] = {}
               }
               break
@@ -738,7 +737,7 @@ export default {
           }
         }
       } catch (e) {
-        console.error('加载历史记录失败:', e)
+    
       }
     },
     // 保存请求到历史
@@ -796,7 +795,7 @@ export default {
       try {
         storage.saveHistory(this.requestHistory)
       } catch (e) {
-        console.error('保存历史记录失败:', e)
+    
       }
     },
     // 加载历史记录项（优先使用合并后的参数）
@@ -883,7 +882,7 @@ export default {
     },
     // 处理输入模式切换
     handleInputModeChange(newMode) {
-      console.log('切换输入模式:', newMode);
+  
       this.updateProperty('inputMode', newMode);
       // 当切换到JSON模式时，尝试从键值对生成JSON
       if (newMode === 'json') {
@@ -894,7 +893,7 @@ export default {
     // 导入JSON为键值对
     importJsonToKvPairs() {
       try {
-        console.log('导入JSON为键值对');
+    
         const result = Helpers.validateJson(this.jsonRawInput)
         if (!result.valid) {
           this.showToast(`JSON格式错误: ${result.error}`)
@@ -929,7 +928,7 @@ export default {
             try {
               valueStr = JSON.stringify(value)
             } catch (e) {
-              console.error('对象转换为JSON字符串失败:', e)
+          
               valueStr = String(value)
             }
           } else {
@@ -1034,7 +1033,7 @@ export default {
           this.mergeParams(target, processedJson)
         }
       } catch (e) {
-        console.warn('全局参数JSON解析失败:', e)
+    
         this.showToast('全局参数JSON格式错误，请检查')
       }
     },
@@ -1070,7 +1069,7 @@ export default {
     collectRequestConfig() {
       // 创建页面参数的深拷贝，确保不影响原页面参数
       // 确保使用最新的全局参数
-      console.log('在collectRequestConfig中获取的全局参数:', this.globalParams);
+  
       const pageGlobalParams = JSON.parse(JSON.stringify(this.globalParams))
       const pageApiParams = JSON.parse(JSON.stringify(this.apiParams))
       const pageHeaders = JSON.parse(JSON.stringify(this.headers))
@@ -1101,7 +1100,7 @@ export default {
               }
             }
           } catch (e) {
-            console.warn('全局参数JSON解析失败:', e)
+        
             this.showToast('全局参数JSON格式错误，请检查')
           }
         } else {
@@ -1193,7 +1192,7 @@ export default {
                 try {
                   jsonData[key] = value ? JSON.parse(value) : {}
                 } catch (e) {
-                  console.error('对象解析失败:', e)
+              
                   jsonData[key] = {}
                 }
                 break
@@ -1228,11 +1227,11 @@ export default {
       
       // 收集全局参数
       const globalParams = collectRequestGlobalParams()
-      console.log('收集到的全局参数:', globalParams)
+  
       
       // 处理接口参数
       const apiParams = processRequestApiParams()
-      console.log('处理后的接口参数:', apiParams)
+  
       
       // 根据全局参数提交方式决定如何处理全局参数
       let params = {} // URL参数
@@ -1244,15 +1243,15 @@ export default {
       // 全局参数根据提交方式处理
       if (pageGlobalParamMethod === 'GET') {
         // GET请求：全局参数合并到URL参数
-        console.log('GET模式：合并全局参数到URL参数')
+    
         this.mergeParams(params, globalParams)
       } else {
         // 非GET请求：全局参数合并到请求体
-        console.log('非GET模式：全局参数设置为请求体参数')
+    
         bodyParams = globalParams
       }
-      console.log('合并后的URL参数:', params)
-      console.log('准备的请求体参数:', bodyParams)
+  
+  
       
       // 构建请求配置
       const { url, targetUrl } = buildRequestUrlInfo(params)
@@ -1264,8 +1263,8 @@ export default {
       
       // 合并请求体数据
       let finalData = apiRequestBody
-      console.log('原始请求体数据:', apiRequestBody)
-      console.log('是否需要合并请求体:', hasBody && bodyParams && Object.keys(bodyParams).length > 0)
+  
+  
       if (hasBody && bodyParams && Object.keys(bodyParams).length > 0) {
         // 如果接口已有请求体，深度合并全局参数
         if (typeof apiRequestBody === 'object' && apiRequestBody !== null) {
@@ -1428,7 +1427,7 @@ export default {
         document.execCommand('copy')
         this.showToast('响应内容已复制')
       } catch (error) {
-        console.error('复制失败:', error)
+    
         modalHelper.error('复制失败！请手动复制内容')
       } finally {
         document.body.removeChild(textArea)

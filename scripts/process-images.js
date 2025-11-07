@@ -15,9 +15,9 @@ async function processImage(inputPath, outputPath, width = 1000) {
       .resize({ width: width })
       .jpeg({ quality: 80 })
       .toFile(outputPath);
-    console.log(`Processed ${inputPath} -> ${outputPath}`);
+    
   } catch (error) {
-    console.error(`Error processing ${inputPath}:`, error);
+    
   }
 }
 
@@ -37,7 +37,7 @@ async function processAllImages() {
     }
   }
   
-  console.log('All images processed successfully!');
+  
 }
 
 processAllImages();

@@ -108,7 +108,7 @@ export default {
       try {
         this.$emit('show-global-settings')
       } catch (error) {
-        console.error('事件触发失败:', error)
+    
       }
       this.showMobileMenu = false // 关闭移动端菜单
     },
@@ -117,7 +117,7 @@ export default {
       try {
         this.$emit('show-help')
       } catch (error) {
-        console.error('事件触发失败:', error)
+    
       }
       this.showMobileMenu = false // 关闭移动端菜单
     },
@@ -126,7 +126,7 @@ export default {
       try {
         this.$emit('toggle-theme')
       } catch (error) {
-        console.error('事件触发失败:', error)
+    
       }
       this.showMobileMenu = false // 关闭移动端菜单
     },

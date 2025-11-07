@@ -10,7 +10,7 @@ import './styles/main.css'
 import './styles/tailwind.css'
 
 // 引入font-awesome
-import 'font-awesome/css/font-awesome.min.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 // 引入json5
 import JSON5 from 'json5'

@@ -57,84 +57,120 @@
     </header>
 
     <main class="container mx-auto px-4 py-8">
-      <div class="text-center mb-8 md:mb-12">
-        <h1 class="text-2xl md:text-3xl font-bold text-dark mb-4">欢迎使用 API Proxy Tester Dev By AI Coder</h1>
-        <p class="text-base md:text-lg text-dark-2 mb-8 md:mb-10 max-w-4xl mx-auto">现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。在对接一些内部系统时，接口通常不允许外网访问，本地在做接口对接测试及开发时无法实时访问测试查看接口效果。本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。</p>
-        
-        <!-- 添加的按钮 -->
-        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-          <button 
-            @click="$router.push('/api-test')"
-            class="px-6 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-all-300 flex items-center justify-center space-x-2"
-          >
-            <i class="fa fa-rocket"></i>
-            <span>立即使用</span>
-          </button>
-          <a 
-            href="https://github.com/HongJuZi/API-Proxy-Tester" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="px-6 py-3 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-lg transition-all-300 flex items-center justify-center space-x-2"
-          >
-            <i class="fa fa-github"></i>
-            <span>下载源码</span>
-          </a>
+      <div class="text-center mb-10 md:mb-16">
+        <div class="mb-6">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+            <i class="fa fa-exchange text-primary text-3xl"></i>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-bold text-dark mb-4">API Proxy Tester</h1>
+          <p class="text-lg md:text-xl text-primary font-medium mb-2">Dev By AI Coder</p>
         </div>
+        
+        <p class="text-base md:text-lg text-dark-2 mb-10 max-w-3xl mx-auto leading-relaxed">
+          现代化的API测试工具，专为解决企业内部系统接口测试难题而设计。
+          本工具可简单部署在内网环境中，为后续的内部接口对接提供方便的测试和实时接口数据对接能力。
+        </p>
+        
+        <!-- 核心价值卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-12">
+          <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-hover transition-all-300">
+            <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <i class="fa fa-shield text-blue-500 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-dark mb-2">内网访问</h3>
+            <p class="text-dark-2 text-sm">解决内网接口无法外网访问的难题</p>
+          </div>
+          
+          <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-hover transition-all-300">
+            <div class="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <i class="fa fa-bolt text-green-500 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-dark mb-2">实时测试</h3>
+            <p class="text-dark-2 text-sm">实时获取真实响应数据，验证接口可用性</p>
+          </div>
+          
+          <div class="bg-white rounded-xl shadow-card p-6 hover:shadow-hover transition-all-300">
+            <div class="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center mb-4 mx-auto">
+              <i class="fa fa-file-text-o text-purple-500 text-2xl"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-dark mb-2">文档同步</h3>
+            <p class="text-dark-2 text-sm">解决文档与实际接口不符的问题</p>
+          </div>
+        </div>
+        
         <!-- AI开发特色介绍和合作邀请 - 列排版 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10 mt-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
           <!-- AI开发特色介绍 -->
-          <div class="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl p-6">
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all-300">
             <div class="flex flex-col items-center text-center">
-              <div class="mb-4">
-                <div class="bg-white rounded-full p-4 shadow-md inline-block">
-                  <i class="fa fa-robot text-primary text-4xl"></i>
+              <div class="mb-5">
+                <div class="bg-white rounded-full p-5 shadow-md inline-block">
+                  <i class="fa fa-robot text-blue-500 text-4xl"></i>
                 </div>
               </div>
               <div class="w-full">
-                <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">AI驱动的开发模式</h2>
-                <p class="text-dark-2 mb-4 text-sm md:text-base">
+                <h2 class="text-2xl font-bold text-dark mb-4">AI驱动的开发模式</h2>
+                <p class="text-dark-2 mb-6 text-base leading-relaxed">
                   本项目是全程由AI Coder参与开发的创新项目，从需求分析、架构设计到代码实现均由AI辅助完成。
                   我们致力于探索AI在软件开发领域的应用，让需求实现由AI来完成，推动项目迭代目标的自动化实现。
-                  目前使用到的AI开发工具有：Trace CN、Qorder等先进AI编程工具。
                 </p>
                 <div class="flex flex-wrap justify-center gap-2">
-                  <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs md:text-sm">AI开发</span>
-                  <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs md:text-sm">自动化实现</span>
-                  <span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs md:text-sm">智能编程</span>
+                  <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">AI开发</span>
+                  <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">自动化实现</span>
+                  <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">智能编程</span>
                 </div>
               </div>
             </div>
           </div>
           
           <!-- 合作邀请 -->
-          <div class="bg-gradient-to-r from-accent/10 to-warning/10 rounded-2xl p-6">
+          <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all-300">
             <div class="flex flex-col items-center text-center">
-              <div class="mb-4">
-                <div class="bg-white rounded-full p-4 shadow-md inline-block">
-                  <i class="fa fa-users text-accent text-4xl"></i>
+              <div class="mb-5">
+                <div class="bg-white rounded-full p-5 shadow-md inline-block">
+                  <i class="fa fa-users text-green-500 text-4xl"></i>
                 </div>
               </div>
               <div class="w-full">
-                <h2 class="text-xl md:text-2xl font-semibold text-dark mb-3">加入我们的开发社区</h2>
-                <p class="text-dark-2 mb-4 text-sm md:text-base">
+                <h2 class="text-2xl font-bold text-dark mb-4">加入我们的开发社区</h2>
+                <p class="text-dark-2 mb-6 text-base leading-relaxed">
                   如果您对这个项目感兴趣，有任何需求想法或改进建议，欢迎加入我们的开发社区！
                   我们鼓励开发者、测试人员和产品经理共同参与项目迭代，一起打造更强大的API测试工具。
-                  请多多提Issues，您的每一个建议都可能成为下一个版本的重要功能！
                 </p>
                 <a href="https://github.com/HongJuZi/API-Proxy-Tester/issues" target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center bg-accent hover:bg-accent/90 text-white font-medium py-2 px-6 rounded-lg transition-all-300">
+                   class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 transform hover:-translate-y-0.5">
                   <i class="fa fa-github mr-2"></i>提交Issue
+                  <i class="fa fa-arrow-right ml-2 text-sm"></i>
                 </a>
               </div>
             </div>
           </div>
         </div>
         
+        <!-- 行动按钮 -->
+        <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+          <button 
+            @click="$router.push('/api-test')"
+            class="px-8 py-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
+          >
+            <i class="fa fa-rocket"></i>
+            <span class="text-lg">立即使用</span>
+          </button>
+          <a 
+            href="https://github.com/HongJuZi/API-Proxy-Tester" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="px-8 py-4 bg-secondary hover:bg-secondary/90 text-white font-medium rounded-xl transition-all-300 flex items-center justify-center space-x-2 transform hover:-translate-y-1 hover:shadow-lg"
+          >
+            <i class="fa fa-github"></i>
+            <span class="text-lg">下载源码</span>
+          </a>
+        </div>
       </div>
 
       <!-- 轮播图组件 -->
-      <div class="mb-8 md:mb-12 max-w-4xl mx-auto">
-        <div class="relative overflow-hidden rounded-xl shadow-lg" ref="carouselContainer">
+      <div class="mb-12 md:mb-16 max-w-4xl mx-auto">
+        <div class="relative overflow-hidden rounded-2xl shadow-xl" ref="carouselContainer">
           <!-- 图片容器 -->
           <div 
             class="flex transition-transform duration-500 ease-in-out"
@@ -157,66 +193,66 @@
           <!-- 导航按钮 -->
           <button 
             @click="prevSlide" 
-            class="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-1.5 md:p-2 transition-all"
+            class="absolute left-4 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 md:p-3 transition-all"
           >
-            <i class="fa fa-chevron-left text-sm md:text-base"></i>
+            <i class="fa fa-chevron-left text-base md:text-lg"></i>
           </button>
           <button 
             @click="nextSlide" 
-            class="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-1.5 md:p-2 transition-all"
+            class="absolute right-4 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full p-2 md:p-3 transition-all"
           >
-            <i class="fa fa-chevron-right text-sm md:text-base"></i>
+            <i class="fa fa-chevron-right text-base md:text-lg"></i>
           </button>
           
           <!-- 指示器 -->
-          <div class="absolute bottom-2 md:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 md:space-x-2">
+          <div class="absolute bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
             <button 
               v-for="(slide, index) in slides" 
               :key="index"
               @click="goToSlide(index)"
-              :class="['w-2 h-2 md:w-3 md:h-3 rounded-full transition-all', currentIndex === index ? 'bg-white' : 'bg-white/50']"
+              :class="['w-3 h-3 rounded-full transition-all', currentIndex === index ? 'bg-white w-6' : 'bg-white/50']"
             ></button>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         <!-- API测试工具卡片 -->
-        <div class="bg-white rounded-xl shadow-card p-4 md:p-6 hover:shadow-hover transition-all-300 cursor-pointer" 
+        <div class="bg-white rounded-2xl shadow-card p-6 hover:shadow-hover transition-all-300 cursor-pointer transform hover:-translate-y-1" 
              @click="$router.push('/api-test')">
-          <div class="flex items-center mb-3 md:mb-4">
-            <i class="fa fa-terminal text-primary text-xl md:text-2xl mr-2 md:mr-3"></i>
-            <h2 class="text-lg md:text-xl font-semibold">API测试工具</h2>
+          <div class="flex items-center mb-4">
+            <i class="fa fa-terminal text-primary text-2xl mr-3"></i>
+            <h2 class="text-xl font-bold">API测试工具</h2>
           </div>
-          <p class="text-sm md:text-base text-dark-2 mb-3 md:mb-4">完整的API测试解决方案，支持多种请求方式和参数配置</p>
-          <div class="flex items-center text-primary text-sm md:text-base">
+          <p class="text-dark-2 mb-4 text-base">完整的API测试解决方案，支持多种请求方式和参数配置</p>
+          <div class="flex items-center text-primary font-medium">
             <span>立即使用</span>
-            <i class="fa fa-arrow-right ml-1 md:ml-2"></i>
+            <i class="fa fa-arrow-right ml-2"></i>
           </div>
         </div>
 
         <!-- 文档生成工具卡片 -->
-        <div class="bg-white rounded-xl shadow-card p-4 md:p-6 hover:shadow-hover transition-all-300 cursor-pointer" 
+        <div class="bg-white rounded-2xl shadow-card p-6 hover:shadow-hover transition-all-300 cursor-pointer transform hover:-translate-y-1" 
              @click="$router.push('/api-test')">
-          <div class="flex items-center mb-3 md:mb-4">
-            <i class="fa fa-file-text-o text-secondary text-xl md:text-2xl mr-2 md:mr-3"></i>
-            <h2 class="text-lg md:text-xl font-semibold">文档生成工具</h2>
+          <div class="flex items-center mb-4">
+            <i class="fa fa-file-text-o text-secondary text-2xl mr-3"></i>
+            <h2 class="text-xl font-bold">文档生成工具</h2>
           </div>
-          <p class="text-sm md:text-base text-dark-2 mb-3 md:mb-4">自动生成API文档，支持Markdown和HTML格式</p>
-          <div class="flex items-center text-secondary text-sm md:text-base">
+          <p class="text-dark-2 mb-4 text-base">自动生成API文档，支持Markdown和HTML格式</p>
+          <div class="flex items-center text-secondary font-medium">
             <span>立即使用</span>
-            <i class="fa fa-arrow-right ml-1 md:ml-2"></i>
+            <i class="fa fa-arrow-right ml-2"></i>
           </div>
         </div>
 
         <!-- Mock服务卡片 -->
-        <div class="bg-white rounded-xl shadow-card p-4 md:p-6 hover:shadow-hover transition-all-300 opacity-50">
-          <div class="flex items-center mb-3 md:mb-4">
-            <i class="fa fa-server text-accent text-xl md:text-2xl mr-2 md:mr-3"></i>
-            <h2 class="text-lg md:text-xl font-semibold">Mock服务</h2>
+        <div class="bg-white rounded-2xl shadow-card p-6 hover:shadow-hover transition-all-300 opacity-50 transform hover:-translate-y-1">
+          <div class="flex items-center mb-4">
+            <i class="fa fa-server text-accent text-2xl mr-3"></i>
+            <h2 class="text-xl font-bold">Mock服务</h2>
           </div>
-          <p class="text-sm md:text-base text-dark-2 mb-3 md:mb-4">快速创建Mock API，模拟真实接口响应</p>
-          <div class="flex items-center text-dark-2 text-sm md:text-base">
+          <p class="text-dark-2 mb-4 text-base">快速创建Mock API，模拟真实接口响应</p>
+          <div class="flex items-center text-dark-2 font-medium">
             <span>即将上线</span>
           </div>
         </div>
@@ -225,8 +261,8 @@
     </main>
 
     <!-- 页脚 -->
-    <footer class="mt-8 md:mt-16 py-4 md:py-6 text-center text-xs md:text-sm text-gray-500 border-t border-gray-200">
-      <p>© 2025 API Proxy Tester By AI Coder <span class="ml-1 md:ml-2">v1.0.0</span></p>
+    <footer class="mt-12 md:mt-16 py-6 md:py-8 text-center text-sm md:text-base text-gray-500 border-t border-gray-200">
+      <p>© 2025 API Proxy Tester By AI Coder <span class="ml-2">v1.0.0</span></p>
       <p class="mt-1">开源许可协议：MIT</p>
     </footer>
   </div>

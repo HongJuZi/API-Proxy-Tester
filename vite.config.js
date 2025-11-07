@@ -13,5 +13,19 @@ export default defineConfig({
   build: {
     outDir: 'dist/',
     assetsDir: 'assets'
+  },
+  // 添加CSS相关配置，确保Font Awesome正常工作
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "node_modules/font-awesome/scss/font-awesome.scss";`
+      }
+    }
+  },
+  // 添加别名和资源处理配置
+  resolve: {
+    alias: {
+      'font-awesome': 'node_modules/font-awesome'
+    }
   }
 })

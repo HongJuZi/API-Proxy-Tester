@@ -1,66 +1,93 @@
 <template>
-  <header class="bg-white shadow-sm sticky top-0 z-50">
+  <header class="bg-white shadow-md sticky top-0 z-50 backdrop-blur-sm bg-opacity-90">
     <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <i class="fa fa-exchange text-primary text-2xl"></i>
-        <h1 class="text-xl md:text-2xl font-bold text-dark">API Proxy Tester</h1>
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <i class="fa fa-exchange text-primary text-xl"></i>
+        </div>
+        <h1 class="text-xl md:text-2xl font-bold text-dark bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">API Proxy Tester</h1>
       </div>
       <!-- 桌面端导航 -->
-      <div class="hidden md:flex items-center space-x-4">
-        <button @click="$router.push('/')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/' }]">
-          <i class="fa fa-home mr-1"></i>首页
+      <div class="hidden md:flex items-center space-x-1">
+        <button @click="$router.push('/')" 
+                :class="['px-4 py-2 rounded-lg font-medium transition-all-300 flex items-center space-x-1', 
+                        { 'bg-primary/10 text-primary': $route.path === '/' },
+                        { 'text-dark-2 hover:bg-light-1 hover:text-primary': $route.path !== '/' }]">
+          <i class="fa fa-home"></i>
+          <span>首页</span>
         </button>
-        <a href="https://www.hongjuzi.com.cn" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
-          <i class="fa fa-globe mr-1"></i>官网
+        <a href="https://www.hongjuzi.com.cn" target="_blank" rel="noopener noreferrer" 
+           class="px-4 py-2 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300 flex items-center space-x-1">
+          <i class="fa fa-globe"></i>
+          <span>官网</span>
         </a>
-        <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" class="text-dark-2 hover:text-primary transition-all-300">
-          <i class="fa fa-github mr-1"></i>GitHub
+        <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer" 
+           class="px-4 py-2 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300 flex items-center space-x-1">
+          <i class="fa fa-github"></i>
+          <span>GitHub</span>
         </a>
-        <button @click="$router.push('/about')" :class="['text-dark-2 hover:text-primary transition-all-300', { 'text-primary font-medium': $route.path === '/about' }]">
-          <i class="fa fa-info-circle mr-1"></i>关于
+        <button @click="$router.push('/about')" 
+                :class="['px-4 py-2 rounded-lg font-medium transition-all-300 flex items-center space-x-1', 
+                        { 'bg-primary/10 text-primary': $route.path === '/about' },
+                        { 'text-dark-2 hover:bg-light-1 hover:text-primary': $route.path !== '/about' }]">
+          <i class="fa fa-info-circle"></i>
+          <span>关于</span>
         </button>
-        <button @click="toggleTheme" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
-          <i class="fa fa-moon-o text-dark-2"></i>
+        <div class="h-5 w-px bg-gray-200 mx-1"></div>
+        <button @click="toggleTheme" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
+          <i class="fa fa-moon-o"></i>
         </button>
-        <button @click="showGlobalSettings" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
-          <i class="fa fa-cog text-dark-2"></i>
+        <button @click="showGlobalSettings" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
+          <i class="fa fa-cog"></i>
         </button>
-        <button @click="showHelp" class="p-2 rounded-full hover:bg-light-1 transition-all-300">
-          <i class="fa fa-question-circle text-dark-2"></i>
+        <button @click="showHelp" class="p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
+          <i class="fa fa-question-circle"></i>
         </button>
       </div>
       <!-- 移动端菜单按钮 -->
-      <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-full hover:bg-light-1 transition-all-300">
-        <i class="fa fa-bars text-dark-2"></i>
+      <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-lg hover:bg-light-1 text-dark-2 hover:text-primary transition-all-300">
+        <i class="fa fa-bars text-xl"></i>
       </button>
     </div>
     <!-- 移动端导航菜单 -->
-    <div v-if="showMobileMenu" class="md:hidden bg-white border-t border-light-2 py-2 px-4">
-      <div class="flex flex-col space-y-3">
+    <div v-if="showMobileMenu" class="md:hidden bg-white border-t border-light-2 py-3 px-4 shadow-lg">
+      <div class="flex flex-col space-y-2">
         <button @click="navigateTo('/')"
-          :class="['flex items-center py-2 px-4 rounded-lg', { 'bg-primary/10 text-primary font-medium': $route.path === '/' }]">
-          <i class="fa fa-home mr-2"></i>首页
+                :class="['flex items-center py-3 px-4 rounded-lg font-medium transition-all-300', 
+                        { 'bg-primary/10 text-primary': $route.path === '/' },
+                        { 'text-dark-2 hover:bg-light-1': $route.path !== '/' }]">
+          <i class="fa fa-home mr-3 text-lg"></i>
+          <span>首页</span>
         </button>
         <a href="https://www.hongjuzi.com.cn" target="_blank" rel="noopener noreferrer"
-          class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-          <i class="fa fa-globe mr-2"></i>官网
+           class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+          <i class="fa fa-globe mr-3 text-lg"></i>
+          <span>官网</span>
         </a>
         <a href="https://github.com/HongJuZi/API-Proxy-Tester" target="_blank" rel="noopener noreferrer"
-          class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-          <i class="fa fa-github mr-2"></i>GitHub
+           class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+          <i class="fa fa-github mr-3 text-lg"></i>
+          <span>GitHub</span>
         </a>
         <button @click="navigateTo('/about')"
-          :class="['flex items-center py-2 px-4 rounded-lg', { 'bg-primary/10 text-primary font-medium': $route.path === '/about' }]">
-          <i class="fa fa-info-circle mr-2"></i>关于
+                :class="['flex items-center py-3 px-4 rounded-lg font-medium transition-all-300', 
+                        { 'bg-primary/10 text-primary': $route.path === '/about' },
+                        { 'text-dark-2 hover:bg-light-1': $route.path !== '/about' }]">
+          <i class="fa fa-info-circle mr-3 text-lg"></i>
+          <span>关于</span>
         </button>
-        <button @click="toggleTheme" class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-          <i class="fa fa-moon-o mr-2"></i>切换主题
+        <div class="h-px bg-gray-100 my-2"></div>
+        <button @click="toggleTheme" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+          <i class="fa fa-moon-o mr-3 text-lg"></i>
+          <span>切换主题</span>
         </button>
-        <button @click="showGlobalSettings" class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-          <i class="fa fa-cog mr-2"></i>全局设置
+        <button @click="showGlobalSettings" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+          <i class="fa fa-cog mr-3 text-lg"></i>
+          <span>全局设置</span>
         </button>
-        <button @click="showHelp" class="flex items-center py-2 px-4 rounded-lg text-dark-2 hover:bg-light-1 hover:text-primary transition-all-300">
-          <i class="fa fa-question-circle mr-2"></i>帮助
+        <button @click="showHelp" class="flex items-center py-3 px-4 rounded-lg text-dark-2 hover:bg-light-1 transition-all-300">
+          <i class="fa fa-question-circle mr-3 text-lg"></i>
+          <span>帮助</span>
         </button>
       </div>
     </div>

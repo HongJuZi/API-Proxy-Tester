@@ -9,6 +9,7 @@
     <textarea
       v-model="localValue"
       @input="handleInput"
+      @blur="formatJSON"
       :placeholder="placeholder || '请输入JSON格式的数据...'"
       style="width: 100%; height: 250px; border: 2px solid blue; background: #e6f7ff; border-radius: 6px; padding: 12px; font-family: monospace; font-size: 14px; resize: vertical; color: black;"
     ></textarea>
@@ -79,6 +80,28 @@ export default {
       this.$emit('input', this.localValue)
       // 发出验证事件
       this.$emit('validated', { valid: !this.error, error: this.error })
+    },
+    
+    formatJSON() {
+      // 当输入框失去焦点时自动格式化JSON
+      if (this.localValue.trim()) {
+        try {
+          // 解析并重新格式化JSON
+          const parsed = JSON.parse(this.localValue)
+          this.localValue = JSON.stringify(parsed, null, 2)
+          this.error = ''
+          
+          // 发出格式化后的输入事件
+          this.$emit('input', this.localValue)
+          this.$emit('validated', { valid: true, error: '' })
+          
+          console.log('JSON已自动格式化')
+        } catch (e) {
+          // 如果格式化失败，保留原始内容并显示错误
+          this.error = 'JSON格式不正确，无法自动格式化'
+          console.log('JSON格式化失败:', e.message)
+        }
+      }
     }
   }
 }

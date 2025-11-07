@@ -377,7 +377,7 @@ export default {
       // 清除之前的错误信息
       this.jsonValidationError = ''
     },
-    // 处理JSON输入框失去焦点事件
+    // 处理JSON输入框失去焦点事件，验证并自动格式化
     handleJsonBlur() {
       // 如果有输入值，自动验证JSON格式
       const trimmedInput = this.localJsonInput.trim()
@@ -389,6 +389,16 @@ export default {
         } else {
           this.jsonValidationError = ''
           this.$emit('json-valid')
+          // 验证成功后自动格式化JSON
+          try {
+            const parsedJson = JSON.parse(trimmedInput)
+            this.localJsonInput = JSON.stringify(parsedJson, null, 2)
+            // 手动触发更新事件
+            this.$emit('update:jsonRawInput', this.localJsonInput)
+          } catch (e) {
+            // 格式化失败但不影响验证结果
+            console.warn('JSON格式化失败:', e)
+          }
         }
       }
     },

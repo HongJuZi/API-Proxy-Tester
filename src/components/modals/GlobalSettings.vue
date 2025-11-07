@@ -406,7 +406,7 @@ export default {
       }
     },
     
-    // 处理JSON输入失去焦点事件，验证格式
+    // 处理JSON输入失去焦点事件，验证并自动格式化格式
     handleJsonBlur() {
       if (!this.globalJsonInputModel.trim()) {
         this.jsonValidationError = '';
@@ -418,6 +418,17 @@ export default {
         this.jsonValidationError = `JSON格式错误: ${result.error || '未知错误'}`;
       } else {
         this.jsonValidationError = '';
+        // 验证成功后自动格式化JSON
+        try {
+          const parsedJson = JSON.parse(this.globalJsonInputModel);
+          this.globalJsonInputModel = JSON.stringify(parsedJson, null, 2);
+          // 手动触发更新和保存
+          this.$emit('update:globalJsonInput', this.globalJsonInputModel);
+          this.saveSettings();
+        } catch (e) {
+          // 格式化失败但不影响验证结果
+          console.warn('JSON格式化失败:', e);
+        }
       }
     }
   }

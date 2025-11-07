@@ -34,7 +34,7 @@
         <div class="bg-secondary/5 rounded-lg p-3 border border-secondary/10 hover:border-secondary/30 transition-all-300">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
-              <i class="fa fa-clock-o"></i>
+              <i class="fa fa-clock"></i>
             </div>
             <div>
               <div class="text-xs text-dark-3 uppercase tracking-wide font-medium">耗时</div>
@@ -47,7 +47,7 @@
         <div class="bg-info/5 rounded-lg p-3 border border-info/10 hover:border-info/30 transition-all-300">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full bg-info/10 flex items-center justify-center text-info">
-              <i class="fa fa-file-o"></i>
+              <i class="fa fa-file"></i>
             </div>
             <div>
               <div class="text-xs text-dark-3 uppercase tracking-wide font-medium">大小</div>

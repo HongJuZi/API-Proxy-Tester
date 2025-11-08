@@ -37,8 +37,8 @@ API Proxy Tester solves the above pain points through:
 ## DEMO
 
 ![Home Page](./public/demo/index.jpg)
-![API Proxy Tester Demo](./public/demo/api.png)
-![Global Setting](./public/demo/config.png)
+![API Proxy Tester Demo](./public/demo/api.jpg)
+![Global Setting](./public/demo/config.jpg)
 
 ## Project Structure
 

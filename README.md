@@ -37,8 +37,8 @@ API Proxy Tester通过以下方式解决上述痛点：
 ## DEMO演示
 
 ![首页](./public/demo/index.jpg)
-![API Proxy Tester Demo](./public/demo/api.png)
-![全局设置](./public/demo/config.png)
+![API Proxy Tester Demo](./public/demo/api.jpg)
+![全局设置](./public/demo/config.jpg)
 
 ## 项目结构
 

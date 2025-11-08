@@ -276,6 +276,94 @@
           </div>
         </div>
       </div>
+
+      <!-- 项目RoadMap卡片 -->
+      <div class="max-w-6xl mx-auto mb-12">
+        <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg p-6">
+          <h2 class="text-2xl font-bold text-dark mb-4 flex items-center">
+            <i class="fa fa-road text-purple-500 mr-2"></i>
+            项目开发路线图
+          </h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- 当前阶段 -->
+            <div class="bg-white rounded-xl shadow-card p-5 border-l-4 border-green-500">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-green-600">当前阶段</h3>
+                <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">进行中</span>
+              </div>
+              <ul class="space-y-2 text-sm text-dark-2">
+                <li class="flex items-center">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>API接口测试功能</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fa fa-check-circle text-green-500 mr-2"></i>
+                  <span>文档生成工具</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fa fa-spinner text-yellow-500 mr-2"></i>
+                  <span>参数模板管理</span>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- 计划阶段 -->
+            <div class="bg-white rounded-xl shadow-card p-5 border-l-4 border-blue-500">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-blue-600">计划阶段</h3>
+                <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">即将开始</span>
+              </div>
+              <ul class="space-y-2 text-sm text-dark-2">
+                <li class="flex items-center">
+                  <i class="fa fa-clock text-blue-500 mr-2"></i>
+                  <span>Mock服务功能</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fa fa-clock text-blue-500 mr-2"></i>
+                  <span>请求历史高级搜索</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fa fa-clock text-blue-500 mr-2"></i>
+                  <span>团队协作功能</span>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- 愿景规划 -->
+            <div class="bg-white rounded-xl shadow-card p-5 border-l-4 border-purple-500">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-purple-600">愿景规划</h3>
+                <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full">规划中</span>
+              </div>
+              <ul class="space-y-2 text-sm text-dark-2">
+                <li class="flex items-center">
+                  <i class="fa fa-star text-purple-500 mr-2"></i>
+                  <span>AI智能测试助手</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fa fa-star text-purple-500 mr-2"></i>
+                  <span>自动化测试流程</span>
+                </li>
+                <li class="flex items-center">
+                  <i class="fa fa-star text-purple-500 mr-2"></i>
+                  <span>多环境配置管理</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="mt-6 text-center">
+            <button 
+              @click="$router.push('/about')"
+              class="inline-flex items-center bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-6 rounded-lg transition-all-300 transform hover:-translate-y-0.5"
+            >
+              <i class="fa fa-info-circle mr-2"></i>了解更多
+              <i class="fa fa-arrow-right ml-2 text-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
     
     <!-- 页脚 -->

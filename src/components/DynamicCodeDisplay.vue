@@ -8,7 +8,7 @@
       </div>
       <div class="text-gray-300 text-sm ml-2">{{ fileName }}</div>
     </div>
-    <div class="h-50 overflow-hidden overflow-y-scroll p-4 font-mono text-sm scroll-thin">
+    <div class="h-auto max-h-50 p-4 font-mono text-sm">
       <div class="text-gray-400">// AI正在编写代码...</div>
       <div v-html="formattedCode"></div>
       <span v-if="isTyping" class="animate-pulse">▌</span>

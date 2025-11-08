@@ -347,6 +347,7 @@ class ApiService {
       path: pageConfig.apiPath, // 保存apiPath用于历史记录加载
       params,
       headers,
+      jsonRawInput: pageConfig.jsonRawInput,
       timeout: pageConfig.timeout,
       data: finalData,
       requestMode: pageConfig.requestMode
@@ -400,8 +401,12 @@ class ApiService {
     }
     
     // 4. 处理请求体
-    if (['POST', 'PUT', 'PATCH'].includes(item.method) && item.data) {
-      updateProperty('jsonRawInput', JSON.stringify(item.data, null, 2));
+    if (['POST', 'PUT', 'PATCH'].includes(item.method) && (item.jsonRawInput || item.data)) {
+      if(item.jsonRawInput) {
+        updateProperty('jsonRawInput', JSON.stringify(item.jsonRawInput, null, 2));
+      } else {
+        updateProperty('jsonRawInput', JSON.stringify(item.data, null, 2));
+      }
       updateProperty('inputMode', 'json');
     }
   }
@@ -477,6 +482,7 @@ class ApiService {
       params: JSON.parse(JSON.stringify(config.params || {})),
       headers: JSON.parse(JSON.stringify(config.headers || {})),
       data: config.data ? JSON.parse(JSON.stringify(config.data)) : null,
+      jsonRawInput: config.jsonRawInput ? JSON.parse(config.jsonRawInput) : {},
       timestamp: Date.now(),
       targetUrl: config.targetUrl || null,
       requestStatus: requestStatus,

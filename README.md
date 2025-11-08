@@ -257,10 +257,14 @@ API-Proxy-Tester/
 
 ---
 
+## 联系交流
+
+- 微信：405494897 （请备注：API Proxy Tester）
+- 邮箱：xjiujiu@foxmail.com
+
 ## 第三方链接
 
-- [Discord](https://discord.com/invite/HongJuZi)
-- [Twitter](https://twitter.com/HongJuZi)
+- [官网](https://www.hongjuzi.com.cn)
 - [GitHub](https://github.com/HongJuZi)
 
 ## 许可证

@@ -238,10 +238,14 @@ Example: Using `{"timestamp": "${datetime}", "request_id": "${UUID}"}` in JSON w
 
 ---
 
+## Contact and Communication
+
+- Wechat：405494897 （Please add me on Wechat with the remark: API Proxy Tester）
+- Email：xjiujiu@foxmail.com
+
 ## Third-party Links
 
-- [Discord](https://discord.com/invite/HongJuZi)
-- [Twitter](https://twitter.com/HongJuZi)
+- [WebSite](https://www.hongjuzi.com.cn)
 - [GitHub](https://github.com/HongJuZi)
 
 ## License

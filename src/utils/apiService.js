@@ -98,6 +98,9 @@ class ApiService {
   processKeyValuePairs(kvPairs) {
     const result = {}
     kvPairs.forEach(param => {
+      if(param?.key && !param.name) {
+        param.name  = param.key
+      }
       if (!param.visible || !param.name.trim()) return
       
       const name = param.name.trim()
@@ -347,7 +350,7 @@ class ApiService {
       path: pageConfig.apiPath, // 保存apiPath用于历史记录加载
       params,
       headers,
-      jsonRawInput: pageConfig.jsonRawInput,
+      jsonRawInput: pageConfig.jsonRawInput ? JSON.parse(pageConfig.jsonRawInput.trim() || '{}') : {},
       timeout: pageConfig.timeout,
       data: finalData,
       requestMode: pageConfig.requestMode
@@ -481,8 +484,8 @@ class ApiService {
       id: Date.now() + Math.random().toString(36).substr(2, 9),
       params: JSON.parse(JSON.stringify(config.params || {})),
       headers: JSON.parse(JSON.stringify(config.headers || {})),
-      data: config.data ? JSON.parse(JSON.stringify(config.data)) : null,
-      jsonRawInput: config.jsonRawInput ? JSON.parse(config.jsonRawInput) : {},
+      data: config.data ? config.data : null,
+      jsonRawInput: config.jsonRawInput ? config.jsonRawInput : null,
       timestamp: Date.now(),
       targetUrl: config.targetUrl || null,
       requestStatus: requestStatus,

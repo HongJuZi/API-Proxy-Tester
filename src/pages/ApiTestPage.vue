@@ -4,9 +4,6 @@
     <AppHeader 
       @toggle-theme="toggleTheme"
     />
-    
-
-    
     <!-- 左侧浮动业务导航工具条 -->
     <div class="hidden lg:block fixed left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-lg shadow-lg border border-gray-200 p-2 z-50 flex flex-col items-center space-y-3 transition-all duration-300" :class="{ 'w-16': !toolBarExpanded, 'w-48': toolBarExpanded }">
       <!-- 业务功能按钮组 -->
@@ -340,6 +337,13 @@ export default {
   },
   watch: {
     // 移除apiName的watcher，避免循环更新
+    
+    // 监听请求方法变化，当选择GET模式时自动切换全局参数到键值对输入方式
+    selectedMethod(newMethod) {
+      if (newMethod === 'GET') {
+        this.updateProperty('globalParamMode', 'kv');
+      }
+    }
   },
   
   computed: {
@@ -891,9 +895,41 @@ export default {
     copyRequestConfig() {
       const config = this.collectRequestConfig()
       const text = JSON.stringify(config, null, 2)
-      navigator.clipboard.writeText(text)
-        .then(() => this.showToast('请求配置已复制'))
-        .catch(() => modalHelper.error('复制失败！'))
+      
+      // 优先使用现代的clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(() => this.showToast('请求配置已复制'))
+          .catch(() => this.fallbackCopyTextToClipboard(text))
+      } else {
+        // 使用传统方法作为后备
+        this.fallbackCopyTextToClipboard(text)
+      }
+    },
+    
+    // 传统的复制文本到剪贴板方法
+    fallbackCopyTextToClipboard(text) {
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      textArea.style.top = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.focus()
+      textArea.select()
+      
+      try {
+        const successful = document.execCommand('copy')
+        if (successful) {
+          this.showToast('请求配置已复制')
+        } else {
+          modalHelper.error('复制失败！')
+        }
+      } catch (err) {
+        modalHelper.error('复制失败！')
+      } finally {
+        document.body.removeChild(textArea)
+      }
     },
     // 验证JSON格式
     validateJson() {

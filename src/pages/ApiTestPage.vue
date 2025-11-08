@@ -1040,6 +1040,7 @@ export default {
         proxyUrl: this.proxyUrl,
         baseUrl: this.baseUrl,
         apiPath: this.apiPath,
+        apiName: this.apiName, // 传递用户输入的接口名称
         globalParamMethod: this.globalParamMethod,
         inputMode: this.inputMode,
         timeout: this.timeout

@@ -330,10 +330,21 @@ class ApiService {
       finalData = paramProcessor.processPlaceholdersInObject(finalData)
     }
     
+    // 生成请求名称 - 优先使用用户输入的apiName，如果没有则使用API路径和方法作为默认名称
+    let requestName = '';
+    if (pageConfig.apiName && pageConfig.apiName.trim()) {
+      requestName = pageConfig.apiName.trim();
+    } else {
+      const apiPath = pageConfig.apiPath || '';
+      requestName = apiPath ? `${pageConfig.selectedMethod} ${apiPath}` : `${pageConfig.selectedMethod} 请求`;
+    }
+    
     return {
       url,
       targetUrl,
       method: pageConfig.selectedMethod,
+      name: requestName, // 添加name属性，用于历史记录显示
+      path: pageConfig.apiPath, // 保存apiPath用于历史记录加载
       params,
       headers,
       timeout: pageConfig.timeout,
@@ -493,7 +504,8 @@ class ApiService {
     }
     
     try {
-      storage.saveHistory(requestHistory);
+      // 保存更新后的历史记录数组，而不是原始的requestHistory
+      storage.saveHistory(newHistory.length > 500 ? newHistory.slice(0, 500) : newHistory);
     } catch (e) {
       // 存储失败时静默处理
     }

@@ -353,7 +353,17 @@ class ApiService {
       jsonRawInput: pageConfig.jsonRawInput ? JSON.parse(pageConfig.jsonRawInput.trim() || '{}') : {},
       timeout: pageConfig.timeout,
       data: finalData,
-      requestMode: pageConfig.requestMode
+      requestMode: pageConfig.requestMode,
+      // 添加全局配置信息
+      baseUrl: pageConfig.baseUrl,
+      globalJsonInput: pageConfig.globalJsonInput ? JSON.parse(pageConfig.globalJsonInput.trim() || '{}') : {},
+      globalParams: pageConfig.globalParams,
+      globalParamMode: pageConfig.globalParamMode,
+      globalParamMethod: pageConfig.globalParamMethod,
+      proxyUrl: pageConfig.proxyUrl,
+      // 添加接口配置信息
+      inputMode: pageConfig.inputMode,
+      kvPairs: pageConfig.kvPairs
     }
   }
   

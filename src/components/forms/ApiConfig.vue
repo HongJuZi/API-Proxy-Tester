@@ -4,8 +4,8 @@
       <h2 class="text-lg font-semibold flex items-center">
         <i class="fa fa-terminal text-primary mr-2"></i>接口配置
       </h2>
-      <button @click="toggleExpand('api')" class="text-dark-2 hover:text-primary transition-all-300">
-        <i :class="expandedSections.api ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"></i>
+      <button @click="$emit('share-config')" class="text-dark-2 hover:text-primary transition-all-300">
+        <i class="fa fa-share-alt"></i>
       </button>
     </div>
     
@@ -403,6 +403,7 @@ export default {
       }
     },
     handleTabKey(event) {
+      // 只处理Tab键，其他快捷键（如Ctrl+A、Ctrl+C、Ctrl+V）保持默认行为
       if (event.key === 'Tab') {
         event.preventDefault();
         
@@ -419,6 +420,7 @@ export default {
           textarea.selectionStart = textarea.selectionEnd = start + spaces.length;
         });
       }
+      // 对于其他快捷键，不做任何处理，保持浏览器默认行为
     }
   }
 }

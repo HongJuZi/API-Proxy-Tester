@@ -28,6 +28,17 @@
             <i class="fa fa-cog text-lg w-6 text-center"></i>
             <span v-show="toolBarExpanded">全局设置</span>
           </button>
+          
+          <!-- 粘贴配置按钮 -->
+          <button 
+            @click="openPasteConfigModal"
+            class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
+            :class="{ 'bg-primary/10 text-primary': activeTool === 'paste' }"
+          >
+            <i class="fa fa-paste text-lg w-6 text-center"></i>
+            <span v-show="toolBarExpanded">粘贴配置</span>
+          </button>
+          
           <button 
             @click="handleShowHelp"
             class="px-3 py-2 h-10 rounded-md text-sm flex items-center space-x-3 w-full justify-start hover:bg-gray-100 transition-colors overflow-hidden"
@@ -71,26 +82,34 @@
     <!-- 移动端业务导航工具条 -->
     <div class="lg:hidden bg-white border-b border-gray-200 py-2 px-4 flex items-center justify-between z-40">
       <div class="flex items-center space-x-2">
-        <button 
-          @click="toggleHistoryModal"
-          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
-          title="历史请求"
-        >
-          <i class="fa fa-history"></i>
-        </button>
-        <button 
-          @click="handleShowGlobalSettings"
-          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
-        >
-          <i class="fa fa-cog"></i>
-        </button>
-        <button 
-          @click="handleShowHelp"
-          class="p-2 rounded-md hover:bg-gray-100 transition-colors"
-        >
-          <i class="fa fa-question-circle"></i>
-        </button>
-      </div>
+          <button 
+            @click="toggleHistoryModal"
+            class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+            title="历史请求"
+          >
+            <i class="fa fa-history"></i>
+          </button>
+          <button 
+            @click="handleShowGlobalSettings"
+            class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          >
+            <i class="fa fa-cog"></i>
+          </button>
+          <!-- 粘贴配置按钮 -->
+          <button 
+            @click="openPasteConfigModal"
+            class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+            title="粘贴配置"
+          >
+            <i class="fa fa-paste"></i>
+          </button>
+          <button 
+            @click="handleShowHelp"
+            class="p-2 rounded-md hover:bg-gray-100 transition-colors"
+          >
+            <i class="fa fa-question-circle"></i>
+          </button>
+        </div>
       <div class="flex items-center space-x-2">
         <button 
           class="p-2 rounded-md hover:bg-gray-100 transition-colors"
@@ -184,6 +203,7 @@
           @send-request="sendRequest"
           @clear-api-config="clearApiConfig"
           @update:api-path="updateProperty('apiPath', $event)"
+          @share-config="showShareModalFunc"
         />
         
         <!-- 请求信息卡片 -->
@@ -272,6 +292,95 @@
     <!-- 帮助模态框 -->
     <HelpModal v-if="showHelp" @close="hideHelp" />
     
+    <!-- 分享模态框 -->
+    <div v-if="showShareModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- 模态框头部 -->
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="font-medium text-dark flex items-center">
+            <i class="fa fa-share-alt text-primary mr-2"></i>
+            分享配置
+          </h3>
+          <button 
+            @click="hideShareModal"
+            class="text-dark-2 hover:text-dark p-2 rounded-full hover:bg-gray-100 transition-colors"
+            title="关闭"
+          >
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <!-- 模态框内容 -->
+        <div class="flex-1 overflow-y-auto p-4">
+          <div class="mb-4">
+            <h4 class="font-medium text-dark-1 mb-2">接口配置 + 全局配置</h4>
+            <pre class="bg-gray-50 p-3 rounded-lg overflow-x-auto text-sm font-mono">{{ JSON.stringify(shareConfig, null, 2) }}</pre>
+          </div>
+        </div>
+        <!-- 模态框底部 -->
+        <div class="p-4 border-t border-gray-200 flex items-center justify-end space-x-3">
+          <button 
+            @click="hideShareModal"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-dark-1 rounded-lg transition-colors"
+          >
+            取消
+          </button>
+          <button 
+            @click="copyShareConfig"
+            class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors"
+          >
+            <i class="fa fa-copy mr-2"></i>
+            复制分享
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 粘贴配置模态框 -->
+    <div v-if="showPasteConfigModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+        <!-- 模态框头部 -->
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="font-medium text-dark flex items-center">
+            <i class="fa fa-paste text-primary mr-2"></i>
+            粘贴配置
+          </h3>
+          <button 
+            @click="hidePasteConfigModal"
+            class="text-dark-2 hover:text-dark p-2 rounded-full hover:bg-gray-100 transition-colors"
+            title="关闭"
+          >
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+        <!-- 模态框内容 -->
+        <div class="flex-1 overflow-y-auto p-4">
+          <div class="mb-4">
+            <h4 class="font-medium text-dark-1 mb-2">粘贴分享的配置数据</h4>
+            <textarea 
+              v-model="pasteConfigInput"
+              placeholder="请粘贴JSON格式的配置数据..."
+              class="w-full h-64 p-3 border border-gray-300 rounded-lg bg-white font-mono text-sm resize-vertical"
+            ></textarea>
+          </div>
+        </div>
+        <!-- 模态框底部 -->
+        <div class="p-4 border-t border-gray-200 flex items-center justify-end space-x-3">
+          <button 
+            @click="hidePasteConfigModal"
+            class="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-dark-1 rounded-lg transition-colors text-sm"
+          >
+            取消
+          </button>
+          <button 
+            @click="applyPasteConfig"
+            class="px-4 py-1.5 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors"
+          >
+            确认
+          </button>
+        </div>
+      </div>
+    </div>
+    
     <!-- 操作提示 -->
     <Toast 
       :message="toastMessage" 
@@ -332,7 +441,11 @@ export default {
       toolBarExpanded: false, // 业务导航工具条是否展开
       activeTool: '', // 当前激活的工具
       activeBusiness: '', // 当前激活的业务功能
-      showHistoryModal: false // 是否显示历史请求模态框
+      showHistoryModal: false, // 是否显示历史请求模态框
+      showShareModal: false, // 是否显示分享模态框
+      shareConfig: {}, // 分享的配置数据
+      showPasteConfigModal: false, // 是否显示粘贴配置模态框
+      pasteConfigInput: '' // 粘贴配置的输入内容
     }
   },
   watch: {
@@ -1305,6 +1418,132 @@ export default {
     handleShowHelp() {
       this.activeTool = 'help'
       this.setHelpVisible(true)
+    },
+    
+    // 显示分享模态框
+    showShareModalFunc() {
+      // 收集所有配置信息
+      this.shareConfig = this.collectRequestConfig();
+      this.showShareModal = true;
+    },
+    
+    // 隐藏分享模态框
+    hideShareModal() {
+      this.showShareModal = false;
+    },
+    
+    // 复制分享配置
+    copyShareConfig() {
+      const text = JSON.stringify(this.shareConfig, null, 2);
+      
+      // 优先使用现代的clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+          .then(() => {
+            this.showToast('配置已复制');
+            this.hideShareModal();
+          })
+          .catch(() => this.fallbackCopyTextToClipboard(text));
+      } else {
+        // 使用传统方法作为后备
+        this.fallbackCopyTextToClipboard(text);
+      }
+    },
+    
+    // 显示粘贴配置模态框
+    openPasteConfigModal() {
+      this.activeTool = 'paste';
+      this.showPasteConfigModal = true;
+      this.pasteConfigInput = '';
+    },
+    
+    // 隐藏粘贴配置模态框
+    hidePasteConfigModal() {
+      this.activeTool = '';
+      this.showPasteConfigModal = false;
+      this.pasteConfigInput = '';
+    },
+    
+    // 应用粘贴的配置数据
+    applyPasteConfig() {
+      try {
+        // 解析JSON数据
+        const config = JSON.parse(this.pasteConfigInput);
+        
+        // 验证配置数据的完整性
+        if (!config.url || !config.method) {
+          this.showToast('配置数据不完整，请检查后重试', 'error');
+          return;
+        }
+        
+        // 应用配置到系统中
+        // 1. 更新接口配置
+        this.updateProperty('selectedMethod', config.method || 'POST');
+        this.updateProperty('apiPath', config.path || '');
+        this.updateProperty('apiName', config.name || '');
+        this.updateProperty('jsonRawInput', JSON.stringify(config.jsonRawInput || {}, null, 2));
+        this.updateProperty('timeout', config.timeout || 5000);
+        this.updateProperty('requestMode', config.requestMode || 'direct');
+        
+        // 2. 更新全局配置
+        this.updateProperty('baseUrl', config.baseUrl || config.url.split('/').slice(0, 3).join('/') || '');
+        this.updateProperty('proxyUrl', config.proxyUrl || 'backend/api-test-worker.php');
+        
+        // 3. 更新全局参数配置
+        if (config.globalJsonInput) {
+          this.updateProperty('globalJsonInput', JSON.stringify(config.globalJsonInput, null, 2));
+        }
+        if (config.globalParams) {
+          this.updateProperty('globalParams', config.globalParams);
+        }
+        if (config.globalParamMode) {
+          this.updateProperty('globalParamMode', config.globalParamMode);
+        }
+        if (config.globalParamMethod) {
+          this.updateProperty('globalParamMethod', config.globalParamMethod);
+        }
+        
+        // 4. 更新请求头
+        if (config.headers) {
+          const headers = Object.entries(config.headers).map(([name, value]) => ({
+            name,
+            value,
+            visible: true
+          }));
+          this.updateProperty('headers', headers);
+        }
+        
+        // 5. 更新API参数
+        if (config.params) {
+          const apiParams = Object.entries(config.params).map(([name, value]) => ({
+            name,
+            value,
+            visible: true
+          }));
+          this.updateProperty('apiParams', apiParams);
+        }
+        
+        // 6. 更新请求体数据
+        if (config.data) {
+          this.updateProperty('jsonRawInput', JSON.stringify(config.data, null, 2));
+        }
+        
+        // 7. 更新接口配置信息
+        if (config.inputMode) {
+          this.updateProperty('inputMode', config.inputMode);
+        }
+        if (config.kvPairs) {
+          this.updateProperty('kvPairs', config.kvPairs);
+        }
+        
+        // 显示成功提示
+        this.showToast('配置已成功应用');
+        
+        // 关闭模态框
+        this.hidePasteConfigModal();
+      } catch (error) {
+        this.showToast(`配置解析失败: ${error.message}`, 'error');
+      }
     }
 
   }
